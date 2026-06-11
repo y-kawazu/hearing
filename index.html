@@ -164,12 +164,12 @@
             <!-- フォーム各ステップのコンテンツ -->
             <div class="flex-grow p-6 overflow-y-auto max-h-[640px]">
                 
-                <!-- STEP 1$301C2: 基本情報・現在のHP状況 -->
+                <!-- STEP 1〜2: 基本情報・現在のHP状況 -->
                 <div id="step-content-1" class="space-y-5">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 1 & 2</span>
                         <h2 class="text-xl font-bold text-slate-900 mt-1">基本情報・現在のHP状況</h2>
-                        <p class="text-sm text-slate-500 mt-1">クライアント様の基本情報、企業データ、および既存サイトの課題を確認します。</p>
+                        <p class="text-sm text-slate-500 mt-1">クライアント様の基本情報、企業データ、および既存サイト of 課題を確認します。</p>
                     </div>
 
                     <!-- 会社名 / 担当者名 -->
@@ -291,7 +291,7 @@
                     </div>
                 </div>
 
-                <!-- STEP 3$301C4: 目的・ターゲット -->
+                <!-- STEP 3〜4: 目的・ターゲット -->
                 <div id="step-content-2" class="space-y-6 hidden">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 3 & 4</span>
@@ -339,7 +339,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">メイン年齢層・性別</label>
-                                <input type="text" id="target_demographics" oninput="updatePreview()" placeholder="例：30代$301C40代の働く女性、ファミリー層" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition outline-none text-sm">
+                                <input type="text" id="target_demographics" oninput="updatePreview()" placeholder="例：30代〜40代の働く女性、ファミリー層" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition outline-none text-sm">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">どのような立場・環境の人か</label>
@@ -359,7 +359,7 @@
                     </div>
                 </div>
 
-                <!-- STEP 5$301C6: ページ構成・素材 -->
+                <!-- STEP 5〜6: ページ構成・素材 -->
                 <div id="step-content-3" class="space-y-6 hidden">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 5 & 6</span>
@@ -733,8 +733,8 @@
                     <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">4. ご用意いただく提供素材</h3>
                     <table class="w-full text-[8.5px] mt-1">
                         <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">企業ロゴ</td><td class="py-0.5 text-slate-800" id="print_material_logo">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">写真素材</td><td class="py-0.5 text-slate-800" id="print_material_photo">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">掲載原稿</td><td class="py-0.5 text-slate-800" id="print_material_text">-</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-800" id="print_material_photo">-</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-800" id="print_material_text">-</td></tr>
                         <tr><td class="py-0.5 text-slate-400 font-bold">インフラ環境</td><td class="py-0.5 text-slate-800" id="print_material_server">-</td></tr>
                     </table>
                 </div>
@@ -894,7 +894,7 @@
             { id: 8, category: "pale", name: "バニラ・スフレアイボリー", desc: "スフレのようにふんわり温かいアイボリー背景。安心感と親しみやすさ。", base: "#FDF6EC", main: "#B45309", accent: "#0F766E", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 9, category: "pale", name: "アリス・アイススカイ", desc: "どこまでも透き通った空色の背景。知的なスタジオ、教育支援などに。", base: "#EBF8FF", main: "#1D4ED8", accent: "#0D9488", baseText: "#1E293B", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 10, category: "pale", name: "ロイヤル・エクリュクリーム", desc: "完璧な品格を誇るロイヤルアイボリー背景。ホテルやサロン、洋菓子向け。", base: "#FFFDF0", main: "#1E293B", accent: "#C2410C", baseText: "#1E293B", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 11, category: "pale", name: "ミスティ・ラベンダー", desc: "朝霧をまとった幻想的な薄紫背景。フレグランス、サロン、詩的な世界観に。", base: "#F5EFF7", main: "#725E75", accent: "#CAAD8A", baseText: "#2F2330", mainText: "#FFFFFF", accentText: "#2F2330" },
+            { id: 11, category: "pale", name: "ミスティ·ラベンダー", desc: "朝霧をまとった幻想的な薄紫背景. フレグランス、サロン、詩的な世界観に。", base: "#F5EFF7", main: "#725E75", accent: "#CAAD8A", baseText: "#2F2330", mainText: "#FFFFFF", accentText: "#2F2330" },
             { id: 12, category: "pale", name: "ピーチ・ソルベピンク", desc: "みずみずしい桃の実をイメージした極薄ピンク背景。可愛らしい雑貨やカフェに。", base: "#FFF5F0", main: "#D94E34", accent: "#4A7A96", baseText: "#3C1F15", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 13, category: "pale", name: "フォグ・スモーキーグレー", desc: "柔らかな霧をまとったライトグレー。スマートなBtoBやポートフォリオに。", base: "#F2F4F7", main: "#3A4F6B", accent: "#E5A93B", baseText: "#1F2937", mainText: "#FFFFFF", accentText: "#111827" },
             { id: 14, category: "pale", name: "フレンチリネン・サンド", desc: "乾いたリネンに包まれるような、穏やかで素朴なくすみベージュベース。", base: "#F5F2EB", main: "#5C564F", accent: "#8B9A76", baseText: "#3E352F", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -913,17 +913,17 @@
             { id: 26, category: "mature", name: "和モダン・砂紋グレー", desc: "枯山水の美しさを砂紋グレー背景で。和食、伝統工芸、温泉旅館に。", base: "#EFECE4", main: "#2D2926", accent: "#9E2A2B", baseText: "#1C1917", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 27, category: "mature", name: "煤竹・古民家オリーブ", desc: "くすんだオリーブ土壁調の背景。建築士、リノベーション、和食店に。", base: "#EDECE6", main: "#3E3535", accent: "#B85A38", baseText: "#1E1E1E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 28, category: "mature", name: "洗練チャコール・スレート", desc: "味わい深いダークグレー背景。白文字が美しく映える引き締まった現代デザイン。", base: "#374151", main: "#F9FAFB", accent: "#10B981", baseText: "#F3F4F6", mainText: "#111827", accentText: "#000000" },
-            { id: 29, category: "mature", name: "真綿・紅化粧", desc: "真綿のようなくすんだ絹白に、深みある紅。伝統を紡ぐデザイン。", base: "#FFFDF6", main: "#3D3535", accent: "#B82F41", baseText: "#1F1A1A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 29, category: "mature", name: "真綿・紅化粧", desc: "真綿のようなくすんだ絹白に、深みある紅. 伝統を紡ぐデザイン。", base: "#FFFDF6", main: "#3D3535", accent: "#B82F41", baseText: "#1F1A1A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 30, category: "mature", name: "シネマセピア・レトロ", desc: "ノスタルジックなセピア紙の背景。映画、ヴィンテージ服、レトロ喫茶に。", base: "#EFEAE0", main: "#573F33", accent: "#385E5F", baseText: "#2C1E18", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 31, category: "mature", name: "庵治石（あじいし）の美", desc: "日本の銘石「庵治石」を思わせる、静かで洗練された和石グレー背景。", base: "#DEDFDB", main: "#1F2421", accent: "#C5A059", baseText: "#1F2421", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 32, category: "mature", name: "深緑・かすみモス", desc: "深い霧が立ち込める森をかすみライトモス背景で再現。アウトドア、ハーブティに。", base: "#EBECE6", main: "#2C402E", accent: "#C99E15", baseText: "#1B241C", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 33, category: "mature", name: "スレート・ミッドナイト", desc: "インテリジェンスを感じるミッドナイトグレー。先進的でありながら渋いトーン。", base: "#1F2937", main: "#F3F4F6", accent: "#ECC94B", baseText: "#F9FAFB", mainText: "#111827", accentText: "#111827" },
+            { id: 33, category: "mature", name: "スレート・ミッドナイト", desc: "インテリジェンスを感じるミッドナイトグレー。先進的でありながら渋いトーン。", base: "#1F2937", main: "#F3F4F6", accent: "#ECC94B", baseText: "#F9FAFB", mainText: "#111827", accent: "#111827" },
             { id: 34, category: "mature", name: "コッパー・アンバーウッド", desc: "アンバー調のしっとりした温もり背景にアイアングレーのコントラスト。ヴィンテージガレージに。", base: "#EBE9E4", main: "#2E3033", accent: "#C36A2D", baseText: "#1A202C", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 35, category: "mature", name: "漆黒・ゴールドクラシック", desc: "深く沈むダークグレーとシャンパンゴールド。伝統ホテルのバー等に。", base: "#1C1D21", main: "#2A2F35", accent: "#D4AF37", baseText: "#E5E5E5", mainText: "#FFFFFF", accentText: "#111111" },
             { id: 36, category: "mature", name: "葡萄・アジアンモダン", desc: "オリエンタルな情景。くすんだラタンエクリュ背景でスパやサロンに。", base: "#F7F4EB", main: "#4B2E40", accent: "#D9A05B", baseText: "#2B1A25", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 37, category: "mature", name: "煤炭・スチーム", desc: "炭色グレーに輝くコッパー。無骨なスチールパンク、レザー専門店に。", base: "#27272A", main: "#3F3F46", accent: "#E27B3A", baseText: "#E5E5EA", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 38, category: "mature", name: "藍染・千草色", desc: "歴史が息づく藍染の美学。くすんだ藍色の背景が圧倒的な存在感を引き出す。", base: "#2B3A4A", main: "#FAF6EE", accent: "#D97706", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
-            { id: 39, category: "mature", name: "織部・抹茶クラシック", desc: "安土桃山時代より続く織部焼の器をイメージした渋い緑と、金色のアクセント。", base: "#3E4C33", main: "#F7F4EB", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
+            { id: 39, category: "mature", name: "織部・抹茶クラシック", desc: "安土桃山時代より続く織部焼 of 器をイメージした渋い緑と、金色のアクセント。", base: "#3E4C33", main: "#F7F4EB", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
             { id: 40, category: "mature", name: "鉄御納戸（てつおんど）", desc: "江戸の粋を感じさせる、青味を含んだ重厚なダークグレー。老舗工務店や企業に。", base: "#2E3B42", main: "#F9FAF7", accent: "#D08A42", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 41, category: "mature", name: "群青・砂金", desc: "深みのある群青にくすんだ黄金色をあわせた、歴史と格式の配色。", base: "#1E2A38", main: "#FAF6EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
             { id: 42, category: "mature", name: "利休茶・煤竹", desc: "千利休が好んだ、緑がかった渋いブラウングレー。茶室、懐石料理に最適。", base: "#4D4B3E", main: "#FAF7F2", accent: "#B85A38", baseText: "#FAF7F2", mainText: "#1E1E1E", accentText: "#FFFFFF" },
@@ -948,7 +948,7 @@
             { id: 59, category: "natural", name: "カスタード・ミモザ", desc: "優しさ溢れるペールイエローとライム。春の訪れを感じるフラワーショップに。", base: "#FFFEE9", main: "#D97706", accent: "#2563EB", baseText: "#3F2305", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 60, category: "natural", name: "ユーカリ・アッシュ", desc: "穏やかな暮らしのユーカリカラー。自然食マクロビオティック、オーガニックアロマに。", base: "#F1F5F2", main: "#4F5D54", accent: "#E29578", baseText: "#2C332E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 61, category: "natural", name: "ピスタチオ・ガーデン", desc: "明るく豊かな実りを。オーガニックコスメやエコロジー建築に。", base: "#EEF2E6", main: "#606F30", accent: "#D97706", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 62, category: "natural", name: "プロバンス・ラベンダー", desc: "南仏のラベンダー畑をイメージした、淡いパープルとナチュラルグリーンの配色。", base: "#FAF5FF", main: "#7C3AED", accent: "#15803D", baseText: "#1E2A20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 62, category: "natural", name: "probas・ラベンダー", desc: "南仏のラベンダー畑をイメージした、淡いパープルとナチュラルグリーンの配色。", base: "#FAF5FF", main: "#7C3AED", accent: "#15803D", baseText: "#1E2A20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 63, category: "natural", name: "ハニー・エクリュ", desc: "温かく親しみやすい極上ハチミツのアイボリー。ナチュラルベーカリーや雑貨に。", base: "#FFFDF0", main: "#D97706", accent: "#0F766E", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 64, category: "natural", name: "セコイア・ウッド", desc: "荘厳な大樹を感じる深みあるナチュラルブラウンと、葉をイメージしたセージ。", base: "#FAF7EE", main: "#4D382B", accent: "#4F5D54", baseText: "#4D382B", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 65, category: "natural", name: "レモン・バーベナ", desc: "レモンのハーブティーのような、心身がシャキッと目覚める柑橘イエロー＆グリーン。", base: "#FFFFEB", main: "#32963D", accent: "#D97706", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -990,8 +990,8 @@
             { id: 93, category: "pop", name: "ピスタチオ・ネオンローズ", desc: "鮮やかなくすみピスタチオに強烈なピンクのネオンを効かせた、前衛的なクリエイティブ色。", base: "#EFF3E7", main: "#4B5320", accent: "#EC4899", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 94, category: "pop", name: "トワイライト・ネオンシアン", desc: "トワイライト（黄昏）のネイビーにくっきりと光るネオンシアン。夜間イベントやDJ向け。", base: "#1E1B4B", main: "#7C3AED", accent: "#06B6D4", baseText: "#EEF2F6", mainText: "#FFFFFF", accentText: "#080A10" },
             { id: 95, category: "pop", name: "ダスティ・パンクローズ", desc: "ダスティーローズ背景に漆黒を合わせ、5%のネオンローズでトドメ。アパレルやエッジなブランドに。", base: "#FCE7F3", main: "#111827", accent: "#EC4899", baseText: "#111827", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 96, category: "pop", name: "アイアイ・フェニックス", desc: "錆びた鉄のようなダークアッシュグレー背景に、蘇る炎の情熱。", base: "#3F3F46", main: "#18181B", accent: "#EA580C", baseText: "#F4F4F5", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 97, category: "pop", name: "フォグ・サイバーイエロー", desc: "極薄のフォググレー（ミスト）背景に、注意を引くビビッドイエロー。近未来デジタルハックに。", base: "#F3F4F6", main: "#1E293B", accent: "#EAB308", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#000000" },
+            { id: 96, category: "pop", name: "アイアン・フェニックス", desc: "錆びた鉄のようなダークアッシュグレー背景に、蘇る炎の情熱。", base: "#3F3F46", main: "#18181B", accent: "#EA580C", baseText: "#F4F4F5", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 97, category: "pop", name: "フォグ・サイバーイエロー", desc: "極薄のフォググレー背景に、注意を引くビビッドイエロー。近未来デジタルハックに。", base: "#F3F4F6", main: "#1E293B", accent: "#EAB308", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#000000" },
             { id: 98, category: "pop", name: "スカンジナビアン・パンク", desc: "静かな北欧の水色背景に、ロックな赤とゴールドを。オルタナティブカルチャー向け。", base: "#ECFDF5", main: "#9F1239", accent: "#C5A059", baseText: "#1F2937", mainText: "#FFFFFF", accentText: "#111827" },
             { id: 99, category: "pop", name: "オーシャン・バーベナ", desc: "海を愛するアパレル・サーフ。淡くまばゆいペールブルーに、夕陽を乗せて。", base: "#F0F9FF", main: "#0D9488", accent: "#EA580C", baseText: "#034E5A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 100, category: "pop", name: "フォレスト・ネオンライム", desc: "荘厳な深緑（フォレスト）ベースに、目が覚めるようなネオンライム。ゲーム、WEBサービス、テック系。", base: "#14532D", main: "#1F2937", accent: "#A3E635", baseText: "#F4FDF4", mainText: "#FFFFFF", accentText: "#09090B" }
@@ -1000,9 +1000,9 @@
         // 予算レンジ初期データ
         const defaultBudgetOptions = [
             { value: "未指定・相談して決定", label: "未指定・相談して決定" },
-            { value: "30万円$301C50万円程度 (ミニマル・ライト)", label: "30万$301C50万円（簡易テンプレートプラン）" },
-            { value: "50万円$301C100万円程度 (スタンダード・標準)", label: "50万$301C100万円（オリジナル・標準プラン）" },
-            { value: "100万円$301C200万円程度 (プレミアム・多機能)", label: "100万$301C200万円（システム連携・マーケ重視）" },
+            { value: "30万円〜50万円程度 (ミニマル・ライト)", label: "30万〜50万円（簡易テンプレートプラン）" },
+            { value: "50万円〜100万円程度 (スタンダード・標準)", label: "50万〜100万円（オリジナル・標準プラン）" },
+            { value: "100万円〜200万円程度 (プレミアム・多機能)", label: "100万〜200万円（システム連携・マーケ重視）" },
             { value: "200万円以上 (大規模カスタマイズ)", label: "200万円以上（大規模コーポレート・EC等）" }
         ];
 
@@ -1306,60 +1306,60 @@
             });
         }
 
-        function selectPalette(id) {
-            selectedPaletteId = id;
-            renderPalettes();
-            updatePreview();
-        }
-
         // 右側のプレビュー表示を全画面化（フルスクリーンモード）するトグル関数
         // 左側の入力フォーム(form-container)と上部のヘッダー(main-header)を完全にhiddenにして100%全画面化します
+        // iPadや各画面サイズに対応するため、calc高さ計算を適応し、見切れ・はみ出しを完全に防ぎます
         function toggleFullscreenPreview() {
             const card = document.getElementById('web-preview-card');
-            const isFull = card.classList.contains('fixed');
+            const previewOuter = document.getElementById('preview-outer-container');
+            
+            // classNameの上書きによる判定狂いを防ぐため、外枠コンテナの classList に 'fixed' が含まれているかで判定
+            const isFull = previewOuter.classList.contains('fixed');
             
             const header = document.getElementById('main-header');
             const formContainer = document.getElementById('form-container');
-            const previewOuter = document.getElementById('preview-outer-container');
             const previewHeader = document.getElementById('preview-header');
+            const closeFullBtn = document.getElementById('close-full-btn');
+            const floatingSelector = document.getElementById('full-screen-floating-selector');
             const body = document.body;
             
             if (!isFull) {
-                // 左カラムとメインヘッダーを完全に隠す（完全なフルスクリーン）
+                // 全画面表示：プレゼンラッパーモードのスタイルを反映
+                card.classList.add('fullscreen-card');
+                
+                // 余計な入力・ヘッダー部分を画面から完全消去
                 header.classList.add('hidden');
                 formContainer.classList.add('hidden');
                 previewHeader.classList.add('hidden');
 
-                // プレビュー領域のアウターコンテナを全幅に広げる
-                previewOuter.classList.replace('w-full', 'w-screen');
-                previewOuter.classList.replace('lg:w-[58%]', 'w-screen');
+                // プレビューのアウターコンテナを fixed フルスクリーン背景として展開（滑らかなグラデーション付きダーク背景）
+                previewOuter.className = "fixed inset-0 z-40 bg-slate-950/95 flex flex-col items-center justify-start p-4 md:p-6 pb-48 overflow-y-auto no-print";
                 
-                // カード自体のスタイルを固定フル画面に変更
-                card.classList.add('fixed', 'inset-0', 'z-50', 'w-screen', 'h-screen', 'p-6', 'md:p-12', 'm-0', 'rounded-none', 'overflow-y-auto', 'shadow-2xl');
-                card.classList.remove('rounded-2xl', 'border', 'border-slate-200', 'shadow-sm', 'flex-grow');
+                // プレビューカード自体のサイズを、下部フローティングメニュー(約160px)を完全に除外した安全高さ「h-[calc(100vh-240px)]」に固定
+                // カード単体にオーバーフロー自動スクロールをかけるため、中のコンテンツがいかに長くても一切はみ出さずカード内で完結します
+                card.className = "fullscreen-card bg-white w-full max-w-4xl h-[calc(100vh-240px)] min-h-[480px] flex flex-col rounded-2xl shadow-2xl overflow-y-auto relative transition-all duration-300";
                 
-                document.getElementById('close-full-btn').classList.remove('hidden');
-                document.getElementById('full-screen-floating-selector').classList.remove('hidden');
-                body.style.overflow = 'hidden'; // 背後のスクロールをロック
+                closeFullBtn.classList.remove('hidden');
+                floatingSelector.classList.remove('hidden');
+                body.style.overflow = 'hidden'; // 背後の親画面スクロールを完全にロック
                 
-                // フローティングパレット初期化・描写
+                // フローティングパレット描画
                 filterPalettesFull('all');
             } else {
-                // 通常分割モードに復帰
+                // 通常分割表示への差し戻し
+                card.classList.remove('fullscreen-card');
+                
                 header.classList.remove('hidden');
                 formContainer.classList.remove('hidden');
                 previewHeader.classList.remove('hidden');
 
-                // プレビューアウターを元の比率に戻す
-                previewOuter.classList.replace('w-screen', 'w-full');
-                previewOuter.classList.add('lg:w-[58%]');
+                // プレビューアウターとカード本体のクラス・比率を元の定義に戻す
+                previewOuter.className = "w-full lg:w-[58%] flex flex-col space-y-4 no-print";
+                card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex-grow flex flex-col min-h-[620px] transition-all duration-300 relative";
                 
-                card.classList.remove('fixed', 'inset-0', 'z-50', 'w-screen', 'h-screen', 'p-6', 'md:p-12', 'm-0', 'rounded-none', 'overflow-y-auto', 'shadow-2xl');
-                card.classList.add('rounded-2xl', 'border', 'border-slate-200', 'shadow-sm', 'flex-grow');
-                
-                document.getElementById('close-full-btn').classList.add('hidden');
-                document.getElementById('full-screen-floating-selector').classList.add('hidden');
-                body.style.overflow = ''; // スクロールロック解除
+                closeFullBtn.classList.add('hidden');
+                floatingSelector.classList.add('hidden');
+                body.style.overflow = ''; // スクロールロックの解除
             }
         }
 
@@ -1460,53 +1460,7 @@
             navItemCompany.style.display = pages.includes("会社概要") ? "inline" : "none";
         }
 
-        function jumpToStep(step) {
-            for (let i = 1; i <= 5; i++) {
-                const content = document.getElementById(`step-content-${i}`);
-                const btn = document.getElementById(`step-btn-${i}`);
-                if (i === step) {
-                    content.classList.remove('hidden');
-                    btn.className = "flex items-center space-x-2 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 pb-2 px-1 focus:outline-none transition";
-                    btn.querySelector('span').className = "w-6 h-6 flex items-center justify-center bg-indigo-600 text-white rounded-full text-xs";
-                } else {
-                    content.classList.add('hidden');
-                    btn.className = "flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-slate-600 pb-2 px-1 focus:outline-none transition";
-                    btn.querySelector('span').className = "w-6 h-6 flex items-center justify-center bg-slate-200 text-slate-600 rounded-full text-xs";
-                }
-            }
-
-            currentStep = step;
-            document.getElementById('current-step-indicator').innerText = currentStep;
-
-            const prevBtn = document.getElementById('prev-btn');
-            if (currentStep === 1) {
-                prevBtn.classList.add('invisible');
-            } else {
-                prevBtn.classList.remove('invisible');
-            }
-
-            const nextBtn = document.getElementById('next-btn');
-            if (currentStep === 5) {
-                nextBtn.innerHTML = `<span>要件を最終確認</span><i class="fa-solid fa-square-check"></i>`;
-            } else {
-                nextBtn.innerHTML = `<span>次へ進む</span><i class="fa-solid fa-arrow-right"></i>`;
-            }
-        }
-
-        function nextStep() {
-            if (currentStep < 5) {
-                jumpToStep(currentStep + 1);
-            } else {
-                openPrintPreview();
-            }
-        }
-
-        function prevStep() {
-            if (currentStep > 1) {
-                jumpToStep(currentStep - 1);
-            }
-        }
-
+        // 印刷用データの充填
         function fillPrintData() {
             // 基本データ
             const companyName = document.getElementById('company_name').value.trim() || "-";
@@ -1756,7 +1710,7 @@
                 ["原稿テキスト", materialText],
                 ["ドメイン・サーバー環境", materialServer],
                 ["", ""],
-                ["■ 7. デザイン・配色プラン方針 (70:25:5黄金法則)", ""],
+                ["■ 7. デザイン・配色方針 (70:25:5黄金法則)", ""],
                 ["決定カラーパレット名", currentPalette.name],
                 ["パレット説明", currentPalette.desc],
                 ["ベースカラー (70%)", currentPalette.base],
