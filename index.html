@@ -12,6 +12,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
     <!-- Font Awesome (Icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PDFエクスポート用ライブラリ (html2pdf.js) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- スプレッドシート(Excel)エクスポート用ライブラリ (SheetJS) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <style>
         body {
             font-family: 'Inter', 'Noto Sans JP', sans-serif;
@@ -84,6 +90,7 @@
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40 no-print">
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
+                <!-- タイトル・管理者 -->
                 <div class="flex items-center space-x-3">
                     <button onclick="openAdminLogin()" class="text-slate-500 hover:text-indigo-600 transition duration-150 px-3 py-2 rounded-lg text-sm font-medium flex items-center space-x-1 hover:bg-indigo-50">
                         <i class="fa-solid fa-lock"></i>
@@ -93,13 +100,20 @@
                         <i class="fa-solid fa-rotate-left"></i>
                         <span class="hidden sm:inline">リセット</span>
                     </button>
-                    <button onclick="exportSVG()" class="bg-emerald-600 hover:bg-emerald-700 text-white transition duration-150 px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 shadow-sm shadow-emerald-100">
-                        <i class="fa-solid fa-file-image"></i>
-                        <span>SVGエクスポート</span>
+                </div>
+                <!-- 各種ダウンロード・出力ボタン -->
+                <div class="flex items-center space-x-2">
+                    <button onclick="exportSpreadsheet()" class="bg-emerald-600 hover:bg-emerald-700 text-white transition duration-150 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-1.5 shadow-sm shadow-emerald-100">
+                        <i class="fa-solid fa-file-excel"></i>
+                        <span>スプレッドシート</span>
                     </button>
-                    <button onclick="openPrintPreview()" class="bg-indigo-600 hover:bg-indigo-700 text-white transition duration-150 px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 shadow-sm shadow-indigo-100">
+                    <button onclick="exportPDF()" class="bg-indigo-600 hover:bg-indigo-700 text-white transition duration-150 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-1.5 shadow-sm shadow-indigo-100">
                         <i class="fa-solid fa-file-pdf"></i>
-                        <span>PDF / 印刷出力</span>
+                        <span>PDF保存</span>
+                    </button>
+                    <button onclick="openPrintPreview()" class="bg-slate-700 hover:bg-slate-800 text-white transition duration-150 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-1.5 shadow-sm">
+                        <i class="fa-solid fa-print"></i>
+                        <span>紙に印刷</span>
                     </button>
                 </div>
             </div>
@@ -150,7 +164,7 @@
             <!-- フォーム各ステップのコンテンツ -->
             <div class="flex-grow p-6 overflow-y-auto max-h-[640px]">
                 
-                <!-- STEP 1〜2: 基本情報・現在のHP状況 -->
+                <!-- STEP 1$301C2: 基本情報・現在のHP状況 -->
                 <div id="step-content-1" class="space-y-5">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 1 & 2</span>
@@ -277,7 +291,7 @@
                     </div>
                 </div>
 
-                <!-- STEP 3〜4: 目的・ターゲット -->
+                <!-- STEP 3$301C4: 目的・ターゲット -->
                 <div id="step-content-2" class="space-y-6 hidden">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 3 & 4</span>
@@ -325,7 +339,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">メイン年齢層・性別</label>
-                                <input type="text" id="target_demographics" oninput="updatePreview()" placeholder="例：30代〜40代の働く女性、ファミリー層" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition outline-none text-sm">
+                                <input type="text" id="target_demographics" oninput="updatePreview()" placeholder="例：30代$301C40代の働く女性、ファミリー層" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition outline-none text-sm">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">どのような立場・環境の人か</label>
@@ -345,7 +359,7 @@
                     </div>
                 </div>
 
-                <!-- STEP 5〜6: ページ構成・素材 -->
+                <!-- STEP 5$301C6: ページ構成・素材 -->
                 <div id="step-content-3" class="space-y-6 hidden">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 5 & 6</span>
@@ -624,7 +638,7 @@
 
     </main>
 
-    <!-- 印刷時専用コンテナ（A4縦1枚に完全に収まるようにレイアウト、フォントサイズ、余白を最適化） -->
+    <!-- 印刷＆PDFエクスポート専用コンテナ（A4縦1枚に完全に収まるようレイアウト、フォント、余白を精緻にデザイン） -->
     <div id="print-sheet-container" class="hidden print-container max-w-[210mm] mx-auto p-4 bg-white min-h-screen text-slate-800">
         <!-- 印刷用ヘッダー -->
         <div class="border-b-2 border-slate-900 pb-2 flex justify-between items-end mb-3">
@@ -835,9 +849,7 @@
     <script>
         // カラーパレットデータ（70:25:5の法則に則った充実の全100バリエーション。背景色（ベースカラー）の多様性と彩度・彩りの違いを完全に担保しました）
         const colorPalettes = [
-            // ==========================================
             // --- グレージュ・淡色（paleカテゴリ）: 25種類 ---
-            // ==========================================
             { id: 1, category: "pale", name: "洗練グレージュ", desc: "大人の上品なくすみグレーベージュ。一番人気のニュアンスカラー。", base: "#F4F2EE", main: "#4A4744", accent: "#C29B9B", baseText: "#2C2A29", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 2, category: "pale", name: "トープ・ミニマリズム", desc: "極上の大人の引き算。上質で無駄のないライフスタイルショップ向け。", base: "#FAF6F0", main: "#6E6053", accent: "#8A9A9E", baseText: "#2D2621", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 3, category: "pale", name: "シャビー・シック", desc: "アンティークなフランス風のブルーグレー。ウェディングやサロンに。", base: "#EBF1F0", main: "#778A90", accent: "#CFA08F", baseText: "#2F3E46", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -874,24 +886,21 @@
             { id: 31, category: "mature", name: "庵治石（あじいし）の美", desc: "日本の銘石「庵治石」を思わせる、静かで洗練された和石グレー背景。", base: "#DEDFDB", main: "#1F2421", accent: "#C5A059", baseText: "#1F2421", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 32, category: "mature", name: "深緑・かすみモス", desc: "深い霧が立ち込める森をかすみライトモス背景で再現。アウトドア、ハーブティに。", base: "#EBECE6", main: "#2C402E", accent: "#C99E15", baseText: "#1B241C", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 33, category: "mature", name: "スレート・ミッドナイト", desc: "インテリジェンスを感じるミッドナイトグレー。先進的でありながら渋いトーン。", base: "#1F2937", main: "#F3F4F6", accent: "#ECC94B", baseText: "#F9FAFB", mainText: "#111827", accentText: "#111827" },
-            { id: 34, category: "mature", name: "コッパー・アンバーウッド",
-              desc: "アンバー調のしっとりした温もり背景にアイアングレーのコントラスト。ヴィンテージガレージ、クラフトビールに。",
-              base: "#EBE9E4", main: "#2E3033", accent: "#C36A2D", baseText: "#1A202C", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 34, category: "mature", name: "コッパー・アンバーウッド", desc: "アンバー調のしっとりした温もり背景にアイアングレーのコントラスト。ヴィンテージガレージに。", base: "#EBE9E4", main: "#2E3033", accent: "#C36A2D", baseText: "#1A202C", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 35, category: "mature", name: "漆黒・ゴールドクラシック", desc: "深く沈むダークグレーとシャンパンゴールド。伝統ホテルのバー等に。", base: "#1C1D21", main: "#2A2F35", accent: "#D4AF37", baseText: "#E5E5E5", mainText: "#FFFFFF", accentText: "#111111" },
             { id: 36, category: "mature", name: "葡萄・アジアンモダン", desc: "オリエンタルな情景。くすんだラタンエクリュ背景でスパやサロンに。", base: "#F7F4EB", main: "#4B2E40", accent: "#D9A05B", baseText: "#2B1A25", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 37, category: "mature", name: "煤炭・スチーム", desc: "炭色グレーに輝くコッパー。無骨なスチールパンク、レザー専門店に。", base: "#27272A", main: "#3F3F46", accent: "#E27B3A", baseText: "#E5E5EA", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            // 新規追加：渋い・和風（特に濃紺・深緑・くすみ）
             { id: 38, category: "mature", name: "藍染・千草色", desc: "歴史が息づく藍染の美学。くすんだ藍色の背景が圧倒的な存在感を引き出す。", base: "#2B3A4A", main: "#FAF6EE", accent: "#D97706", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 39, category: "mature", name: "織部・抹茶クラシック", desc: "安土桃山時代より続く織部焼の器をイメージした渋い緑と、金色のアクセント。", base: "#3E4C33", main: "#F7F4EB", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
             { id: 40, category: "mature", name: "鉄御納戸（てつおんど）", desc: "江戸の粋を感じさせる、青味を含んだ重厚なダークグレー。老舗工務店や企業に。", base: "#2E3B42", main: "#F9FAF7", accent: "#D08A42", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
-            { id: 41, category: "mature", name: "群青・砂金", desc: "深みのある群青（ロイヤルブルー）にくすんだ黄金色をあわせた、歴史と格式の配色。", base: "#1E2A38", main: "#FAF6EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
+            { id: 41, category: "mature", name: "群青・砂金", desc: "深みのある群青にくすんだ黄金色をあわせた、歴史と格式の配色。", base: "#1E2A38", main: "#FAF6EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
             { id: 42, category: "mature", name: "利休茶・煤竹", desc: "千利休が好んだ、緑がかった渋いブラウングレー。茶室、懐石料理に最適。", base: "#4D4B3E", main: "#FAF7F2", accent: "#B85A38", baseText: "#FAF7F2", mainText: "#1E1E1E", accentText: "#FFFFFF" },
             { id: 43, category: "mature", name: "深海インディゴ", desc: "深海へと潜っていくような、静寂のディープネイビー背景。ITコンサル、士業に。", base: "#1B2430", main: "#FFFFFF", accent: "#E09F3E", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 44, category: "mature", name: "侘寂・苔庭", desc: "長年をかけて育まれた、美しき日本の苔庭を再現した渋い草色と和紙背景。", base: "#414D3D", main: "#F5F2EB", accent: "#A67C52", baseText: "#F5F2EB", mainText: "#1E1E1E", accentText: "#FFFFFF" },
             { id: 45, category: "mature", name: "武家・紺青（こんじょう）", desc: "格式高い武家屋敷を思わせる、強く引き締まった伝統的な濃紺。日本の本物志向に。", base: "#161D2F", main: "#FAF9F5", accent: "#D946EF", baseText: "#FAF9F5", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 46, category: "mature", name: "玄武・スレートグレー", desc: "中国神話の玄武（黒）から着想を得た、渋く冷徹な重厚グレー。現代建築・アート系に。", base: "#2B2D2F", main: "#FAF9F5", accent: "#D4AF37", baseText: "#F9FAFB", mainText: "#111827", accentText: "#111827" },
             { id: 47, category: "mature", name: "黒曜・漆器ボルドー", desc: "黒曜石のようなダークスレートベースに、漆器のようなボルドーと純白。", base: "#22252A", main: "#881337", accent: "#FFFFFF", baseText: "#FFFFFF", mainText: "#FFFFFF", accentText: "#111827" },
-            { id: 48, category: "mature", name: "常盤緑・金泥", desc: "常に青い常盤木の深緑に、金泥（きんでい）の雅を添えた、格式高き日本の美。", base: "#263D2E", main: "#FAF7EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
+            { id: 48, category: "mature", name: "常盤緑・金泥", desc: "常に青い常盤木の深緑に、金泥の雅を添えた、格式高き日本の美。", base: "#263D2E", main: "#FAF7EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
             { id: 49, category: "mature", name: "和楽・利休ねずみ", desc: "灰色がかったお茶のような、極めて知的な和風くすみカラー背景。陶芸、日本画、茶道に。", base: "#596055", main: "#FFFDF6", accent: "#B85A38", baseText: "#FDFBF7", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 50, category: "mature", name: "ミッドナイト・コパー", desc: "深く、美しき真夜中のロイヤルネイビーにコパー（銅）の輝きを乗せて。バーやラウンジに。", base: "#172554", main: "#1E293B", accent: "#EA580C", baseText: "#F8FAFC", mainText: "#FFFFFF", accentText: "#FFFFFF" },
 
@@ -908,7 +917,6 @@
             { id: 58, category: "natural", name: "メープル・バニラエクリュ", desc: "ふんわりと溶け込むエクリュアイボリー。丁寧な暮らしの家具店等に。", base: "#F9F4EB", main: "#C84B31", accent: "#2D4263", baseText: "#191919", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 59, category: "natural", name: "カスタード・ミモザ", desc: "優しさ溢れるペールイエローとライム。春の訪れを感じるフラワーショップに。", base: "#FFFEE9", main: "#D97706", accent: "#2563EB", baseText: "#3F2305", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 60, category: "natural", name: "ユーカリ・アッシュ", desc: "穏やかな暮らしのユーカリカラー。自然食マクロビオティック、オーガニックアロマに。", base: "#F1F5F2", main: "#4F5D54", accent: "#E29578", baseText: "#2C332E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            // 新規追加
             { id: 61, category: "natural", name: "ピスタチオ・ガーデン", desc: "明るく豊かな実りを。オーガニックコスメやエコロジー建築に。", base: "#EEF2E6", main: "#606F30", accent: "#D97706", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 62, category: "natural", name: "プロバンス・ラベンダー", desc: "南仏のラベンダー畑をイメージした、淡いパープルとナチュラルグリーンの配色。", base: "#FAF5FF", main: "#7C3AED", accent: "#15803D", baseText: "#1E2A20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 63, category: "natural", name: "ハニー・エクリュ", desc: "温かく親しみやすい極上ハチミツのアイボリー。ナチュラルベーカリーや雑貨に。", base: "#FFFDF0", main: "#D97706", accent: "#0F766E", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -929,7 +937,6 @@
             { id: 74, category: "corporate", name: "モダン・ボルドー", desc: "大人の成熟した信頼感。専門クリニック、法律事務所、コンサルに。", base: "#F9F4F5", main: "#581C26", accent: "#9A3412", baseText: "#2A0E14", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 75, category: "corporate", name: "パール・ミストネイビー", desc: "淡く上品なパールホワイトグレーに信頼のネイビーを乗せて。", base: "#F9FAFB", main: "#111827", accent: "#4F46E5", baseText: "#111827", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 76, category: "corporate", name: "スマート・モノシフォン", desc: "徹底的にフラットで洗練されたモノトーンデザイン。余白の美学を活かす。", base: "#F3F4F6", main: "#09090B", accent: "#6B7280", baseText: "#111827", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            // 新規追加
             { id: 77, category: "corporate", name: "ロイヤル・インディゴ", desc: "知性を宿した深いインディゴブルー背景。監査法人やBtoBテック大手に最適。", base: "#1E2638", main: "#FAFAFA", accent: "#0EA5E9", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 78, category: "corporate", name: "クラウド・ネイビー", desc: "淡いクラウドグレーベースに、安心感を与えるディープネイビー。", base: "#F3F5FA", main: "#1E3A8A", accent: "#10B981", baseText: "#1E3A8A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 79, category: "corporate", name: "アッシュ・インテリジェンス", desc: "都会的なミディアムグレーに知的ネイビーをのせた、最高にクールなコーポレート色。", base: "#E5E7EB", main: "#1E3A8A", accent: "#EC4899", baseText: "#111827", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -944,19 +951,18 @@
             // ==========================================
             { id: 85, category: "pop", name: "創造性・バイオレット", desc: "感性を揺さぶるネオンバイオレット。先進のデザイン事務所、アートサロンに。", base: "#F8F5FF", main: "#7C3AED", accent: "#F43F5E", baseText: "#1C1917", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 86, category: "pop", name: "メルヘン・パステルレモン", desc: "お日さまを浴びたレモンイエロー背景。ハンドメイド、子供向け、スイーツに。", base: "#FEFCE8", main: "#A8DADC", accent: "#F4A261", baseText: "#1D3557", mainText: "#1D3557", accentText: "#FFFFFF" },
-            { id: 87, category: "pop", name: "サンセット・カリフォルニア", desc: "開放的なサニーバニラ背景。カリフォルニアスタイルアパレル、ダイナーに。", base: "#FFFDF6", main: "#D94E34", accent: "#4A7A96", baseText: "#3C1F15", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 87, category: "pop", name: "サンセット・カリフォルニア", desc: "開放的なサニーバニラ背景. カリフォルニアスタイルアパレル、ダイナーに。", base: "#FFFDF6", main: "#D94E34", accent: "#4A7A96", baseText: "#3C1F15", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 88, category: "pop", name: "レトロポップ・ティール", desc: "アメリカンレトロポップ。ヘアサロン、ポップなカフェ、個性的アトリエに。", base: "#FFFBF2", main: "#008080", accent: "#FF6F61", baseText: "#1E293B", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 89, category: "pop", name: "アクティブ・アスリートグレー", desc: "力強いスレートグレー背景に、アスリートの熱意を乗せたライム。パーソナルジムに。", base: "#374151", main: "#1F2937", accent: "#A3E635", baseText: "#F9FAFB", mainText: "#F9FAFB", accentText: "#09090B" },
             { id: 90, category: "pop", name: "コズミック・ボイジャー", desc: "深宇宙をマイルドなネイビーグレー背景で。WEB3、VRイベントなどに。", base: "#242936", main: "#1F2833", accent: "#66FCF1", baseText: "#C5C6C7", mainText: "#FFFFFF", accentText: "#080A10" },
             { id: 91, category: "pop", name: "クラフト・ブリック", desc: "手仕事を感じる温かなクラフト紙背景。DIY、工具、男前インテリア店に。", base: "#FDF9F2", main: "#3E4149", accent: "#D35400", baseText: "#1A252C", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 92, category: "pop", name: "サイバー・デジタルミント", desc: "デジタルスレート背景に、ミントネオン。ガジェット、プログラミングスクールに。", base: "#1F2937", main: "#10B981", accent: "#F43F5E", baseText: "#F9FAFB", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            // 新規追加
             { id: 93, category: "pop", name: "ピスタチオ・ネオンローズ", desc: "鮮やかなくすみピスタチオに強烈なピンクのネオンを効かせた、前衛的なクリエイティブ色。", base: "#EFF3E7", main: "#4B5320", accent: "#EC4899", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 94, category: "pop", name: "トワイライト・ネオンシアン", desc: "トワイライト（黄昏）のネイビーにくっきりと光るネオンシアン。夜間イベントやDJ向け。", base: "#1E1B4B", main: "#7C3AED", accent: "#06B6D4", baseText: "#EEF2F6", mainText: "#FFFFFF", accentText: "#080A10" },
             { id: 95, category: "pop", name: "ダスティ・パンクローズ", desc: "ダスティーローズ背景に漆黒を合わせ、5%のネオンローズでトドメ。アパレルやエッジなブランドに。", base: "#FCE7F3", main: "#111827", accent: "#EC4899", baseText: "#111827", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 96, category: "pop", name: "アイアン・フェニックス", desc: "錆びた鉄のようなダークアッシュグレー背景に、蘇る炎（レスキューオレンジ）の情熱。", base: "#3F3F46", main: "#18181B", accent: "#EA580C", baseText: "#F4F4F5", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 96, category: "pop", name: "アイアン・フェニックス", desc: "錆びた鉄のようなダークアッシュグレー背景に、蘇る炎の情熱。", base: "#3F3F46", main: "#18181B", accent: "#EA580C", baseText: "#F4F4F5", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 97, category: "pop", name: "フォグ・サイバーイエロー", desc: "極薄のフォググレー（ミスト）背景に、注意を引くビビッドイエロー。近未来デジタルハックに。", base: "#F3F4F6", main: "#1E293B", accent: "#EAB308", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#000000" },
-            { id: 98, category: "pop", name: "スカンジナビアン・パンク", desc: "静かな北欧の水色背景に、ロックな赤（ボルドー）とゴールドを。オルタナティブカルチャー向け。", base: "#ECFDF5", main: "#9F1239", accent: "#C5A059", baseText: "#1F2937", mainText: "#FFFFFF", accentText: "#111827" },
+            { id: 98, category: "pop", name: "スカンジナビアン・パンク", desc: "静かな北欧の水色背景に、ロックな赤とゴールドを。オルタナティブカルチャー向け。", base: "#ECFDF5", main: "#9F1239", accent: "#C5A059", baseText: "#1F2937", mainText: "#FFFFFF", accentText: "#111827" },
             { id: 99, category: "pop", name: "オーシャン・バーベナ", desc: "海を愛するアパレル・サーフ。淡くまばゆいペールブルーに、夕陽を乗せて。", base: "#F0F9FF", main: "#0D9488", accent: "#EA580C", baseText: "#034E5A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 100, category: "pop", name: "フォレスト・ネオンライム", desc: "荘厳な深緑（フォレスト）ベースに、目が覚めるようなネオンライム。ゲーム、WEBサービス、テック系。", base: "#14532D", main: "#1F2937", accent: "#A3E635", baseText: "#F4FDF4", mainText: "#FFFFFF", accentText: "#09090B" }
         ];
@@ -964,9 +970,9 @@
         // 予算レンジ初期データ
         const defaultBudgetOptions = [
             { value: "未指定・相談して決定", label: "未指定・相談して決定" },
-            { value: "30万円〜50万円程度 (ミニマル・ライト)", label: "30万〜50万円（簡易テンプレートプラン）" },
-            { value: "50万円〜100万円程度 (スタンダード・標準)", label: "50万〜100万円（オリジナル・標準プラン）" },
-            { value: "100万円〜200万円程度 (プレミアム・多機能)", label: "100万〜200万円（システム連携・マーケ重視）" },
+            { value: "30万円$301C50万円程度 (ミニマル・ライト)", label: "30万$301C50万円（簡易テンプレートプラン）" },
+            { value: "50万円$301C100万円程度 (スタンダード・標準)", label: "50万$301C100万円（オリジナル・標準プラン）" },
+            { value: "100万円$301C200万円程度 (プレミアム・多機能)", label: "100万$301C200万円（システム連携・マーケ重視）" },
             { value: "200万円以上 (大規模カスタマイズ)", label: "200万円以上（大規模コーポレート・EC等）" }
         ];
 
@@ -1476,10 +1482,11 @@
             document.getElementById('print_additional_notes').innerText = additionalNotes;
         }
 
+        // 紙への通常印刷 (ブラウザ印刷)
         function openPrintPreview() {
             const companyName = document.getElementById('company_name').value.trim();
             if(!companyName) {
-                showCustomAlert("打合せシートを印刷・PDF出力するために、STEP 1の「会社名」をご記入ください！", "入力項目チェック").then(() => {
+                showCustomAlert("印刷を起動するために、STEP 1の「会社名」をご記入ください！", "入力項目チェック").then(() => {
                     jumpToStep(1);
                 });
                 return;
@@ -1500,261 +1507,153 @@
             printSheet.classList.add('hidden');
         }
 
-        function resetData() {
-            showCustomConfirm("入力されたヒアリングシートの内容を完全にクリアして初期状態に戻します。よろしいですか？", "データのリセット").then((confirmed) => {
-                if(confirmed) {
-                    document.getElementById('company_name').value = '';
-                    document.getElementById('company_rep').value = '';
-                    document.getElementById('company_address').value = '';
-                    document.getElementById('corporate_number').value = '';
-                    document.getElementById('company_industry').value = '';
-                    document.getElementById('construction_license').value = '';
-                    document.getElementById('company_capital').value = '';
-                    document.getElementById('company_phone').value = '';
-
-                    document.getElementById('client_name').value = '';
-                    document.getElementById('client_email').value = '';
-                    document.getElementById('meeting_date').value = '';
-                    
-                    const hpRadios = document.querySelectorAll('input[name="current_hp_status"]');
-                    hpRadios[0].checked = true;
-                    toggleHPUri(false);
-
-                    document.querySelectorAll('input[name="pain_points"]').forEach(el => el.checked = false);
-                    document.getElementById('custom_pain_points').value = '';
-
-                    const mainGoalRadios = document.querySelectorAll('input[name="main_goal"]');
-                    mainGoalRadios[0].checked = true;
-
-                    document.getElementById('target_demographics').value = '';
-                    document.getElementById('target_persona').value = '';
-                    document.getElementById('target_keywords').value = '';
-                    document.getElementById('target_pain_points').value = '';
-
-                    document.querySelectorAll('input[name="pages"]').forEach(el => {
-                        if (el.value === "トップページ" || el.value === "サービス紹介" || el.value === "会社概要" || el.value === "お問い合わせ") {
-                            el.checked = true;
-                        } else {
-                            el.checked = false;
-                        }
-                    });
-
-                    document.getElementById('material_logo').selectedIndex = 0;
-                    document.getElementById('material_photo').selectedIndex = 0;
-                    document.getElementById('material_text').selectedIndex = 0;
-                    document.getElementById('material_server').selectedIndex = 0;
-
-                    selectedPaletteId = 1; // 信頼・コーポレートをデフォルトに
-                    filterPalettes('all');
-
-                    document.getElementById('schedule_date').value = '';
-                    document.getElementById('budget_level').selectedIndex = 0;
-                    
-                    const opRadios = document.querySelectorAll('input[name="operation_style"]');
-                    opRadios[0].checked = true;
-
-                    document.getElementById('additional_notes').value = '';
-
-                    jumpToStep(1);
-                    updatePreview();
-                }
-            });
-        }
-
-        function exportSVG() {
-            const companyName = document.getElementById('company_name').value.trim() || "株式会社〇〇";
+        // iPad等でプリンタなしで直接PDFとしてダウンロード保存する機能 (html2pdf.js)
+        function exportPDF() {
+            const companyName = document.getElementById('company_name').value.trim() || "Web_Hearing_Sheet";
             if(!companyName || companyName === "株式会社〇〇") {
-                showCustomAlert("SVGを書き出す前に、STEP 1にて「会社名」をご記入ください。", "入力項目チェック").then(() => {
+                showCustomAlert("PDFをエクスポートする前に、STEP 1にて「会社名」をご記入ください。", "入力項目チェック").then(() => {
                     jumpToStep(1);
                 });
                 return;
             }
 
-            // 各種データの取り出し
-            const companyRep = document.getElementById('company_rep').value.trim() || "-";
-            const companyAddress = document.getElementById('company_address').value.trim() || "-";
-            const corporateNumber = document.getElementById('corporate_number').value.trim() || "-";
-            const companyIndustry = document.getElementById('company_industry').value.trim() || "-";
-            const constructionLicense = document.getElementById('construction_license').value.trim() || "-";
-            const companyCapital = document.getElementById('company_capital').value.trim() || "-";
-            const companyPhone = document.getElementById('company_phone').value.trim() || "-";
+            fillPrintData();
+            
+            const printSheet = document.getElementById('print-sheet-container');
+            printSheet.classList.remove('hidden'); // 一時的にレンダリング対象にする
 
-            const clientName = document.getElementById('client_name').value.trim() || "担当者様";
-            const meetingDate = document.getElementById('meeting_date').value || "----/--/--";
-            const currentPalette = colorPalettes.find(p => p.id === selectedPaletteId);
-            const mainGoal = document.querySelector('input[name="main_goal"]:checked')?.value || "新規顧客獲得";
-            const budget = document.getElementById('budget_level').value;
+            const opt = {
+                margin:       [8, 8, 8, 8],
+                filename:     `${companyName}_web_hearing_sheet.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
 
-            const pages = Array.from(document.querySelectorAll('input[name="pages"]:checked')).map(el => el.value);
-            const pagesText = pages.join(', ');
+            // 生成完了後に再び非表示にする
+            html2pdf().set(opt).from(printSheet).save().then(() => {
+                printSheet.classList.add('hidden');
+                showCustomAlert("PDFファイルをデバイスにエクスポートしました。", "エクスポート完了");
+            }).catch(err => {
+                printSheet.classList.add('hidden');
+                showCustomAlert("PDFの生成に失敗しました: " + err, "エラー");
+            });
+        }
 
-            const targetD = document.getElementById('target_demographics').value.trim() || "未入力";
-            const targetP = document.getElementById('target_persona').value.trim() || "未入力";
+        // Excelワークシート (.xlsx) へ構造化データを書き出す機能 (SheetJS)
+        function exportSpreadsheet() {
+            const companyName = document.getElementById('company_name').value.trim() || "ヒアリング情報";
+            if(!companyName || companyName === "株式会社〇〇") {
+                showCustomAlert("スプレッドシートをエクスポートする前に、STEP 1にて「会社名」をご記入ください。", "入力項目チェック").then(() => {
+                    jumpToStep(1);
+                });
+                return;
+            }
 
+            const companyRep = document.getElementById('company_rep').value.trim() || "未入力";
+            const companyAddress = document.getElementById('company_address').value.trim() || "未入力";
+            const corporateNumber = document.getElementById('corporate_number').value.trim() || "未入力";
+            const companyIndustry = document.getElementById('company_industry').value.trim() || "未入力";
+            const constructionLicense = document.getElementById('construction_license').value.trim() || "未入力";
+            const companyCapital = document.getElementById('company_capital').value.trim() || "未入力";
+            const companyPhone = document.getElementById('company_phone').value.trim() || "未入力";
+            
+            const clientName = document.getElementById('client_name').value.trim() || "未入力";
+            const meetingDate = document.getElementById('meeting_date').value || "未指定";
+            const clientEmail = document.getElementById('client_email').value.trim() || "未入力";
             const hpStatus = document.querySelector('input[name="current_hp_status"]:checked')?.value || "なし";
+            const currentHpUrl = document.getElementById('current_hp_url').value.trim() || "なし";
+            
+            const painPoints = Array.from(document.querySelectorAll('input[name="pain_points"]:checked')).map(el => el.value).join(', ');
+            const customPainPoints = document.getElementById('custom_pain_points').value.trim() || "特になし";
+            const mainGoal = document.querySelector('input[name="main_goal"]:checked')?.value || "未指定";
+            
+            const targetDemographics = document.getElementById('target_demographics').value.trim() || "未入力";
+            const targetPersona = document.getElementById('target_persona').value.trim() || "未入力";
+            const targetKeywords = document.getElementById('target_keywords').value.trim() || "未入力";
+            const targetPainPoints = document.getElementById('target_pain_points').value.trim() || "未入力";
+            
+            const pages = Array.from(document.querySelectorAll('input[name="pages"]:checked')).map(el => el.value).join(', ');
+            const materialLogo = document.getElementById('material_logo').value;
+            const materialPhoto = document.getElementById('material_photo').value;
+            const materialText = document.getElementById('material_text').value;
+            const materialServer = document.getElementById('material_server').value;
+            
+            const currentPalette = colorPalettes.find(p => p.id === selectedPaletteId);
+            const scheduleDate = document.getElementById('schedule_date').value.trim() || "未指定";
+            const budgetLevel = document.getElementById('budget_level').value;
+            const operationStyle = document.querySelector('input[name="operation_style"]:checked')?.value || "未指定";
+            const additionalNotes = document.getElementById('additional_notes').value.trim() || "特になし";
 
-            // SVG内への書き出し（全企業情報を整理配置：座標調整）
-            const svgString = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1130" width="100%" height="100%">
-  <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#F8FAFC;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#E2E8F0;stop-opacity:1" />
-    </linearGradient>
-    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
-      <drop-shadow dx="0" dy="5" stdDeviation="10" flood-color="#0F172A" flood-opacity="0.06" />
-    </filter>
-  </defs>
+            // Excel用2次元配列データの構築
+            const data = [
+                ["Web制作ヒアリング要件定義書 - スプレッドシートサマリー", ""],
+                ["出力日", new Date().toLocaleDateString('ja-JP')],
+                ["", ""],
+                ["■ 1. クライアント基本情報", ""],
+                ["会社名 / 屋号", companyName],
+                ["代表者名", companyRep],
+                ["所在地", companyAddress],
+                ["法人番号", corporateNumber],
+                ["業種", companyIndustry],
+                ["建設業許可情報", constructionLicense],
+                ["資本金", companyCapital],
+                ["電話番号", companyPhone],
+                ["ご担当者名", clientName],
+                ["打合せ日", meetingDate],
+                ["メールアドレス", clientEmail],
+                ["既存ホームページの有無", hpStatus],
+                ["既存ホームページURL", currentHpUrl],
+                ["", ""],
+                ["■ 2. 解決したい現状の課題", ""],
+                ["選択された課題項目", painPoints || "特になし"],
+                ["その他の課題・要望", customPainPoints],
+                ["", ""],
+                ["■ 3. プロジェクト目的・ゴール", ""],
+                ["ホームページ制作の主たる目的", mainGoal],
+                ["", ""],
+                ["■ 4. ターゲット設計", ""],
+                ["想定ターゲット層", targetDemographics],
+                ["想定人物像・ニーズ", targetPersona],
+                ["予想検索キーワード", targetKeywords],
+                ["顧客の悩み・課題感", targetPainPoints],
+                ["", ""],
+                ["■ 5. サイトマップ / 構成", ""],
+                ["必要構成ページ", pages],
+                ["", ""],
+                ["■ 6. 提供素材・インフラ環境状況", ""],
+                ["ロゴ提供", materialLogo],
+                ["写真素材", materialPhoto],
+                ["原稿テキスト", materialText],
+                ["ドメイン・サーバー環境", materialServer],
+                ["", ""],
+                ["■ 7. デザイン・配色プラン方針 (70:25:5黄金法則)", ""],
+                ["決定カラーパレット名", currentPalette.name],
+                ["パレット説明", currentPalette.desc],
+                ["ベースカラー (70%)", currentPalette.base],
+                ["メインカラー (25%)", currentPalette.main],
+                ["アクセントカラー (5%)", currentPalette.accent],
+                ["", ""],
+                ["■ 8. スケジュール・想定予算・運用保守", ""],
+                ["希望納期（公開希望時期）", scheduleDate],
+                ["想定ご予算レンジ", budgetLevel],
+                ["公開後の運用・管理スタイル", operationStyle],
+                ["特別要望・打合せメモ", additionalNotes]
+            ];
 
-  <!-- 全体背景 -->
-  <rect width="800" height="1130" fill="url(#grad)" rx="16"/>
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(data);
 
-  <!-- メインカード -->
-  <rect x="30" y="30" width="740" height="1070" fill="#FFFFFF" rx="12" filter="url(#shadow)"/>
+            // スタイル・カラム幅の調整
+            ws['!cols'] = [
+                { wch: 32 }, // A列の幅
+                { wch: 65 }  // B列の幅
+            ];
 
-  <!-- ヘッダー装飾（メインカラー） -->
-  <path d="M 30 42 A 12 12 0 0 1 42 30 L 758 30 A 12 12 0 0 1 770 42 L 770 80 L 30 80 Z" fill="${currentPalette.main}"/>
-  <text x="50" y="62" font-family="'Inter', 'Noto Sans JP'" font-size="18" font-weight="black" fill="${currentPalette.mainText}">${companyName}</text>
-  <text x="750" y="60" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="${currentPalette.mainText}" text-anchor="end">要件定義デザインサマリー | 打合せ日: ${meetingDate}</text>
-
-  <!-- 1. デザインカラーパレットセクション (70:25:5) -->
-  <g transform="translate(50, 110)">
-    <text x="0" y="0" font-family="'Inter', 'Noto Sans JP'" font-size="13" font-weight="bold" fill="#1E293B">■ 70:25:5 カラーパレットプラン: ${currentPalette.name}</text>
-    
-    <!-- 70% Base -->
-    <rect x="0" y="15" width="220" height="60" fill="${currentPalette.base}" rx="6" stroke="#E2E8F0" stroke-width="1"/>
-    <text x="12" y="38" font-family="'Inter', 'Noto Sans JP'" font-size="10" font-weight="bold" fill="${currentPalette.baseText}">Base Color (70%)</text>
-    <text x="12" y="54" font-family="'Inter'" font-size="11" font-weight="bold" fill="${currentPalette.baseText}">${currentPalette.base}</text>
-
-    <!-- 25% Main -->
-    <rect x="240" y="15" width="220" height="60" fill="${currentPalette.main}" rx="6"/>
-    <text x="252" y="38" font-family="'Inter', 'Noto Sans JP'" font-size="10" font-weight="bold" fill="${currentPalette.mainText}">Main Color (25%)</text>
-    <text x="252" y="54" font-family="'Inter'" font-size="11" font-weight="bold" fill="${currentPalette.mainText}">${currentPalette.main}</text>
-
-    <!-- 5% Accent -->
-    <rect x="480" y="15" width="220" height="60" fill="${currentPalette.accent}" rx="6"/>
-    <text x="492" y="38" font-family="'Inter', 'Noto Sans JP'" font-size="10" font-weight="bold" fill="${currentPalette.accentText}">Accent Color (5%)</text>
-    <text x="492" y="54" font-family="'Inter'" font-size="11" font-weight="bold" fill="${currentPalette.accentText}">${currentPalette.accent}</text>
-  </g>
-
-  <!-- 境界線 -->
-  <line x1="50" y1="200" x2="750" y2="200" stroke="#E2E8F0" stroke-width="1"/>
-
-  <!-- 2. 基本情報 ＆ 現状の課題 -->
-  <g transform="translate(50, 220)">
-    <!-- 基本企業情報 -->
-    <rect x="0" y="0" width="335" height="195" fill="#F8FAFC" rx="8" stroke="#E2E8F0" stroke-width="1"/>
-    <text x="15" y="22" font-family="'Inter', 'Noto Sans JP'" font-size="12" font-weight="bold" fill="#1E293B">■ クライアント企業情報</text>
-    
-    <text x="15" y="44" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" fill="#64748B">代表者名</text>
-    <text x="85" y="44" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" font-weight="bold" fill="#1E293B">${companyRep}</text>
-    
-    <text x="15" y="66" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" fill="#64748B">所在地</text>
-    <text x="85" y="66" font-family="'Inter', 'Noto Sans JP'" font-size="8.5" fill="#1E293B">${companyAddress}</text>
-    
-    <text x="15" y="88" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" fill="#64748B">法人番号</text>
-    <text x="85" y="88" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" font-weight="bold" fill="#1E293B">${corporateNumber}</text>
-
-    <text x="15" y="110" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" fill="#64748B">業種・許可</text>
-    <text x="85" y="110" font-family="'Inter', 'Noto Sans JP'" font-size="9" fill="#1E293B">${companyIndustry} / ${constructionLicense}</text>
-
-    <text x="15" y="132" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" fill="#64748B">資本金/TEL</text>
-    <text x="85" y="132" font-family="'Inter', 'Noto Sans JP'" font-size="9" fill="#1E293B">${companyCapital} / ${companyPhone}</text>
-
-    <text x="15" y="154" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" fill="#64748B">窓口担当</text>
-    <text x="85" y="154" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" font-weight="bold" fill="#1E293B">${clientName}</text>
-
-    <text x="15" y="176" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" fill="#64748B">現HP状況</text>
-    <text x="85" y="176" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" fill="#1E293B">${hpStatus}</text>
-
-    <!-- 課題 -->
-    <rect x="365" y="0" width="335" height="195" fill="#F8FAFC" rx="8" stroke="#E2E8F0" stroke-width="1"/>
-    <text x="380" y="22" font-family="'Inter', 'Noto Sans JP'" font-size="12" font-weight="bold" fill="#1E293B">■ 解決したいビジネスの課題</text>
-    <text x="380" y="52" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#475569">・集客・反響・採用のミッション達成</text>
-    <text x="380" y="78" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#475569">・スマートフォンやタブレット閲覧の最適化</text>
-    <text x="380" y="104" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#475569">・70:25:5 の配色黄金比に基づく直感的な情報提示</text>
-    <text x="380" y="130" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#475569">・インフラ環境（サーバー／ドメイン）の安定化</text>
-  </g>
-
-  <!-- 3. プロジェクトの目的 & ターゲット -->
-  <g transform="translate(50, 435)">
-    <rect x="0" y="0" width="700" height="145" fill="#F8FAFC" rx="8" stroke="#E2E8F0" stroke-width="1"/>
-    
-    <text x="15" y="25" font-family="'Inter', 'Noto Sans JP'" font-size="12" font-weight="bold" fill="#1E293B">■ プロジェクトの主たる目的（ゴール）</text>
-    <rect x="15" y="38" width="670" height="30" fill="${currentPalette.main}" rx="4" opacity="0.08"/>
-    <text x="25" y="57" font-family="'Inter', 'Noto Sans JP'" font-size="11.5" font-weight="bold" fill="${currentPalette.main}">${mainGoal}</text>
-
-    <!-- ターゲット属性 -->
-    <text x="15" y="95" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#64748B">想定ターゲット層</text>
-    <text x="130" y="95" font-family="'Inter', 'Noto Sans JP'" font-size="10" font-weight="bold" fill="#1E293B">${targetD}</text>
-
-    <text x="15" y="120" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#64748B">人物像・ニーズ</text>
-    <text x="130" y="120" font-family="'Inter', 'Noto Sans JP'" font-size="10" font-weight="bold" fill="#1E293B">${targetP}</text>
-  </g>
-
-  <!-- 4. 必要ページ構成（サイトマップ） -->
-  <g transform="translate(50, 600)">
-    <text x="0" y="0" font-family="'Inter', 'Noto Sans JP'" font-size="12" font-weight="bold" fill="#1E293B">■ 必要ページ構成 (サイトマップ)</text>
-    <rect x="0" y="12" width="700" height="65" fill="#F8FAFC" rx="8" stroke="#E2E8F0" stroke-width="1"/>
-    <text x="15" y="35" font-family="'Inter', 'Noto Sans JP'" font-size="10.5" fill="#475569" font-weight="bold">トップページ / ${pagesText}</text>
-    <text x="15" y="52" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" fill="#94A3B8">※選択された構成を基準とし、ユーザー導線を意識して実制作に展開します。</text>
-  </g>
-
-  <!-- 5. 提供素材 & スケジュール・予算 -->
-  <g transform="translate(50, 685)">
-    <!-- 素材 -->
-    <rect x="0" y="0" width="335" height="175" fill="#F8FAFC" rx="8" stroke="#E2E8F0" stroke-width="1"/>
-    <text x="15" y="25" font-family="'Inter', 'Noto Sans JP'" font-size="12" font-weight="bold" fill="#1E293B">■ クライアント提供素材</text>
-    
-    <text x="15" y="55" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#64748B">1. 企業ロゴ</text>
-    <text x="120" y="55" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" font-weight="bold" fill="#334155">${materialLogo}</text>
-
-    <text x="15" y="85" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#64748B">2. 写真素材</text>
-    <text x="120" y="85" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" font-weight="bold" fill="#334155">${materialPhoto}</text>
-
-    <text x="15" y="115" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#64748B">3. 掲載原稿</text>
-    <text x="120" y="115" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" font-weight="bold" fill="#334155">${materialText}</text>
-
-    <text x="15" y="145" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#64748B">4. インフラ</text>
-    <text x="120" y="145" font-family="'Inter', 'Noto Sans JP'" font-size="9.5" font-weight="bold" fill="#334155">${materialServer}</text>
-
-    <!-- 予算スケジュール -->
-    <rect x="365" y="0" width="335" height="175" fill="#F8FAFC" rx="8" stroke="#E2E8F0" stroke-width="1"/>
-    <text x="380" y="25" font-family="'Inter', 'Noto Sans JP'" font-size="12" font-weight="bold" fill="#1E293B">■ スケジュール・予算・保守</text>
-    
-    <text x="380" y="55" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#64748B">希望納期</text>
-    <text x="470" y="55" font-family="'Inter', 'Noto Sans JP'" font-size="10" font-weight="bold" fill="#334155">相談・順次調整</text>
-
-    <text x="380" y="85" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#64748B">想定予算</text>
-    <text x="470" y="85" font-family="'Inter', 'Noto Sans JP'" font-size="10" font-weight="bold" fill="#334155">${budget}</text>
-
-    <text x="380" y="115" font-family="'Inter', 'Noto Sans JP'" font-size="10" fill="#64748B">運用方針</text>
-    <text x="470" y="115" font-family="'Inter', 'Noto Sans JP'" font-size="10" font-weight="bold" fill="#334155">共同管理・サポート型</text>
-  </g>
-
-  <!-- 6. サマリー説明 -->
-  <g transform="translate(50, 880)">
-    <rect x="0" y="0" width="700" height="130" fill="${currentPalette.base}" rx="8" stroke="#E2E8F0" stroke-width="1"/>
-    <text x="20" y="30" font-family="'Inter', 'Noto Sans JP'" font-size="12" font-weight="bold" fill="${currentPalette.baseText}">■ Webデザイン配色基本方針 (70:25:5)</text>
-    <text x="20" y="55" font-family="'Inter', 'Noto Sans JP'" font-size="10.5" fill="${currentPalette.baseText}" opacity="0.8">選定された『${currentPalette.name}』を全体のテーマ配色に据え、70:25:5の黄金比率を維持します。</text>
-    <text x="20" y="75" font-family="'Inter', 'Noto Sans JP'" font-size="10.5" fill="${currentPalette.baseText}" opacity="0.8">Base（背景など全体の70%）、Main（ブランド構築の25%）、Accent（お問合せなどの注目点5%）の比率で</text>
-    <text x="20" y="95" font-family="'Inter', 'Noto Sans JP'" font-size="10.5" fill="${currentPalette.baseText}" opacity="0.8">お客様のご要望に基づき、ユーザーを惹きつける最適な体験価値のレイアウトへと仕上げます。</text>
-  </g>
-
-  <!-- フッター -->
-  <text x="400" y="1055" font-family="'Inter'" font-size="9" font-weight="bold" fill="#94A3B8" text-anchor="middle">DESIGNED BY WEB HEARING APP (A4 PORTRAIT MODEL)</text>
-</svg>
-            `;
-
-            const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `${companyName}_web_design_plan.svg`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
+            XLSX.utils.book_append_sheet(wb, ws, "要件定義サマリー");
+            XLSX.writeFile(wb, `${companyName}_web_hearing_sheet.xlsx`);
+            
+            showCustomAlert("スプレッドシート（Excel形式 .xlsx）を書き出しました。表計算アプリにインポートしてご利用ください。", "エクスポート完了");
         }
     </script>
 </body>
