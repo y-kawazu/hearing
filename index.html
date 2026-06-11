@@ -10,7 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- PDFエクスポート用ライブラリ (html2pdf.js) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- スプレッドシート(Excel)エクスポート用ライブラリ (SheetJS) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
@@ -32,6 +34,54 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+
+        /* ----------------------------------------------------
+           全画面プレゼンテーション表示時専用のスケールアップCSS
+           iPadなどで実際のWebサイトに等しい圧倒的な迫力を出します
+           ---------------------------------------------------- */
+        .fullscreen-mode #prev-brand-name {
+            font-size: 1.25rem !important; /* 20px */
+        }
+        .fullscreen-mode #prev-nav-links {
+            font-size: 0.875rem !important; /* 14px */
+            gap: 1.5rem !important;
+        }
+        .fullscreen-mode #prev-nav-cta {
+            padding: 0.5rem 1.25rem !important;
+            border-radius: 0.5rem !important;
+        }
+        .fullscreen-mode #prev-logo-icon {
+            width: 2.5rem !important;
+            height: 2.5rem !important;
+            font-size: 1rem !important;
+        }
+        .fullscreen-mode #prev-hero {
+            padding: 5rem 2rem !important; /* パディングを拡大 */
+        }
+        .fullscreen-mode #prev-hero-badge {
+            font-size: 0.875rem !important;
+            padding: 0.5rem 1.25rem !important;
+        }
+        .fullscreen-mode #prev-hero-title {
+            font-size: 2.5rem !important; /* タイトルを巨大に */
+            max-width: 48rem !important;
+        }
+        .fullscreen-mode #prev-hero-desc {
+            font-size: 1.125rem !important; /* 説明文を大きく */
+            max-width: 36rem !important;
+        }
+        .fullscreen-mode #prev-hero-btn,
+        .fullscreen-mode #prev-hero-btn-sub {
+            padding: 0.75rem 2rem !important;
+            font-size: 1rem !important;
+        }
+        .fullscreen-mode .grid-cols-3 h4 {
+            font-size: 0.875rem !important;
+        }
+        .fullscreen-mode .grid-cols-3 p {
+            font-size: 0.75rem !important;
+        }
+
         /* 印刷用CSS（A4縦1枚に完全に収まるようにマージンやパディングを極限最適化） */
         @media print {
             @page {
@@ -81,9 +131,11 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
 
+    <!-- ヘッダー -->
     <header id="main-header" class="bg-white border-b border-slate-200 sticky top-0 z-40 no-print">
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
+                <!-- タイトル・管理者 -->
                 <div class="flex items-center space-x-3">
                     <button onclick="openAdminLogin()" class="text-slate-500 hover:text-indigo-600 transition duration-150 px-3 py-2 rounded-lg text-sm font-medium flex items-center space-x-1 hover:bg-indigo-50">
                         <i class="fa-solid fa-lock"></i>
@@ -94,6 +146,7 @@
                         <span class="hidden sm:inline">リセット</span>
                     </button>
                 </div>
+                <!-- 各種ダウンロード・出力ボタン（ご要望に合わせて簡潔に再命名） -->
                 <div class="flex items-center space-x-2">
                     <button onclick="exportSpreadsheet()" class="bg-emerald-600 hover:bg-emerald-700 text-white transition duration-150 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-1.5 shadow-sm shadow-emerald-100">
                         <i class="fa-solid fa-file-excel"></i>
@@ -105,39 +158,47 @@
                     </button>
                     <button onclick="openPrintPreview()" class="bg-slate-700 hover:bg-slate-800 text-white transition duration-150 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-1.5 shadow-sm">
                         <i class="fa-solid fa-print"></i>
-                        <span>紙に印刷</span>
+                        <span>印刷</span>
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
+    <!-- メインコンテンツ -->
     <main class="flex-grow flex flex-col lg:flex-row max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6 no-print">
         
+        <!-- 左側：フォームステップエリア (幅 42%) -->
         <div id="form-container" class="w-full lg:w-[42%] flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden min-h-[680px]">
             
+            <!-- ステップ進捗インジケーター -->
             <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 overflow-x-auto whitespace-nowrap">
                 <div class="flex items-center space-x-2 sm:space-x-4 min-w-[600px] justify-between">
+                    <!-- Step 1-2 -->
                     <button onclick="jumpToStep(1)" id="step-btn-1" class="flex items-center space-x-2 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 pb-2 px-1 focus:outline-none transition">
                         <span class="w-6 h-6 flex items-center justify-center bg-indigo-600 text-white rounded-full text-xs">1</span>
                         <span>基本・現状</span>
                     </button>
                     <div class="h-0.5 bg-slate-200 w-6 flex-shrink-0"></div>
+                    <!-- Step 3-4 -->
                     <button onclick="jumpToStep(2)" id="step-btn-2" class="flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-slate-600 pb-2 px-1 focus:outline-none transition">
                         <span class="w-6 h-6 flex items-center justify-center bg-slate-200 text-slate-600 rounded-full text-xs">2</span>
                         <span>目的・ターゲット</span>
                     </button>
                     <div class="h-0.5 bg-slate-200 w-6 flex-shrink-0"></div>
+                    <!-- Step 5-6 -->
                     <button onclick="jumpToStep(3)" id="step-btn-3" class="flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-slate-600 pb-2 px-1 focus:outline-none transition">
                         <span class="w-6 h-6 flex items-center justify-center bg-slate-200 text-slate-600 rounded-full text-xs">3</span>
                         <span>構成・素材</span>
                     </button>
                     <div class="h-0.5 bg-slate-200 w-6 flex-shrink-0"></div>
+                    <!-- Step 7 -->
                     <button onclick="jumpToStep(4)" id="step-btn-4" class="flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-slate-600 pb-2 px-1 focus:outline-none transition">
                         <span class="w-6 h-6 flex items-center justify-center bg-slate-200 text-slate-600 rounded-full text-xs">4</span>
                         <span>デザイン色</span>
                     </button>
                     <div class="h-0.5 bg-slate-200 w-6 flex-shrink-0"></div>
+                    <!-- Step 8 -->
                     <button onclick="jumpToStep(5)" id="step-btn-5" class="flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-slate-600 pb-2 px-1 focus:outline-none transition">
                         <span class="w-6 h-6 flex items-center justify-center bg-slate-200 text-slate-600 rounded-full text-xs">5</span>
                         <span>日程・予算</span>
@@ -145,8 +206,10 @@
                 </div>
             </div>
 
+            <!-- フォーム各ステップのコンテンツ -->
             <div class="flex-grow p-6 overflow-y-auto max-h-[640px]">
                 
+                <!-- STEP 1〜2: 基本情報・現在のHP状況 -->
                 <div id="step-content-1" class="space-y-5">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 1 & 2</span>
@@ -154,6 +217,7 @@
                         <p class="text-sm text-slate-500 mt-1">クライアント様の基本情報、企業データ、および既存サイトの課題を確認します。</p>
                     </div>
 
+                    <!-- 会社名 / 担当者名 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">会社名 / 屋号 <span class="text-red-500">*</span></label>
@@ -165,11 +229,13 @@
                         </div>
                     </div>
 
+                    <!-- 所在地 -->
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">所在地</label>
                         <input type="text" id="company_address" oninput="updatePreview()" placeholder="例：福岡県福岡市中央区天神1丁目1-1" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition outline-none text-sm">
                     </div>
 
+                    <!-- 法人番号 / 業種 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">法人番号</label>
@@ -181,6 +247,7 @@
                         </div>
                     </div>
 
+                    <!-- 建設業許可 / 資本金 / 電話番号 -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div class="md:col-span-1">
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">建設業許可</label>
@@ -196,6 +263,7 @@
                         </div>
                     </div>
 
+                    <!-- ご担当者 / メール / 日付 -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3 border-t border-slate-100">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">ご担当者名 <span class="text-red-500">*</span></label>
@@ -268,6 +336,7 @@
                     </div>
                 </div>
 
+                <!-- STEP 3〜4: 目的・ターゲット -->
                 <div id="step-content-2" class="space-y-6 hidden">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 3 & 4</span>
@@ -335,6 +404,7 @@
                     </div>
                 </div>
 
+                <!-- STEP 5〜6: ページ構成・素材 -->
                 <div id="step-content-3" class="space-y-6 hidden">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 5 & 6</span>
@@ -449,7 +519,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[420px] overflow-y-auto pr-1" id="color-palette-list">
-                        </div>
+                    </div>
                 </div>
 
                 <div id="step-content-5" class="space-y-6 hidden">
@@ -467,7 +537,7 @@
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">想定ご予算レンジ</label>
                             <select id="budget_level" onchange="updatePreview()" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition outline-none text-sm bg-white">
-                                </select>
+                            </select>
                         </div>
                     </div>
 
@@ -625,7 +695,7 @@
             </div>
         </div>
         <div class="flex space-x-3 overflow-x-auto pb-1" id="full-screen-mini-palette-list">
-            </div>
+        </div>
     </div>
 
     <div id="print-sheet-container" class="hidden print-container max-w-[210mm] mx-auto p-4 bg-white min-h-screen text-slate-800">
@@ -669,7 +739,7 @@
                     <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">4. ご用意いただく提供素材</h3>
                     <table class="w-full text-[8.5px] mt-1">
                         <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">企業ロゴ</td><td class="py-0.5 text-slate-800" id="print_material_logo">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">写真素材</td><td class="py-0.5 text-slate-800" id="print_material_photo">-</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-800" id="print_material_photo">-</td></tr>
                         <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">掲載原稿</td><td class="py-0.5 text-slate-800" id="print_material_text">-</td></tr>
                         <tr><td class="py-0.5 text-slate-400 font-bold">インフラ環境</td><td class="py-0.5 text-slate-800" id="print_material_server">-</td></tr>
                     </table>
@@ -721,6 +791,7 @@
         <div class="pt-1.5 border-t border-slate-200 text-center text-[7.5px] text-slate-400 mt-2"><p>※本ヒアリングシートは、要件定義初期段階の構成案サマリーとなります。</p></div>
     </div>
 
+    <!-- カスタム確認ダイアログ -->
     <div id="custom-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm flex items-center justify-center z-50 hidden no-print">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl border border-slate-100 mx-4">
             <div class="flex items-center space-x-3 mb-4"><div id="modal-icon-bg" class="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl"><i id="modal-icon" class="fa-solid fa-circle-info text-lg"></i></div><h3 id="modal-title" class="text-sm font-bold text-slate-900">確認</h3></div>
@@ -732,6 +803,7 @@
     <script>
         // 完全統合された全100個のプロ仕様パレット配列（文法エラーのない1つのソリッドな配列定義です）
         const colorPalettes = [
+            // --- グレージュ・淡色（paleカテゴリ）: 25種類 ---
             { id: 1, category: "pale", name: "洗練グレージュ", desc: "大人の上品なくすみグレーベージュ。一番人気のニュアンスカラー。", base: "#F4F2EE", main: "#4A4744", accent: "#C29B9B", baseText: "#2C2A29", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 2, category: "pale", name: "トープ・ミニマリズム", desc: "極上の大人の引き算。上質で無駄のないライフスタイルショップ向け。", base: "#FAF6F0", main: "#6E6053", accent: "#8A9A9E", baseText: "#2D2621", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 3, category: "pale", name: "シャビー・シック", desc: "アンティークなフランス風のブルーグレー。ウェディングやサロンに。", base: "#EBF1F0", main: "#778A90", accent: "#CFA08F", baseText: "#2F3E46", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -779,13 +851,13 @@
             { id: 43, category: "mature", name: "深海インディゴ", desc: "深海へと潜っていくような、静寂のディープネイビー背景。ITコンサル、士業に。", base: "#1B2430", main: "#FFFFFF", accent: "#E09F3E", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 44, category: "mature", name: "侘寂・苔庭", desc: "長年をかけて育まれた、美しき日本の苔庭を再現した渋い草色と和紙背景。", base: "#414D3D", main: "#F5F2EB", accent: "#A67C52", baseText: "#F5F2EB", mainText: "#1E1E1E", accentText: "#FFFFFF" },
             { id: 45, category: "mature", name: "武家・紺青（こんじょう）", desc: "格式高い武家屋敷を思わせる、強く引き締まった伝統的な濃紺。日本の本物志向に。", base: "#161D2F", main: "#FAF9F5", accent: "#D946EF", baseText: "#FAF9F5", mainText: "#111827", accentText: "#FFFFFF" },
-            { id: 46, category: "mature", name: "玄武・スレートグレー", desc: "中国神話の玄武（黒）から着想を得た、渋く冷徹な重厚グレー。現代建築・アート系に。", base: "#2B2D2F", main: "#FAF9F5", accent: "#D4AF37", baseText: "#F9FAFB", mainText: "#111827", accentText: "#111827" },
+            { id: 46, category: "mature", name: "玄武・スレートグレー", desc: "中国神話の玄武（黒）から着想を得た、渋く冷徹な重厚グレー。現代建築・アート系に。", base: "#2B2D2F", main: "#FAF9F5", accent: "#D4AF37", baseText: "#F9FAFB", mainText: "#111827", accent: "#111827" },
             { id: 47, category: "mature", name: "黒曜・漆器ボルドー", desc: "黒曜石のようなダークスレートベースに、漆器のようなボルドーと純白。", base: "#22252A", main: "#881337", accent: "#FFFFFF", baseText: "#FFFFFF", mainText: "#FFFFFF", accentText: "#111827" },
-            { id: 48, category: "mature", name: "常盤緑・金泥", desc: "常に青い常盤木の深緑に、金泥の雅を添えた、格式高き日本の美。", base: "#263D2E", main: "#FAF7EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
-            { id: 49, category: "mature", name: "和楽・利休ねずみ", desc: "灰色がかったお茶のような、極めて知的な和風くすみカラー背景。陶芸、日本画、茶道に。", base: "#596055", main: "#FFFDF6", accent: "#B85A38", baseText: "#FDFBF7", mainText: "#111827", accentText: "#FFFFFF" },
+            { id: 48, category: "mature", name: "常盤緑・金泥", desc: "常に青い常盤木の深緑に、金泥の雅を添えた、格式高き日本の美。", base: "#263D2E", main: "#FAF7EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accent: "#111827" },
+            { id: 49, category: "mature", name: "和楽・利休ねずみ", desc: "灰色がかったお茶のような、極めて知的な和風くすみカラー背景。陶芸、日本画、茶道に。", base: "#596055", main: "#FFFDF6", accent: "#B85A38", baseText: "#FDFBF7", mainText: "#111827", accent: "#FFFFFF" },
             { id: 50, category: "mature", name: "ミッドナイト・コパー", desc: "深く、美しき真夜中のロイヤルネイビーにコパー（銅）の輝きを乗せて。バーやラウンジに。", base: "#172554", main: "#1E293B", accent: "#EA580C", baseText: "#F8FAFC", mainText: "#FFFFFF", accentText: "#FFFFFF" },
 
-            // --- 北欧・ナチュラル（naturalカテゴリ）: 17種類 ---
+            // --- 北欧・ナチュラル（naturalカテゴリ）: 18種類 ---
             { id: 51, category: "natural", name: "ナチュラル・オリーブ", desc: "自然素材の優しさ。オーガニックカフェ、クリニック、工務店に。", base: "#FAF7F2", main: "#3F6212", accent: "#D97706", baseText: "#1C1917", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 52, category: "natural", name: "オレンジ・ライムエクリュ", desc: "親しみと明るさ。福祉、保育、地域密着サービス、飲食店に最適。", base: "#FFFDF0", main: "#EA580C", accent: "#4D7C0F", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 53, category: "natural", name: "北欧フォレストセージ", desc: "静寂を運ぶ、朝のセージミスト背景。北欧家具、自然派コスメに。", base: "#F4F7F4", main: "#4A5D4E", accent: "#D69F7E", baseText: "#1E2A20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -797,20 +869,22 @@
             { id: 59, category: "natural", name: "カスタード・ミモザ", desc: "優しさ溢れるペールイエローとライム。春の訪れを感じるフラワーショップに。", base: "#FFFEE9", main: "#D97706", accent: "#2563EB", baseText: "#3F2305", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 60, category: "natural", name: "ユーカリ・アッシュ", desc: "穏やかな暮らしのユーカリカラー。自然食マクロビオティック、オーガニックアロマに。", base: "#F1F5F2", main: "#4F5D54", accent: "#E29578", baseText: "#2C332E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 61, category: "natural", name: "ピスタチオ・ガーデン", desc: "明るく豊かな実りを。オーガニックコスメやエコロジー建築に。", base: "#EEF2E6", main: "#606F30", accent: "#D97706", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 62, category: "natural", name: "プロバンス・ラベンダー", desc: "南仏のラベンダー畑をイメージした、淡いパープルとナチュラルグリーンの配色。", base: "#FAF5FF", main: "#7C3AED", accent: "#15803D", baseText: "#1E2A20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 62, category: "natural", name: "probas・ラベンダー", desc: "南仏のラベンダー畑をイメージした、淡いパープルとナチュラルグリーンの配色。", base: "#FAF5FF", main: "#7C3AED", accent: "#15803D", baseText: "#1E2A20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 63, category: "natural", name: "ハニー・エクリュ", desc: "温かく親しみやすい極上ハチミツのアイボリー。ナチュラルベーカリーや雑貨に。", base: "#FFFDF0", main: "#D97706", accent: "#0F766E", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 64, category: "natural", name: "セコイア・ウッド", desc: "荘厳な大樹を感じる深みあるナチュラルブラウンと、葉をイメージしたセージ。", base: "#FAF7EE", main: "#4D382B", accent: "#4F5D54", baseText: "#4D382B", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 65, category: "natural", name: "レモン・バーベナ", desc: "レモンのハーブティーのような、心身がシャキッと目覚める柑橘イエロー＆グリーン。", base: "#FFFFEB", main: "#32963D", accent: "#D97706", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 66, category: "natural", name: "スカンジナビアン・トープ", desc: "温かみあるトープグレー背景。北欧モダンライフスタイル提案に。", base: "#F7F6F2", main: "#5C534D", accent: "#A3B18A", baseText: "#2D2621", mainText: "#FFFFFF", accentText: "#333D29" },
-            { id: 67, category: "natural", name: "フォレスト・ピクニック", desc: "生命力あふれる森と日だまりの芝生。エコライフ、リクレーション、アウトドアに。", base: "#F2F5EB", main: "#1B5E20", accent: "#EA580C", baseText: "#1B5E20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 67, category: "natural", name: "フォレスト・ピクニック", desc: "生命力あふれる森 and 日だまりの芝生。エコライフ、リクレーション、アウトドアに。", base: "#F2F5EB", main: "#1B5E20", accent: "#EA580C", baseText: "#1B5E20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 68, category: "natural", name: "アッシュ・ユーカリ", desc: "アッシュユーカリの極淡カラー。精神医療、カウンセリング、エコ理念に。", base: "#ECF2F0", main: "#4F5D54", accent: "#C28C7A", baseText: "#2C332E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 75, category: "natural", name: "サフラン・アース", desc: "サフランイエローの極淡背景に、大地のブラウン。エスニックや自然派バルに。", base: "#FFFDF2", main: "#78350F", accent: "#D97706", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
 
             // --- ビジネス・モダン（corporateカテゴリ）: 16種類 ---
-            { id: 68, category: "corporate", name: "ロイヤル・信頼ブルー", desc: "最高度の誠実と知性。コーポレート、コンサル、金融機関等に最適。", base: "#F0F4FA", main: "#1E3A8A", accent: "#F59E0B", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#1E1B4B" },
+            { id: 69, category: "corporate", name: "ロイヤル・信頼ブルー", desc: "最高度の誠実と知性。コーポレート、コンサル、金融機関等に最適。", base: "#F0F4FA", main: "#1E3A8A", accent: "#F59E0B", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#1E1B4B" },
             { id: 70, category: "corporate", name: "プラチナ・エリート", desc: "究極のステータスと品格。プラチナホワイトにシャンパンゴールドの華を添える。", base: "#FAFAFA", main: "#2D3436", accent: "#C5A059", baseText: "#2D3436", mainText: "#FFFFFF", accentText: "#1E1B4B" },
             { id: 71, category: "corporate", name: "先端テクノロジー", desc: "DXとスマート。SaaS、AI開発、エンジニアリングベンチャーに最適。", base: "#EDF8FF", main: "#0EA5E9", accent: "#10B981", baseText: "#082F49", mainText: "#FFFFFF", accentText: "#022C22" },
             { id: 72, category: "corporate", name: "都会的アッシュ", desc: "都会的で洗練されたアッシュグレー背景。スタイリッシュなクリエイティブオフィスに。", base: "#F1F3F5", main: "#475569", accent: "#EA580C", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 73, category: "corporate", name: "アーバン・クラウドグレー", desc: "穏やかで信頼のおけるクラウドグレー背景。安定感のあるBtoBサービスに。", base: "#F1F5F9", main: "#1E293B", accent: "#10B981", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 74, category: "corporate", name: "モダン・ボルドー", desc: "大人の成熟した信頼感。専門クリニック、法律事務所、コンサルに。", base: "#F9F4F5", main: "#581C26", accent: "#9A3412", baseText: "#2A0E14", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 74, category: "corporate", name: "モダン・ボルドー", desc: "大人の成熟した信頼感. 専門クリニック、法律事務所、コンサルに。", base: "#F9F4F5", main: "#581C26", accent: "#9A3412", baseText: "#2A0E14", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 75, category: "corporate", name: "パール・ミストネイビー", desc: "淡く上品なパールホワイトグレーに信頼のネイビーを乗せて。", base: "#F9FAFB", main: "#111827", accent: "#4F46E5", baseText: "#111827", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 76, category: "corporate", name: "スマート・モノシフォン", desc: "徹底的にフラットで洗練されたモノトーンデザイン。余白の美学を活かす。", base: "#F3F4F6", main: "#09090B", accent: "#6B7280", baseText: "#111827", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 77, category: "corporate", name: "ロイヤル・インディゴ", desc: "知性を宿した深いインディゴブルー背景。監査法人やBtoBテック大手に最適。", base: "#1E2638", main: "#FAFAFA", accent: "#0EA5E9", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
@@ -839,8 +913,8 @@
             { id: 96, category: "pop", name: "アイアン・フェニックス", desc: "錆びた鉄のようなダークアッシュグレー背景に、蘇る炎の情熱。", base: "#3F3F46", main: "#18181B", accent: "#EA580C", baseText: "#F4F4F5", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 97, category: "pop", name: "フォグ・サイバーイエロー", desc: "極薄のフォググレー背景に、注意を引くビビッドイエロー。近未来デジタルハックに。", base: "#F3F4F6", main: "#1E293B", accent: "#EAB308", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#000000" },
             { id: 98, category: "pop", name: "スカンジナビアン・パンク", desc: "静かな北欧の水色背景に、ロックな赤とゴールドを。オルタナティブカルチャー向け。", base: "#ECFDF5", main: "#9F1239", accent: "#C5A059", baseText: "#1F2937", mainText: "#FFFFFF", accentText: "#111827" },
-            { id: 99, category: "pop", name: "オーシャン・バーベナ", desc: "海を愛するアパレル・サーフ。淡くまばゆいペールブルーに、夕陽を乗せて。", base: "#F0F9FF", main: "#0D9488", accent: "#EA580C", baseText: "#034E5A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 100, category: "pop", name: "フォレスト・ネオンライム", desc: "荘厳な深緑ベースに、目が覚めるようなネオンライム。ゲーム、WEBサービス、テック系。", base: "#14532D", main: "#1F2937", accent: "#A3E635", baseText: "#F4FDF4", mainText: "#FFFFFF", accentText: "#09090B" }
+            { id: 100, category: "pop", name: "フォレスト・ネオンライム", desc: "荘厳な深緑ベースに、目が覚めるようなネオンライム。ゲーム、WEBサービス、テック系。", base: "#14532D", main: "#1F2937", accent: "#A3E635", baseText: "#F4FDF4", mainText: "#FFFFFF", accentText: "#09090B" },
+            { id: 99, category: "pop", name: "オーシャン・バーベナ", desc: "海を愛するアパレル・サーフ。淡くまばゆいペールブルーに、夕陽を乗せて。", base: "#F0F9FF", main: "#0D9488", accent: "#EA580C", baseText: "#034E5A", mainText: "#FFFFFF", accentText: "#FFFFFF" }
         ];
 
         let selectedPaletteId = 1; 
@@ -1006,21 +1080,34 @@
             const floatingSelector = document.getElementById('full-screen-floating-selector');
             
             if (!isFull) {
+                // 全画面表示専用のスケールアップクラスを注入
+                card.classList.add('fullscreen-mode');
+
                 header.classList.add('hidden');
                 formContainer.classList.add('hidden');
                 previewHeader.classList.add('hidden');
-                previewOuter.className = "fixed inset-0 z-40 bg-slate-950/95 flex flex-col items-center justify-start p-4 pb-48 overflow-y-auto no-print";
-                card.className = "bg-white w-full max-w-4xl h-[calc(100vh-240px)] flex flex-col rounded-2xl shadow-2xl overflow-y-auto relative";
+
+                // プレビューのアウターコンテナを fixed フルスクリーン背景として展開
+                previewOuter.className = "fixed inset-0 z-40 bg-slate-950/95 flex flex-col items-center justify-start p-4 md:p-8 pb-48 overflow-y-auto no-print";
+                
+                // カード自体の最大幅制限を完全撤去（max-w-4xlからmax-w-none、w-fullへ変更。さらに高さをiPad等の画面全体に最適化）
+                card.className = "fullscreen-mode bg-white w-full max-w-none h-[calc(100vh-200px)] flex flex-col rounded-2xl shadow-2xl overflow-y-auto relative transition-all duration-300";
+                
                 closeFullBtn.classList.remove('hidden');
                 floatingSelector.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
                 filterPalettesFull('all');
             } else {
+                card.classList.remove('fullscreen-mode');
+
                 header.classList.remove('hidden');
                 formContainer.classList.remove('hidden');
                 previewHeader.classList.remove('hidden');
+
+                // 通常モードに安全復帰
                 previewOuter.className = "w-full lg:w-[58%] flex flex-col space-y-4 no-print";
-                card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex-grow flex flex-col min-h-[620px] relative";
+                card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex-grow flex flex-col min-h-[620px] relative transition-all duration-300";
+                
                 closeFullBtn.classList.add('hidden');
                 floatingSelector.classList.add('hidden');
                 document.body.style.overflow = '';
@@ -1078,7 +1165,7 @@
             let desc = "目的を達成するための最適な体験価値を作ります。";
             if(mainGoal.includes("採用")) {
                 title = `${companyName}で、共に未来を創る。`;
-                desc = "私たちの熱いミッションや社風を伝える採用特設サイト。";
+                desc = "私たちの熱いスピリットや社風を伝える採用特設サイト。";
             } else if(mainGoal.includes("問い合わせ")) {
                 title = "ビジネスを、ウェブの力で最大化する。";
                 desc = "見込み顧客へ正確に魅力を発信し、確実なお問い合わせへと誘います。";
