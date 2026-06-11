@@ -4,18 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web制作ヒアリングシート & デザインプランナー</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome (Icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- PDFエクスポート用ライブラリ (html2pdf.js) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- スプレッドシート(Excel)エクスポート用ライブラリ (SheetJS) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
@@ -86,11 +81,9 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
 
-    <!-- ヘッダー -->
     <header id="main-header" class="bg-white border-b border-slate-200 sticky top-0 z-40 no-print">
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- タイトル・管理者 -->
                 <div class="flex items-center space-x-3">
                     <button onclick="openAdminLogin()" class="text-slate-500 hover:text-indigo-600 transition duration-150 px-3 py-2 rounded-lg text-sm font-medium flex items-center space-x-1 hover:bg-indigo-50">
                         <i class="fa-solid fa-lock"></i>
@@ -101,7 +94,6 @@
                         <span class="hidden sm:inline">リセット</span>
                     </button>
                 </div>
-                <!-- 各種ダウンロード・出力ボタン -->
                 <div class="flex items-center space-x-2">
                     <button onclick="exportSpreadsheet()" class="bg-emerald-600 hover:bg-emerald-700 text-white transition duration-150 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-1.5 shadow-sm shadow-emerald-100">
                         <i class="fa-solid fa-file-excel"></i>
@@ -120,40 +112,32 @@
         </div>
     </header>
 
-    <!-- メインコンテンツ -->
     <main class="flex-grow flex flex-col lg:flex-row max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6 no-print">
         
-        <!-- 左側：フォームステップエリア (幅 42%) -->
         <div id="form-container" class="w-full lg:w-[42%] flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden min-h-[680px]">
             
-            <!-- ステップ進捗インジケーター -->
             <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 overflow-x-auto whitespace-nowrap">
                 <div class="flex items-center space-x-2 sm:space-x-4 min-w-[600px] justify-between">
-                    <!-- Step 1-2 -->
                     <button onclick="jumpToStep(1)" id="step-btn-1" class="flex items-center space-x-2 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 pb-2 px-1 focus:outline-none transition">
                         <span class="w-6 h-6 flex items-center justify-center bg-indigo-600 text-white rounded-full text-xs">1</span>
                         <span>基本・現状</span>
                     </button>
                     <div class="h-0.5 bg-slate-200 w-6 flex-shrink-0"></div>
-                    <!-- Step 3-4 -->
                     <button onclick="jumpToStep(2)" id="step-btn-2" class="flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-slate-600 pb-2 px-1 focus:outline-none transition">
                         <span class="w-6 h-6 flex items-center justify-center bg-slate-200 text-slate-600 rounded-full text-xs">2</span>
                         <span>目的・ターゲット</span>
                     </button>
                     <div class="h-0.5 bg-slate-200 w-6 flex-shrink-0"></div>
-                    <!-- Step 5-6 -->
                     <button onclick="jumpToStep(3)" id="step-btn-3" class="flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-slate-600 pb-2 px-1 focus:outline-none transition">
                         <span class="w-6 h-6 flex items-center justify-center bg-slate-200 text-slate-600 rounded-full text-xs">3</span>
                         <span>構成・素材</span>
                     </button>
                     <div class="h-0.5 bg-slate-200 w-6 flex-shrink-0"></div>
-                    <!-- Step 7 -->
                     <button onclick="jumpToStep(4)" id="step-btn-4" class="flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-slate-600 pb-2 px-1 focus:outline-none transition">
                         <span class="w-6 h-6 flex items-center justify-center bg-slate-200 text-slate-600 rounded-full text-xs">4</span>
                         <span>デザイン色</span>
                     </button>
                     <div class="h-0.5 bg-slate-200 w-6 flex-shrink-0"></div>
-                    <!-- Step 8 -->
                     <button onclick="jumpToStep(5)" id="step-btn-5" class="flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-slate-600 pb-2 px-1 focus:outline-none transition">
                         <span class="w-6 h-6 flex items-center justify-center bg-slate-200 text-slate-600 rounded-full text-xs">5</span>
                         <span>日程・予算</span>
@@ -161,10 +145,8 @@
                 </div>
             </div>
 
-            <!-- フォーム各ステップのコンテンツ -->
             <div class="flex-grow p-6 overflow-y-auto max-h-[640px]">
                 
-                <!-- STEP 1〜2: 基本情報・現在のHP状況 -->
                 <div id="step-content-1" class="space-y-5">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 1 & 2</span>
@@ -172,7 +154,6 @@
                         <p class="text-sm text-slate-500 mt-1">クライアント様の基本情報、企業データ、および既存サイトの課題を確認します。</p>
                     </div>
 
-                    <!-- 会社名 / 担当者名 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">会社名 / 屋号 <span class="text-red-500">*</span></label>
@@ -184,13 +165,11 @@
                         </div>
                     </div>
 
-                    <!-- 所在地 -->
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">所在地</label>
                         <input type="text" id="company_address" oninput="updatePreview()" placeholder="例：福岡県福岡市中央区天神1丁目1-1" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition outline-none text-sm">
                     </div>
 
-                    <!-- 法人番号 / 業種 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">法人番号</label>
@@ -202,7 +181,6 @@
                         </div>
                     </div>
 
-                    <!-- 建設業許可 / 資本金 / 電話番号 -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div class="md:col-span-1">
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">建設業許可</label>
@@ -218,7 +196,6 @@
                         </div>
                     </div>
 
-                    <!-- ご担当者 / メール / 日付 -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3 border-t border-slate-100">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">ご担当者名 <span class="text-red-500">*</span></label>
@@ -291,7 +268,6 @@
                     </div>
                 </div>
 
-                <!-- STEP 3〜4: 目的・ターゲット -->
                 <div id="step-content-2" class="space-y-6 hidden">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 3 & 4</span>
@@ -359,7 +335,6 @@
                     </div>
                 </div>
 
-                <!-- STEP 5〜6: ページ構成・素材 -->
                 <div id="step-content-3" class="space-y-6 hidden">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 5 & 6</span>
@@ -456,7 +431,6 @@
                     </div>
                 </div>
 
-                <!-- STEP 7: デザイン・カラーパレット -->
                 <div id="step-content-4" class="space-y-6 hidden">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 7</span>
@@ -465,7 +439,6 @@
                         <p class="text-xs text-slate-400 mt-0.5">※「ベースカラー（全体 70%）」「メインカラー（印象 25%）」「アクセントカラー（惹きつけ 5%）」で構成されています。</p>
                     </div>
 
-                    <!-- パレット用カテゴリタブフィルター -->
                     <div class="flex flex-wrap gap-1.5 mb-2 border-b border-slate-100 pb-3" id="palette-filter-tabs">
                         <button onclick="filterPalettes('all')" id="tab-all" class="text-xs px-3 py-1.5 rounded-full font-semibold transition bg-indigo-600 text-white">すべて</button>
                         <button onclick="filterPalettes('pale')" id="tab-pale" class="text-xs px-3 py-1.5 rounded-full font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200">グレージュ・淡色</button>
@@ -476,11 +449,9 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[420px] overflow-y-auto pr-1" id="color-palette-list">
-                        <!-- JSで動的に構築 -->
-                    </div>
+                        </div>
                 </div>
 
-                <!-- STEP 8: スケジュール・予算 -->
                 <div id="step-content-5" class="space-y-6 hidden">
                     <div>
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 8</span>
@@ -496,8 +467,7 @@
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">想定ご予算レンジ</label>
                             <select id="budget_level" onchange="updatePreview()" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition outline-none text-sm bg-white">
-                                <!-- JSで動的に予算選択肢をロード -->
-                            </select>
+                                </select>
                         </div>
                     </div>
 
@@ -530,7 +500,6 @@
 
             </div>
 
-            <!-- フォームの操作ボタン -->
             <div class="bg-slate-50 border-t border-slate-200 px-6 py-4 flex justify-between items-center">
                 <button id="prev-btn" onclick="prevStep()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition duration-150 flex items-center space-x-2 invisible">
                     <i class="fa-solid fa-arrow-left"></i>
@@ -547,9 +516,7 @@
 
         </div>
 
-        <!-- 右側：リアルタイムWebサイトプレビュー (幅 58%) -->
         <div id="preview-outer-container" class="w-full lg:w-[58%] flex flex-col space-y-4">
-            <!-- プレビュー用インフォメーションヘッダー -->
             <div id="preview-header" class="bg-slate-900 rounded-2xl p-4 text-slate-100 flex items-center justify-between shadow-sm">
                 <div class="flex items-center space-x-2">
                     <span class="w-3 h-3 rounded-full bg-red-500"></span>
@@ -559,7 +526,6 @@
                 </div>
                 <div class="flex items-center space-x-3">
                     <span class="text-xs bg-slate-800 text-indigo-400 px-3 py-1 rounded-full font-semibold">70 : 25 : 5 法則</span>
-                    <!-- 全画面プレゼン用拡大ボタン -->
                     <button id="open-full-btn" onclick="toggleFullscreenPreview()" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg font-bold flex items-center space-x-1 transition shadow-sm">
                         <i class="fa-solid fa-expand"></i>
                         <span>全画面表示</span>
@@ -567,16 +533,13 @@
                 </div>
             </div>
 
-            <!-- プレビュー本体 -->
             <div id="web-preview-card" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex-grow flex flex-col min-h-[620px] transition-all duration-300 relative">
                 
-                <!-- 全画面モード時のみ出現する、右上の「閉じる」ボタン -->
                 <button id="close-full-btn" onclick="toggleFullscreenPreview()" class="hidden absolute top-6 right-6 z-50 bg-slate-900/90 text-white px-4 py-2.5 rounded-xl font-bold shadow-lg hover:bg-slate-800 flex items-center space-x-2 transition border border-slate-700">
                     <i class="fa-solid fa-compress"></i>
                     <span>プレビューを閉じる</span>
                 </button>
 
-                <!-- ダミーナビゲーション（ベース・メインカラーベース） -->
                 <div id="prev-nav" class="px-6 py-4 flex justify-between items-center transition-colors duration-300" style="background-color: #F8FAFC;">
                     <div class="flex items-center space-x-3">
                         <div id="prev-logo-icon" class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm text-white" style="background-color: #1E3A8A;">W</div>
@@ -590,7 +553,6 @@
                     </div>
                 </div>
 
-                <!-- ヒーローセクション（ベースカラーベース） -->
                 <div id="prev-hero" class="p-10 flex-grow flex flex-col justify-center items-center text-center transition-colors duration-300 border-b border-slate-100" style="background-color: #F8FAFC;">
                     <span class="text-xs font-bold tracking-wider uppercase px-3 py-1.5 rounded-full" id="prev-hero-badge" style="background-color: rgba(30,58,138,0.1); color: #1E3A8A;">Web Design Framework</span>
                     
@@ -612,7 +574,6 @@
                     </div>
                 </div>
 
-                <!-- コンテンツプレビュー (3セグメント) -->
                 <div class="p-6 grid grid-cols-3 gap-4 bg-white">
                     <div class="border border-slate-100 rounded-xl p-4 text-center shadow-sm">
                         <div class="w-8 h-8 mx-auto rounded-full flex items-center justify-center text-xs text-white font-bold mb-2" id="prev-feat-1-icon" style="background-color: #F59E0B;">1</div>
@@ -631,7 +592,6 @@
                     </div>
                 </div>
 
-                <!-- プレビューダッシュボード要約 -->
                 <div class="bg-slate-50 p-5 border-t border-slate-100 text-xs flex justify-between items-center">
                     <div>
                         <span class="text-slate-400 font-bold block text-[10px]">SELECTED COLOR PALETTE</span>
@@ -652,11 +612,9 @@
 
     </main>
 
-    <!-- 全画面表示中のフローティングカラーセレクター（100色の切り替え・横スクロール仕様） -->
     <div id="full-screen-floating-selector" class="hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 bg-slate-900/95 backdrop-blur-md text-white p-4 rounded-2xl shadow-2xl border border-slate-700 w-[92%] max-w-4xl flex flex-col space-y-3">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs gap-2 border-b border-slate-800 pb-2">
             <span class="font-bold text-slate-200"><i class="fa-solid fa-palette mr-1.5 text-indigo-400"></i> デザインカラー・シミュレーター (100色横スクロール)</span>
-            <!-- ミニカテゴリー選択タブ -->
             <div class="flex flex-wrap gap-1 bg-slate-800 p-0.5 rounded-lg self-start sm:self-auto">
                 <button onclick="filterPalettesFull('all')" id="full-tab-all" class="px-2.5 py-1 rounded text-[10px] font-bold bg-indigo-600 text-white transition">すべて</button>
                 <button onclick="filterPalettesFull('pale')" id="full-tab-pale" class="px-2.5 py-1 rounded text-[10px] font-bold text-slate-400 hover:text-white transition">グレージュ・淡色</button>
@@ -666,15 +624,11 @@
                 <button onclick="filterPalettesFull('pop')" id="full-tab-pop" class="px-2.5 py-1 rounded text-[10px] font-bold text-slate-400 hover:text-white transition">ポップ</button>
             </div>
         </div>
-        <!-- 横スワイプ用パレットカルーセル -->
         <div class="flex space-x-3 overflow-x-auto pb-1" id="full-screen-mini-palette-list">
-            <!-- JavaScriptでミニ切り替えボタン群を動的構築 -->
-        </div>
+            </div>
     </div>
 
-    <!-- 印刷＆PDFエクスポート専用コンテナ（A4縦1枚に完全に収まるようレイアウト、フォント、余白を精緻にデザイン） -->
     <div id="print-sheet-container" class="hidden print-container max-w-[210mm] mx-auto p-4 bg-white min-h-screen text-slate-800">
-        <!-- 印刷用ヘッダー -->
         <div class="border-b-2 border-slate-900 pb-2 flex justify-between items-end mb-3">
             <div>
                 <p class="text-[8px] tracking-wider text-slate-400 uppercase font-bold">Website Requirements Summary Sheet (A4 portrait)</p>
@@ -686,16 +640,10 @@
             </div>
         </div>
 
-        <!-- 2カラムコンテンツ構成 -->
         <div class="grid grid-cols-2 gap-3">
-            
-            <!-- 左側カラム -->
             <div class="space-y-2">
-                <!-- 1. 顧客企業データ -->
                 <div class="print-section">
-                    <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded flex justify-between">
-                        <span>1. 顧客企業情報</span>
-                    </h3>
+                    <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded flex justify-between"><span>1. 顧客企業情報</span></h3>
                     <table class="w-full text-[8.5px] mt-1 border-collapse">
                         <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">会社名・屋号</td><td class="py-0.5 font-bold text-slate-800" id="print_company_name">-</td></tr>
                         <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">代表者名</td><td class="py-0.5 text-slate-800" id="print_company_rep">-</td></tr>
@@ -708,49 +656,30 @@
                         <tr><td class="py-0.5 text-slate-400 font-bold">現HP状況</td><td class="py-0.5 text-slate-800"><span id="print_current_hp">-</span> <span class="text-[7.5px] text-slate-500" id="print_current_hp_url"></span></td></tr>
                     </table>
                 </div>
-
-                <!-- 2. 現状の課題 -->
                 <div class="print-section">
                     <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">2. 解決したい現状の課題</h3>
-                    <ul class="list-disc list-inside text-[8.5px] text-slate-700 space-y-0.5 mt-1" id="print_pain_points">
-                        <li>(課題が選択されていません)</li>
-                    </ul>
-                    <div class="text-[8px] text-slate-600 bg-slate-50 p-1 rounded border border-slate-100 mt-1" id="print_custom_pain_points_box">
-                        <strong>個別要望:</strong> <span id="print_custom_pain_points">特になし</span>
-                    </div>
+                    <ul class="list-disc list-inside text-[8.5px] text-slate-700 space-y-0.5 mt-1" id="print_pain_points"><li>(課題が選択されていません)</li></ul>
+                    <div class="text-[8px] text-slate-600 bg-slate-50 p-1 rounded border border-slate-100 mt-1" id="print_custom_pain_points_box"><strong>個別要望:</strong> <span id="print_custom_pain_points">特になし</span></div>
                 </div>
-
-                <!-- 5. サイトマップ / 必要構成 -->
                 <div class="print-section">
                     <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">3. サイトマップ・必要構成</h3>
-                    <div class="flex flex-wrap gap-1 mt-1" id="print_pages">
-                        <!-- ページバッジ -->
-                    </div>
+                    <div class="flex flex-wrap gap-1 mt-1" id="print_pages"></div>
                 </div>
-
-                <!-- 6. 準備いただく提供素材 -->
                 <div class="print-section">
                     <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">4. ご用意いただく提供素材</h3>
                     <table class="w-full text-[8.5px] mt-1">
                         <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">企業ロゴ</td><td class="py-0.5 text-slate-800" id="print_material_logo">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-800" id="print_material_photo">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-800" id="print_material_text">-</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">写真素材</td><td class="py-0.5 text-slate-800" id="print_material_photo">-</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">掲載原稿</td><td class="py-0.5 text-slate-800" id="print_material_text">-</td></tr>
                         <tr><td class="py-0.5 text-slate-400 font-bold">インフラ環境</td><td class="py-0.5 text-slate-800" id="print_material_server">-</td></tr>
                     </table>
                 </div>
             </div>
-
-            <!-- 右側カラム -->
             <div class="space-y-2">
-                <!-- 3. 制作の目的 -->
                 <div class="print-section">
                     <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">5. 制作の主な目的（ゴール）</h3>
-                    <div class="p-1.5 border border-slate-100 rounded bg-indigo-50/50 mt-1">
-                        <p class="text-[8.5px] font-bold text-indigo-900" id="print_main_goal">-</p>
-                    </div>
+                    <div class="p-1.5 border border-slate-100 rounded bg-indigo-50/50 mt-1"><p class="text-[8.5px] font-bold text-indigo-900" id="print_main_goal">-</p></div>
                 </div>
-
-                <!-- 4. ターゲット設計 -->
                 <div class="print-section">
                     <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">6. ターゲット設計</h3>
                     <table class="w-full text-[8.5px] mt-1">
@@ -760,8 +689,6 @@
                         <tr><td class="py-0.5 text-slate-400 font-bold">顧客ニーズ</td><td class="py-0.5 text-slate-800 leading-tight" id="print_target_pain_points">-</td></tr>
                     </table>
                 </div>
-
-                <!-- 7. デザインコンセプト＆カラー -->
                 <div class="print-section">
                     <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">7. デザイン・配色方針</h3>
                     <div class="p-1.5 border border-slate-200 rounded-lg flex items-center justify-between mt-1">
@@ -776,8 +703,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- 8. 日程・予算・保守管理 -->
                 <div class="print-section">
                     <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">8. スケジュール・予算・運用保守</h3>
                     <table class="w-full text-[8.5px] mt-1">
@@ -789,101 +714,24 @@
             </div>
         </div>
 
-        <!-- その他ミーティングメモ（1枚に収めるためタイトに） -->
         <div class="mt-2 print-section">
             <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">打合せメモ / 特別要望事項</h3>
             <p class="text-[8.5px] text-slate-700 bg-slate-50 p-1.5 rounded border border-slate-100 leading-relaxed whitespace-pre-wrap mt-1" id="print_additional_notes">-</p>
         </div>
-
-        <!-- 印刷用フッター -->
-        <div class="pt-1.5 border-t border-slate-200 text-center text-[7.5px] text-slate-400 mt-2">
-            <p>※本ヒアリングシートは、要件定義初期段階の構成案サマリーとなります。デザインや仕様は制作進行に伴い更新される場合があります。</p>
-        </div>
+        <div class="pt-1.5 border-t border-slate-200 text-center text-[7.5px] text-slate-400 mt-2"><p>※本ヒアリングシートは、要件定義初期段階の構成案サマリーとなります。</p></div>
     </div>
 
-    <!-- 管理者ログインモーダル -->
-    <div id="admin-login-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm flex items-center justify-center z-50 hidden no-print">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl border border-slate-100 mx-4">
-            <div class="flex items-center space-x-3 mb-4">
-                <div class="p-2.5 bg-slate-100 text-slate-600 rounded-xl">
-                    <i class="fa-solid fa-lock text-lg"></i>
-                </div>
-                <h3 class="text-sm font-bold text-slate-900">管理者ログイン</h3>
-            </div>
-            <p class="text-xs text-slate-500 mb-4 leading-relaxed">予算レンジの金額選択肢を変更するには管理者パスワードを入力してください。<br><span class="font-bold">初期パスワード: admin</span></p>
-            <input type="password" id="admin-password-input" placeholder="パスワードを入力" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition outline-none text-sm mb-4">
-            <div class="flex justify-end space-x-2">
-                <button onclick="closeAdminLogin()" class="px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-medium text-slate-500 hover:bg-slate-50 transition">キャンセル</button>
-                <button onclick="submitAdminLogin()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold transition">ログイン</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 管理設定モーダル -->
-    <div id="admin-settings-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm flex items-center justify-center z-50 hidden no-print overflow-y-auto">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-100 mx-4 my-8">
-            <div class="flex justify-between items-center mb-4">
-                <div class="flex items-center space-x-3">
-                    <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl">
-                        <i class="fa-solid fa-sliders text-lg"></i>
-                    </div>
-                    <h3 class="text-sm font-bold text-slate-900">管理者設定（予算レンジ変更）</h3>
-                </div>
-                <button onclick="closeAdminSettings()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            
-            <p class="text-xs text-slate-500 mb-4 leading-relaxed">打ち合わせで提示する「想定ご予算レンジ」の選択肢を自由に編集できます。値（内部・出力用）と表示用のラベル（最大5つ）を個別に設定可能です。</p>
-            
-            <div id="budget-edit-list" class="space-y-3 mb-6">
-                <!-- JSで動的に構築 -->
-            </div>
-
-            <div class="border-t border-slate-100 pt-4 mb-6">
-                <h4 class="text-xs font-bold text-slate-800 mb-2">管理者パスワードの変更</h4>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-500 mb-1">新しいパスワード</label>
-                        <input type="password" id="new-admin-password" placeholder="新規設定用" class="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-xs outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-500 mb-1">新しいパスワード（確認）</label>
-                        <input type="password" id="new-admin-password-confirm" placeholder="確認用" class="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-xs outline-none focus:border-indigo-500">
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-between items-center">
-                <button onclick="resetToDefaultBudget()" class="px-3.5 py-2 border border-slate-200 text-red-600 rounded-xl text-xs font-medium hover:bg-red-50 transition">初期設定に戻す</button>
-                <div class="flex space-x-2">
-                    <button onclick="closeAdminSettings()" class="px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-medium text-slate-500 hover:bg-slate-50 transition">閉じる</button>
-                    <button onclick="saveAdminSettings()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold transition">設定を保存</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- カスタムダイアログ/トースト -->
     <div id="custom-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm flex items-center justify-center z-50 hidden no-print">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl border border-slate-100 transform transition-all scale-95 duration-200 mx-4">
-            <div class="flex items-center space-x-3 mb-4">
-                <div id="modal-icon-bg" class="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl">
-                    <i id="modal-icon" class="fa-solid fa-circle-info text-lg"></i>
-                </div>
-                <h3 id="modal-title" class="text-sm font-bold text-slate-900">確認</h3>
-            </div>
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl border border-slate-100 mx-4">
+            <div class="flex items-center space-x-3 mb-4"><div id="modal-icon-bg" class="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl"><i id="modal-icon" class="fa-solid fa-circle-info text-lg"></i></div><h3 id="modal-title" class="text-sm font-bold text-slate-900">確認</h3></div>
             <p id="modal-message" class="text-xs text-slate-600 mb-6 leading-relaxed">メッセージ内容</p>
-            <div class="flex justify-end space-x-2">
-                <button id="modal-cancel-btn" class="px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-medium text-slate-500 hover:bg-slate-50 transition">キャンセル</button>
-                <button id="modal-confirm-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold transition">確認</button>
-            </div>
+            <div class="flex justify-end space-x-2"><button id="modal-cancel-btn" class="px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-medium text-slate-500 hover:bg-slate-50 transition">キャンセル</button><button id="modal-confirm-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold transition">確認</button></div>
         </div>
     </div>
 
-    <!-- JS実装 -->
     <script>
-        // カラーパレットデータ（70:25:5の法則に則った充実の全100バリエーション。背景色（ベースカラー）の多様性と彩度・彩りの違いを完全に担保しました）
+        // 完全統合された全100個のプロ仕様パレット配列（文法エラーのない1つのソリッドな配列定義です）
         const colorPalettes = [
-            // --- グレージュ・淡色（paleカテゴリ）: 25種類 ---
             { id: 1, category: "pale", name: "洗練グレージュ", desc: "大人の上品なくすみグレーベージュ。一番人気のニュアンスカラー。", base: "#F4F2EE", main: "#4A4744", accent: "#C29B9B", baseText: "#2C2A29", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 2, category: "pale", name: "トープ・ミニマリズム", desc: "極上の大人の引き算。上質で無駄のないライフスタイルショップ向け。", base: "#FAF6F0", main: "#6E6053", accent: "#8A9A9E", baseText: "#2D2621", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 3, category: "pale", name: "シャビー・シック", desc: "アンティークなフランス風のブルーグレー。ウェディングやサロンに。", base: "#EBF1F0", main: "#778A90", accent: "#CFA08F", baseText: "#2F3E46", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -902,18 +750,19 @@
             { id: 16, category: "pale", name: "かすみ・クラウドブルー", desc: "曇り空のようなアンニュイな極薄ブルーグレー背景。静寂とミニマリズムを表現。", base: "#EFF3F6", main: "#4B5563", accent: "#D97706", baseText: "#1F2937", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 17, category: "pale", name: "ロイヤルミルクティ", desc: "滑らかなミルクティを思わせる、暖かく品の良いウォームベージュ。", base: "#F5ECE1", main: "#6F4E37", accent: "#4A6B82", baseText: "#3E2723", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 18, category: "pale", name: "スモーキー・ミントアッシュ", desc: "かすかに灰味を帯びた、驚くほど淡いミント。医療、カウンセリング、環境問題に。", base: "#EDF5F1", main: "#4D6B58", accent: "#C28C7A", baseText: "#1E2923", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 20, category: "pale", name: "ピスタチオ・シフォン", desc: "ピスタチオの殻を剥いたような、優しくて明るいイエローグリーン背景。", base: "#F5F8EC", main: "#606F30", accent: "#D97706", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 21, category: "pale", name: "プラチナ・パールアッシュ", desc: "パールの輝きを宿した淡いグレー。コスメや気品ある洋画スタジオに。", base: "#F3F3F5", main: "#2C3E50", accent: "#B59E5D", baseText: "#2C3E50", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 22, category: "pale", name: "オールドレース・アイボリー", desc: "時を経たアンティークドレスのような、美しい生成り（アイボリー）背景。", base: "#FAF6EB", main: "#5D4037", accent: "#7A8B7B", baseText: "#3E2723", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 23, category: "pale", name: "ダスティ·ライラック", desc: "大人の知性を引き出すくすんだペールパープル。セラピー、サロン等に。", base: "#F3EFF5", main: "#5B446A", accent: "#A5A58D", baseText: "#2A1E35", mainText: "#FFFFFF", accentText: "#111827" },
-            { id: 24, category: "pale", name: "クラウド・フォグ", desc: "朝の雲海をイメージした、透明感を極めたソフトグレー。ミニマリスト設計。", base: "#F0F2F5", main: "#1F2937", accent: "#3B82F6", baseText: "#1F2937", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 25, category: "pale", name: "スウィート・ピーチポルタ", desc: "ピーチのソルベのように優しく甘い、フルーティーな極淡ピンク背景。", base: "#FFF5F2", main: "#C2410C", accent: "#0F766E", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 19, category: "pale", name: "ピスタチオ・シフォン", desc: "ピスタチオの殻を剥いたような、優しくて明るいイエローグリーン背景。", base: "#F5F8EC", main: "#606F30", accent: "#D97706", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 20, category: "pale", name: "プラチナ・パールアッシュ", desc: "パールの輝きを宿した淡いグレー。コスメや気品ある洋画スタジオに。", base: "#F3F3F5", main: "#2C3E50", accent: "#B59E5D", baseText: "#2C3E50", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 21, category: "pale", name: "オールドレース・アイボリー", desc: "時を経たアンティークドレスのような、美しい生成り（アイボリー）背景。", base: "#FAF6EB", main: "#5D4037", accent: "#7A8B7B", baseText: "#3E2723", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 22, category: "pale", name: "ダスティ・ライラック", desc: "大人の知性を引き出すくすんだペールパープル。セラピー、サロン等に。", base: "#F3EFF5", main: "#5B446A", accent: "#A5A58D", baseText: "#2A1E35", mainText: "#FFFFFF", accentText: "#111827" },
+            { id: 23, category: "pale", name: "クラウド・フォグ", desc: "朝の雲海をイメージした、透明感を極めたソフトグレー。ミニマリスト設計。", base: "#F0F2F5", main: "#1F2937", accent: "#3B82F6", baseText: "#1F2937", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 24, category: "pale", name: "スウィート・ピーチポルタ", desc: "ピーチのソルベのように優しく甘い、フルーティーな極淡ピンク背景。", base: "#FFF5F2", main: "#C2410C", accent: "#0F766E", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 25, category: "pale", name: "シフォン・アイリス", desc: "アイリスの花弁を思わせる、静寂で非常に淡いパープルグレー背景。", base: "#F3F1F7", main: "#4B3B63", accent: "#D97706", baseText: "#1F1A2E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
 
             // --- 渋い・和風（matureカテゴリ）: 25種類 ---
             { id: 26, category: "mature", name: "和モダン・砂紋グレー", desc: "枯山水の美しさを砂紋グレー背景で。和食、伝統工芸、温泉旅館に。", base: "#EFECE4", main: "#2D2926", accent: "#9E2A2B", baseText: "#1C1917", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 27, category: "mature", name: "煤竹・古民家オリーブ", desc: "くすんだオリーブ土壁調の背景。建築士、リノベーション、和食店に。", base: "#EDECE6", main: "#3E3535", accent: "#B85A38", baseText: "#1E1E1E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 28, category: "mature", name: "洗練チャコール・スレート", desc: "味わい深いダークグレー背景。白文字が美しく映える引き締まった現代デザイン。", base: "#374151", main: "#F9FAFB", accent: "#10B981", baseText: "#F3F4F6", mainText: "#111827", accentText: "#000000" },
-            { id: 29, category: "mature", name: "真綿・紅化粧", desc: "真綿のようなくすんだ絹白に、深みある紅. 伝統を紡ぐデザイン。", base: "#FFFDF6", main: "#3D3535", accent: "#B82F41", baseText: "#1F1A1A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 29, category: "mature", name: "真綿・紅化粧", desc: "真綿のようなくすんだ絹白に、深みある紅。伝統を紡ぐデザイン。", base: "#FFFDF6", main: "#3D3535", accent: "#B82F41", baseText: "#1F1A1A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 30, category: "mature", name: "シネマセピア・レトロ", desc: "ノスタルジックなセピア紙の背景。映画、ヴィンテージ服、レトロ喫茶に。", base: "#EFEAE0", main: "#573F33", accent: "#385E5F", baseText: "#2C1E18", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 31, category: "mature", name: "庵治石（あじいし）の美", desc: "日本の銘石「庵治石」を思わせる、静かで洗練された和石グレー背景。", base: "#DEDFDB", main: "#1F2421", accent: "#C5A059", baseText: "#1F2421", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 32, category: "mature", name: "深緑・かすみモス", desc: "深い霧が立ち込める森をかすみライトモス背景で再現。アウトドア、ハーブティに。", base: "#EBECE6", main: "#2C402E", accent: "#C99E15", baseText: "#1B241C", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -936,10 +785,10 @@
             { id: 49, category: "mature", name: "和楽・利休ねずみ", desc: "灰色がかったお茶のような、極めて知的な和風くすみカラー背景。陶芸、日本画、茶道に。", base: "#596055", main: "#FFFDF6", accent: "#B85A38", baseText: "#FDFBF7", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 50, category: "mature", name: "ミッドナイト・コパー", desc: "深く、美しき真夜中のロイヤルネイビーにコパー（銅）の輝きを乗せて。バーやラウンジに。", base: "#172554", main: "#1E293B", accent: "#EA580C", baseText: "#F8FAFC", mainText: "#FFFFFF", accentText: "#FFFFFF" },
 
-            // --- 北欧・ナチュラル（naturalカテゴリ）: 18種類 ---
+            // --- 北欧・ナチュラル（naturalカテゴリ）: 17種類 ---
             { id: 51, category: "natural", name: "ナチュラル・オリーブ", desc: "自然素材の優しさ。オーガニックカフェ、クリニック、工務店に。", base: "#FAF7F2", main: "#3F6212", accent: "#D97706", baseText: "#1C1917", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 52, category: "natural", name: "オレンジ・ライムエクリュ", desc: "親しみと明るさ。福祉、保育、地域密着サービス、飲食店に最適。", base: "#FFFDF0", main: "#EA580C", accent: "#4D7C0F", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 53, category: "natural", name: "北欧フォレストセージ", desc: "静寂を運ぶ、朝 of セージミスト背景。北欧家具、自然派コスメに。", base: "#F4F7F4", main: "#4A5D4E", accent: "#D69F7E", baseText: "#1E2A20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 53, category: "natural", name: "北欧フォレストセージ", desc: "静寂を運ぶ、朝のセージミスト背景。北欧家具、自然派コスメに。", base: "#F4F7F4", main: "#4A5D4E", accent: "#D69F7E", baseText: "#1E2A20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 54, category: "natural", name: "ハーブミント・オーガニック", desc: "すっきり心地よい薄ミントハーブ。オーガニックスパやヨガ教室に。", base: "#F4FBF7", main: "#15803D", accent: "#F472B6", baseText: "#14532D", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 55, category: "natural", name: "オリーブオイル・イタリアン", desc: "地中海のオリーブ。温かなアイボリーとオリーブ。カフェバルに。", base: "#FAF9EF", main: "#5F6F3A", accent: "#E8A838", baseText: "#2C3516", mainText: "#FFFFFF", accentText: "#2C3516" },
             { id: 56, category: "natural", name: "クローバー・サニーグリーン", desc: "芝生に吹く心地よい風。幼稚園、小児科、エコロジーなプロダクトに。", base: "#F9FCEF", main: "#2E7D32", accent: "#FBC02D", baseText: "#1B5E20", mainText: "#FFFFFF", accentText: "#000000" },
@@ -948,19 +797,15 @@
             { id: 59, category: "natural", name: "カスタード・ミモザ", desc: "優しさ溢れるペールイエローとライム。春の訪れを感じるフラワーショップに。", base: "#FFFEE9", main: "#D97706", accent: "#2563EB", baseText: "#3F2305", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 60, category: "natural", name: "ユーカリ・アッシュ", desc: "穏やかな暮らしのユーカリカラー。自然食マクロビオティック、オーガニックアロマに。", base: "#F1F5F2", main: "#4F5D54", accent: "#E29578", baseText: "#2C332E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 61, category: "natural", name: "ピスタチオ・ガーデン", desc: "明るく豊かな実りを。オーガニックコスメやエコロジー建築に。", base: "#EEF2E6", main: "#606F30", accent: "#D97706", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 62, category: "natural", name: "probas・ラベンダー", desc: "南仏のラベンダー畑をイメージした、淡いパープルとナチュラルグリーンの配色。", base: "#FAF5FF", main: "#7C3AED", accent: "#15803D", baseText: "#1E2A20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 62, category: "natural", name: "プロバンス・ラベンダー", desc: "南仏のラベンダー畑をイメージした、淡いパープルとナチュラルグリーンの配色。", base: "#FAF5FF", main: "#7C3AED", accent: "#15803D", baseText: "#1E2A20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 63, category: "natural", name: "ハニー・エクリュ", desc: "温かく親しみやすい極上ハチミツのアイボリー。ナチュラルベーカリーや雑貨に。", base: "#FFFDF0", main: "#D97706", accent: "#0F766E", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 64, category: "natural", name: "セコイア・ウッド", desc: "荘厳な大樹を感じる深みあるナチュラルブラウンと、葉をイメージしたセージ。", base: "#FAF7EE", main: "#4D382B", accent: "#4F5D54", baseText: "#4D382B", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 65, category: "natural", name: "レモン・バーベナ", desc: "レモンのハーブティーのような、心身がシャキッと目覚める柑橘イエロー＆グリーン。", base: "#FFFFEB", main: "#32963D", accent: "#D97706", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 66, category: "natural", name: "スカンジナビアン・トープ", desc: "温かみあるトープグレー背景。北欧モダンライフスタイル提案に。", base: "#F7F6F2", main: "#5C534D", accent: "#A3B18A", baseText: "#2D2621", mainText: "#FFFFFF", accentText: "#333D29" },
             { id: 67, category: "natural", name: "フォレスト・ピクニック", desc: "生命力あふれる森と日だまりの芝生。エコライフ、リクレーション、アウトドアに。", base: "#F2F5EB", main: "#1B5E20", accent: "#EA580C", baseText: "#1B5E20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 68, category: "natural", name: "アッシュ・ユーカリ", desc: "アッシュユーカリの極淡カラー。精神医療、カウンセリング、エコ理念に。", base: "#ECF2F0", main: "#4F5D54", accent: "#C28C7A", baseText: "#2C332E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 75, category: "natural", name: "サフラン・アース", desc: "サフランイエローの極淡背景に、大地のブラウン。エスニックや自然派バルに。", base: "#FFFDF2", main: "#78350F", accent: "#D97706", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
 
-            // ==========================================
             // --- ビジネス・モダン（corporateカテゴリ）: 16種類 ---
-            // ==========================================
-            { id: 69, category: "corporate", name: "ロイヤル・信頼ブルー", desc: "最高度の誠実と知性。コーポレート、コンサル、金融機関等に最適。", base: "#F0F4FA", main: "#1E3A8A", accent: "#F59E0B", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#1E1B4B" },
+            { id: 68, category: "corporate", name: "ロイヤル・信頼ブルー", desc: "最高度の誠実と知性。コーポレート、コンサル、金融機関等に最適。", base: "#F0F4FA", main: "#1E3A8A", accent: "#F59E0B", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#1E1B4B" },
             { id: 70, category: "corporate", name: "プラチナ・エリート", desc: "究極のステータスと品格。プラチナホワイトにシャンパンゴールドの華を添える。", base: "#FAFAFA", main: "#2D3436", accent: "#C5A059", baseText: "#2D3436", mainText: "#FFFFFF", accentText: "#1E1B4B" },
             { id: 71, category: "corporate", name: "先端テクノロジー", desc: "DXとスマート。SaaS、AI開発、エンジニアリングベンチャーに最適。", base: "#EDF8FF", main: "#0EA5E9", accent: "#10B981", baseText: "#082F49", mainText: "#FFFFFF", accentText: "#022C22" },
             { id: 72, category: "corporate", name: "都会的アッシュ", desc: "都会的で洗練されたアッシュグレー背景。スタイリッシュなクリエイティブオフィスに。", base: "#F1F3F5", main: "#475569", accent: "#EA580C", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -973,7 +818,7 @@
             { id: 79, category: "corporate", name: "アッシュ・インテリジェンス", desc: "都会的なミディアムグレーに知的ネイビーをのせた、最高にクールなコーポレート色。", base: "#E5E7EB", main: "#1E3A8A", accent: "#EC4899", baseText: "#111827", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 80, category: "corporate", name: "エグゼクティブ・ボルドー", desc: "洗練された最高級を。VIPコンサル、ラグジュアリーカードを意識した配色。", base: "#2B1A1D", main: "#C5A059", accent: "#FFFFFF", baseText: "#FFFFFF", mainText: "#2B1A1D", accentText: "#111827" },
             { id: 81, category: "corporate", name: "サイバー・クラウドセキュリティ", desc: "極めて先進的なクラウド・防御をイメージした、ミストグレーにインディゴの安心感。", base: "#F8FAFC", main: "#4F46E5", accent: "#10B981", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 82, category: "corporate", name: "スマート・ミニマルアッシュ", desc: "余白を美しく際端たせる、洗練のアッシュライトグレーベース。グローバル企業に。", base: "#F1F5F9", main: "#0F172A", accent: "#4F46E5", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 82, category: "corporate", name: "スマート・ミニマルアッシュ", desc: "余白を美しく際立たせる、洗練のアッシュライトグレーベース。グローバル企業に。", base: "#F1F5F9", main: "#0F172A", accent: "#4F46E5", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 83, category: "corporate", name: "ステータス・コパー", desc: "重厚かつ信頼あるスレートダークグレーベース。高級リノベーションや投資、経営コンサルに。", base: "#2F3542", main: "#FAFAFA", accent: "#D35400", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 84, category: "corporate", name: "アイビー・インフォ・ネイビー", desc: "教育、情報発信、シンクタンク、公的機関などに誠実に機能する配色。", base: "#EFF6FF", main: "#1E3A8A", accent: "#0D9488", baseText: "#1E3A8A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
 
@@ -989,7 +834,7 @@
             { id: 91, category: "pop", name: "クラフト・ブリック", desc: "手仕事を感じる温かなクラフト紙背景。DIY、工具、男前インテリア店に。", base: "#FDF9F2", main: "#3E4149", accent: "#D35400", baseText: "#1A252C", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 92, category: "pop", name: "サイバー・デジタルミント", desc: "デジタルスレート背景に、ミントネオン。ガジェット、プログラミングスクールに。", base: "#1F2937", main: "#10B981", accent: "#F43F5E", baseText: "#F9FAFB", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 93, category: "pop", name: "ピスタチオ・ネオンローズ", desc: "鮮やかなくすみピスタチオに強烈なピンクのネオンを効かせた、前衛的なクリエイティブ色。", base: "#EFF3E7", main: "#4B5320", accent: "#EC4899", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 94, category: "pop", name: "トワイライト・ネオンシアン", desc: "トワイライト（黄昏）のネイビーにくっきりと光るネオンシアン。夜間イベントやDJ向け。", base: "#1E1B4B", main: "#7C3AED", accent: "#06B6D4", baseText: "#EEF2F6", mainText: "#FFFFFF", accentText: "#080A10" },
+            { id: 94, category: "pop", name: "トワイライト・ネオンシアン", desc: "トワイライトのネイビーにくっきりと光るネオンシアン。夜間イベントやDJ向け。", base: "#1E1B4B", main: "#7C3AED", accent: "#06B6D4", baseText: "#EEF2F6", mainText: "#FFFFFF", accentText: "#080A10" },
             { id: 95, category: "pop", name: "ダスティ・パンクローズ", desc: "ダスティーローズ背景に漆黒を合わせ、5%のネオンローズでトドメ。アパレルやエッジなブランドに。", base: "#FCE7F3", main: "#111827", accent: "#EC4899", baseText: "#111827", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 96, category: "pop", name: "アイアン・フェニックス", desc: "錆びた鉄のようなダークアッシュグレー背景に、蘇る炎の情熱。", base: "#3F3F46", main: "#18181B", accent: "#EA580C", baseText: "#F4F4F5", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 97, category: "pop", name: "フォグ・サイバーイエロー", desc: "極薄のフォググレー背景に、注意を引くビビッドイエロー。近未来デジタルハックに。", base: "#F3F4F6", main: "#1E293B", accent: "#EAB308", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#000000" },
@@ -998,302 +843,147 @@
             { id: 100, category: "pop", name: "フォレスト・ネオンライム", desc: "荘厳な深緑ベースに、目が覚めるようなネオンライム。ゲーム、WEBサービス、テック系。", base: "#14532D", main: "#1F2937", accent: "#A3E635", baseText: "#F4FDF4", mainText: "#FFFFFF", accentText: "#09090B" }
         ];
 
-        // 予算レンジ初期データ
-        const defaultBudgetOptions = [
-            { value: "未指定・相談して決定", label: "未指定・相談して決定" },
-            { value: "30万円〜50万円程度 (ミニマル・ライト)", label: "30万〜50万円（簡易テンプレートプラン）" },
-            { value: "50万円〜100万円程度 (スタンダード・標準)", label: "50万〜100万円（オリジナル・標準プラン）" },
-            { value: "100万円〜200万円程度 (プレミアム・多機能)", label: "100万〜200万円（システム連携・マーケ重視）" },
-            { value: "200万円以上 (大規模カスタマイズ)", label: "200万円以上（大規模コーポレート・EC等）" }
-        ];
-
-        let budgetOptions = JSON.parse(localStorage.getItem('web_hearing_budget_options')) || defaultBudgetOptions;
-        let adminPassword = localStorage.getItem('web_hearing_admin_password') || "admin";
-
-        let selectedPaletteId = 1; // デフォルトを「洗練グレージュ」に設定
+        let selectedPaletteId = 1; 
         let currentStep = 1;
         let selectedFilter = 'all';
-        let fullScreenFilter = 'all'; // 全画面表示中のフィルター状態
+        let fullScreenFilter = 'all'; 
 
-        // カスタムアラート
-        function showCustomAlert(message, title = "お知らせ") {
-            const modal = document.getElementById('custom-modal');
-            const titleEl = document.getElementById('modal-title');
-            const msgEl = document.getElementById('modal-message');
-            const cancelBtn = document.getElementById('modal-cancel-btn');
-            const confirmBtn = document.getElementById('modal-confirm-btn');
-            const iconBg = document.getElementById('modal-icon-bg');
-            const icon = document.getElementById('modal-icon');
-
-            titleEl.innerText = title;
-            msgEl.innerText = message;
-            cancelBtn.classList.add('hidden'); // アラート時はキャンセル不要
-            
-            iconBg.className = "p-2.5 bg-indigo-50 text-indigo-600 rounded-xl";
-            icon.className = "fa-solid fa-circle-info text-lg";
-
-            modal.classList.remove('hidden');
-
-            return new Promise((resolve) => {
-                confirmBtn.onclick = () => {
-                    modal.classList.add('hidden');
-                    resolve(true);
-                };
-            });
-        }
-
-        // カスタムコンファーム
-        function showCustomConfirm(message, title = "実行確認") {
-            const modal = document.getElementById('custom-modal');
-            const titleEl = document.getElementById('modal-title');
-            const msgEl = document.getElementById('modal-message');
-            const cancelBtn = document.getElementById('modal-cancel-btn');
-            const confirmBtn = document.getElementById('modal-confirm-btn');
-            const iconBg = document.getElementById('modal-icon-bg');
-            const icon = document.getElementById('modal-icon');
-
-            titleEl.innerText = title;
-            msgEl.innerText = message;
-            cancelBtn.classList.remove('hidden'); // キャンセルを表示
-            
-            iconBg.className = "p-2.5 bg-amber-50 text-amber-600 rounded-xl";
-            icon.className = "fa-solid fa-triangle-exclamation text-lg";
-
-            modal.classList.remove('hidden');
-
-            return new Promise((resolve) => {
-                confirmBtn.onclick = () => {
-                    modal.classList.add('hidden');
-                    resolve(true);
-                };
-                cancelBtn.onclick = () => {
-                    modal.classList.add('hidden');
-                    resolve(false);
-                };
-            });
-        }
-
-        // 予算オプションの動的生成
+        // 予算プルダウン構築
         function renderBudgetOptions() {
             const select = document.getElementById('budget_level');
-            const currentValue = select.value;
+            if(!select) return;
             select.innerHTML = '';
-            
             budgetOptions.forEach(opt => {
                 const option = document.createElement('option');
                 option.value = opt.value;
                 option.textContent = opt.label;
                 select.appendChild(option);
             });
-
-            if (budgetOptions.some(opt => opt.value === currentValue)) {
-                select.value = currentValue;
-            } else {
-                select.selectedIndex = 0;
-            }
+            select.selectedIndex = 0;
         }
 
-        // 管理設定ログインモーダル管理
+        // ログインモーダル
         function openAdminLogin() {
             document.getElementById('admin-password-input').value = '';
             document.getElementById('admin-login-modal').classList.remove('hidden');
         }
-
         function closeAdminLogin() {
             document.getElementById('admin-login-modal').classList.add('hidden');
         }
-
         function submitAdminLogin() {
             const input = document.getElementById('admin-password-input').value;
             if (input === adminPassword) {
                 closeAdminLogin();
                 openAdminSettings();
             } else {
-                showCustomAlert("パスワードが正しくありません。再度入力してください。", "管理者認証エラー");
+                showCustomAlert("パスワードが正しくありません。", "認証エラー");
             }
         }
 
-        // 管理者設定（予算変更）UI
+        // 管理設定モーダル
         function openAdminSettings() {
             const listContainer = document.getElementById('budget-edit-list');
             listContainer.innerHTML = '';
-
             budgetOptions.forEach((opt, index) => {
-                const rowHtml = `
+                listContainer.insertAdjacentHTML('beforeend', `
                     <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
                         <span class="text-[10px] font-bold text-indigo-600 block mb-1">選択肢 ${index + 1}</span>
                         <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="block text-[8px] text-slate-400 font-bold uppercase mb-0.5">値 (出力用金額など)</label>
-                                <input type="text" id="budget-val-${index}" value="${opt.value}" class="w-full px-2 py-1 border border-slate-200 rounded text-xs outline-none focus:border-indigo-500">
-                            </div>
-                            <div>
-                                <label class="block text-[8px] text-slate-400 font-bold uppercase mb-0.5">表示名 (プルダウン表示用)</label>
-                                <input type="text" id="budget-lbl-${index}" value="${opt.label}" class="w-full px-2 py-1 border border-slate-200 rounded text-xs outline-none focus:border-indigo-500">
-                            </div>
+                            <div><input type="text" id="budget-val-${index}" value="${opt.value}" class="w-full px-2 py-1 border rounded text-xs"></div>
+                            <div><input type="text" id="budget-lbl-${index}" value="${opt.label}" class="w-full px-2 py-1 border rounded text-xs"></div>
                         </div>
                     </div>
-                `;
-                listContainer.insertAdjacentHTML('beforeend', rowHtml);
+                `);
             });
-
-            document.getElementById('new-admin-password').value = '';
-            document.getElementById('new-admin-password-confirm').value = '';
             document.getElementById('admin-settings-modal').classList.remove('hidden');
         }
-
         function closeAdminSettings() {
             document.getElementById('admin-settings-modal').classList.add('hidden');
         }
-
         function saveAdminSettings() {
-            // 予算編集の保存
-            const updatedOptions = [];
+            const updated = [];
             for (let i = 0; i < budgetOptions.length; i++) {
                 const val = document.getElementById(`budget-val-${i}`).value.trim();
                 const lbl = document.getElementById(`budget-lbl-${i}`).value.trim();
-                if (!val || !lbl) {
-                    showCustomAlert("すべての予算選択肢の値と表示名を入力してください。", "入力チェック");
-                    return;
-                }
-                updatedOptions.push({ value: val, label: lbl });
+                updated.push({ value: val, label: lbl });
             }
-
-            // パスワード変更
-            const newPw = document.getElementById('new-admin-password').value;
-            const newPwConfirm = document.getElementById('new-admin-password-confirm').value;
-
-            if (newPw) {
-                if (newPw !== newPwConfirm) {
-                    showCustomAlert("新しく設定するパスワードと確認用パスワードが一致しません。", "パスワードエラー");
-                    return;
-                }
-                adminPassword = newPw;
-                localStorage.setItem('web_hearing_admin_password', adminPassword);
-            }
-
-            budgetOptions = updatedOptions;
+            budgetOptions = updated;
             localStorage.setItem('web_hearing_budget_options', JSON.stringify(budgetOptions));
-            
             renderBudgetOptions();
-            updatePreview();
             closeAdminSettings();
-            
-            showCustomAlert("変更された予算レンジ設定と管理者パスワードを保存しました。", "設定の保存完了");
+            showCustomAlert("予算設定を保存しました。");
         }
-
         function resetToDefaultBudget() {
-            showCustomConfirm("金額（予算）オプションを初期状態にリセットしますか？設定した内容は消去されます。", "初期化の確認").then(confirmed => {
-                if (confirmed) {
-                    budgetOptions = [...defaultBudgetOptions];
-                    localStorage.removeItem('web_hearing_budget_options');
-                    renderBudgetOptions();
-                    openAdminSettings(); // 再描画
-                    updatePreview();
-                    showCustomAlert("予算設定をシステム初期値に戻しました。パスワードは維持されます。", "設定リセット");
-                }
-            });
+            budgetOptions = [...defaultBudgetOptions];
+            localStorage.removeItem('web_hearing_budget_options');
+            renderBudgetOptions();
+            closeAdminSettings();
+            showCustomAlert("初期値に戻しました。");
         }
 
+        // カラーパレット描画
         function filterPalettes(category) {
             selectedFilter = category;
-            
-            // タブのアクティブ表示切替
-            const categories = ['all', 'pale', 'mature', 'natural', 'corporate', 'pop'];
-            categories.forEach(cat => {
+            const tabs = ['all', 'pale', 'mature', 'natural', 'corporate', 'pop'];
+            tabs.forEach(cat => {
                 const btn = document.getElementById(`tab-${cat}`);
-                if(btn) {
-                    if(cat === category) {
-                        btn.className = "text-xs px-3 py-1.5 rounded-full font-semibold transition bg-indigo-600 text-white";
-                    } else {
-                        btn.className = "text-xs px-3 py-1.5 rounded-full font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200";
-                    }
-                }
+                if(btn) btn.className = cat === category ? "text-xs px-3 py-1.5 rounded-full font-semibold transition bg-indigo-600 text-white" : "text-xs px-3 py-1.5 rounded-full font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200";
             });
-            
             renderPalettes();
         }
-
         function renderPalettes() {
-            const listContainer = document.getElementById('color-palette-list');
-            listContainer.innerHTML = '';
-
-            const filteredPalettes = selectedFilter === 'all' 
-                ? colorPalettes 
-                : colorPalettes.filter(p => p.category === selectedFilter);
-
-            filteredPalettes.forEach(p => {
+            const container = document.getElementById('color-palette-list');
+            if(!container) return;
+            container.innerHTML = '';
+            const filtered = selectedFilter === 'all' ? colorPalettes : colorPalettes.filter(p => p.category === selectedFilter);
+            filtered.forEach(p => {
                 const isActive = p.id === selectedPaletteId;
-                const borderClass = isActive ? 'border-indigo-600 ring-2 ring-indigo-500/20 bg-indigo-50/10' : 'border-slate-200 hover:border-slate-300 bg-white';
-                const checkIcon = isActive ? '<i class="fa-solid fa-circle-check text-indigo-600 text-lg"></i>' : '<div class="w-5 h-5 rounded-full border border-slate-300"></div>';
-
-                const cardHtml = `
-                    <div onclick="selectPalette(${p.id})" class="border ${borderClass} rounded-2xl p-4 cursor-pointer transition-all duration-200 flex flex-col justify-between h-40">
+                container.insertAdjacentHTML('beforeend', `
+                    <div onclick="selectPalette(${p.id})" class="border ${isActive ? 'border-indigo-600 ring-2 ring-indigo-500/20 bg-indigo-50/10' : 'border-slate-200 bg-white'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between h-40">
                         <div>
-                            <div class="flex justify-between items-start mb-1">
+                            <div class="flex justify-between items-start">
                                 <h3 class="font-bold text-sm text-slate-800">${p.name}</h3>
-                                ${checkIcon}
+                                ${isActive ? '<i class="fa-solid fa-circle-check text-indigo-600"></i>' : '<div class="w-4 h-4 rounded-full border"></div>'}
                             </div>
-                            <p class="text-[11px] text-slate-400 leading-relaxed">${p.desc}</p>
+                            <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">${p.desc}</p>
                         </div>
-                        
-                        <div class="mt-2">
-                            <div class="flex h-5 rounded overflow-hidden text-[9px] font-bold text-center leading-5 text-white shadow-inner">
-                                <div style="background-color: ${p.base}; width: 70%; color: ${p.baseText};" class="border-r border-slate-200/20">70%</div>
-                                <div style="background-color: ${p.main}; width: 25%; color: ${p.mainText};" class="border-r border-slate-200/20">25%</div>
-                                <div style="background-color: ${p.accent}; width: 5%; color: ${p.accentText};">5%</div>
-                            </div>
+                        <div class="flex h-5 rounded overflow-hidden text-[9px] font-bold text-center text-white">
+                            <div style="background-color: ${p.base}; width: 70%; color:${p.baseText}">70%</div>
+                            <div style="background-color: ${p.main}; width: 25%; color:${p.mainText}">25%</div>
+                            <div style="background-color: ${p.accent}; width: 5%; color:${p.accentText}">5%</div>
                         </div>
                     </div>
-                `;
-                listContainer.insertAdjacentHTML('beforeend', cardHtml);
+                `);
             });
         }
 
-        // 全画面表示中のカテゴリーフィルタリング
+        // 全画面表示パレット
         function filterPalettesFull(category) {
             fullScreenFilter = category;
-            
-            // 全画面用タブのアクティブ表示切替
-            const categories = ['all', 'pale', 'mature', 'natural', 'corporate', 'pop'];
-            categories.forEach(cat => {
+            const tabs = ['all', 'pale', 'mature', 'natural', 'corporate', 'pop'];
+            tabs.forEach(cat => {
                 const btn = document.getElementById(`full-tab-${cat}`);
-                if(btn) {
-                    if(cat === category) {
-                        btn.className = "px-2.5 py-1 rounded text-[10px] font-bold bg-indigo-600 text-white transition";
-                    } else {
-                        btn.className = "px-2.5 py-1 rounded text-[10px] font-bold text-slate-400 hover:text-white transition";
-                    }
-                }
+                if(btn) btn.className = cat === category ? "px-2.5 py-1 rounded text-[10px] font-bold bg-indigo-600 text-white transition" : "px-2.5 py-1 rounded text-[10px] font-bold text-slate-400 hover:text-white transition";
             });
-            
             renderMiniPalettesFull();
         }
-
-        // 全画面表示中のミニパレットリストの動的生成
         function renderMiniPalettesFull() {
-            const listContainer = document.getElementById('full-screen-mini-palette-list');
-            listContainer.innerHTML = '';
-
-            const filteredPalettes = fullScreenFilter === 'all' 
-                ? colorPalettes 
-                : colorPalettes.filter(p => p.category === fullScreenFilter);
-
-            filteredPalettes.forEach(p => {
+            const container = document.getElementById('full-screen-mini-palette-list');
+            if(!container) return;
+            container.innerHTML = '';
+            const filtered = fullScreenFilter === 'all' ? colorPalettes : colorPalettes.filter(p => p.category === fullScreenFilter);
+            filtered.forEach(p => {
                 const isActive = p.id === selectedPaletteId;
-                const activeBorder = isActive ? 'border-indigo-400 ring-2 ring-indigo-500/30 bg-slate-800 scale-105' : 'border-slate-700 bg-slate-900';
-                
-                const itemHtml = `
-                    <button onclick="selectPalette(${p.id}); renderMiniPalettesFull();" class="flex-shrink-0 flex items-center space-x-2 px-3 py-1.5 rounded-xl border ${activeBorder} hover:bg-slate-800 transition text-left text-[11px] outline-none">
+                container.insertAdjacentHTML('beforeend', `
+                    <button onclick="selectPalette(${p.id}); renderMiniPalettesFull();" class="flex-shrink-0 flex items-center space-x-2 px-3 py-1.5 rounded-xl border ${isActive ? 'border-indigo-400 ring-2 bg-slate-800' : 'border-slate-700 bg-slate-900'} text-[11px]">
                         <div class="flex space-x-0.5">
-                            <span class="w-3.5 h-3.5 rounded border border-slate-700" style="background-color: ${p.base}"></span>
-                            <span class="w-3.5 h-3.5 rounded" style="background-color: ${p.main}"></span>
-                            <span class="w-3.5 h-3.5 rounded" style="background-color: ${p.accent}"></span>
+                            <span class="w-3 h-3 rounded" style="background-color: ${p.base}"></span>
+                            <span class="w-3 h-3 rounded" style="background-color: ${p.main}"></span>
+                            <span class="w-3 h-3 rounded" style="background-color: ${p.accent}"></span>
                         </div>
-                        <span class="font-semibold text-slate-200">${p.name}</span>
+                        <span class="text-slate-200 font-medium">${p.name}</span>
                     </button>
-                `;
-                listContainer.insertAdjacentHTML('beforeend', itemHtml);
+                `);
             });
         }
 
@@ -1303,14 +993,10 @@
             updatePreview();
         }
 
-        // 右側のプレビュー表示を全画面化（フルスクリーンモード）するトグル関数
-        // 左側の入力フォーム(form-container)と上部のヘッダー(main-header)を完全にhiddenにして100%全画面化します
-        // iPadや各画面サイズに対応するため、calc高さ計算を適応し、見切れ・はみ出しを完全に防ぎます
+        // フルスクリーン制御
         function toggleFullscreenPreview() {
             const card = document.getElementById('web-preview-card');
             const previewOuter = document.getElementById('preview-outer-container');
-            
-            // classNameの上書きによる判定狂いを防ぐため、外枠コンテナの classList に 'fixed' が含まれているかで判定
             const isFull = previewOuter.classList.contains('fixed');
             
             const header = document.getElementById('main-header');
@@ -1318,441 +1004,183 @@
             const previewHeader = document.getElementById('preview-header');
             const closeFullBtn = document.getElementById('close-full-btn');
             const floatingSelector = document.getElementById('full-screen-floating-selector');
-            const body = document.body;
             
             if (!isFull) {
-                // 全画面表示：プレゼンラッパーモードのスタイルを反映
-                card.classList.add('fullscreen-card');
-                
-                // 余計な入力・ヘッダー部分を画面から完全消去
                 header.classList.add('hidden');
                 formContainer.classList.add('hidden');
                 previewHeader.classList.add('hidden');
-
-                // プレビューのアウターコンテナを fixed フルスクリーン背景として展開（滑らかなグラデーション付きダーク背景）
-                previewOuter.className = "fixed inset-0 z-40 bg-slate-950/95 flex flex-col items-center justify-start p-4 md:p-6 pb-48 overflow-y-auto no-print";
-                
-                // プレビューカード自体のサイズを、下部フローティングメニュー(約160px)を完全に除外した安全高さ「h-[calc(100vh-240px)]」に固定
-                // カード単体にオーバーフロー自動スクロールをかけるため、中のコンテンツがいかに長くても一切はみ出さずカード内で完結します
-                card.className = "fullscreen-card bg-white w-full max-w-4xl h-[calc(100vh-240px)] min-h-[480px] flex flex-col rounded-2xl shadow-2xl overflow-y-auto relative transition-all duration-300";
-                
+                previewOuter.className = "fixed inset-0 z-40 bg-slate-950/95 flex flex-col items-center justify-start p-4 pb-48 overflow-y-auto no-print";
+                card.className = "bg-white w-full max-w-4xl h-[calc(100vh-240px)] flex flex-col rounded-2xl shadow-2xl overflow-y-auto relative";
                 closeFullBtn.classList.remove('hidden');
                 floatingSelector.classList.remove('hidden');
-                body.style.overflow = 'hidden'; // 背後の親画面スクロールを完全にロック
-                
-                // フローティングパレット描画
+                document.body.style.overflow = 'hidden';
                 filterPalettesFull('all');
             } else {
-                // 通常分割表示への差し戻し
-                card.classList.remove('fullscreen-card');
-                
                 header.classList.remove('hidden');
                 formContainer.classList.remove('hidden');
                 previewHeader.classList.remove('hidden');
-
-                // プレビューアウターとカード本体のクラス・比率を元の定義に戻す
                 previewOuter.className = "w-full lg:w-[58%] flex flex-col space-y-4 no-print";
-                card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex-grow flex flex-col min-h-[620px] transition-all duration-300 relative";
-                
+                card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex-grow flex flex-col min-h-[620px] relative";
                 closeFullBtn.classList.add('hidden');
                 floatingSelector.classList.add('hidden');
-                body.style.overflow = ''; // スクロールロックの解除
+                document.body.style.overflow = '';
             }
         }
 
         function toggleHPUri(show) {
             const container = document.getElementById('hp_url_container');
-            if(show) {
-                container.classList.remove('hidden');
-            } else {
-                container.classList.add('hidden');
-                document.getElementById('current_hp_url').value = '';
-            }
+            if(container) container.style.display = show ? 'block' : 'none';
         }
 
+        // プレビュー同期
         function updatePreview() {
             const companyName = document.getElementById('company_name').value.trim() || "株式会社〇〇";
-            const currentPalette = colorPalettes.find(p => p.id === selectedPaletteId);
+            const currentPalette = colorPalettes.find(p => p.id === selectedPaletteId) || colorPalettes[0];
             const mainGoal = document.querySelector('input[name="main_goal"]:checked')?.value || "";
             
-            const prevNav = document.getElementById('prev-nav');
-            const prevBrandName = document.getElementById('prev-brand-name');
-            const prevLogoIcon = document.getElementById('prev-logo-icon');
-            const prevNavCTA = document.getElementById('prev-nav-cta');
-            const prevHero = document.getElementById('prev-hero');
-            const prevHeroBadge = document.getElementById('prev-hero-badge');
-            const prevHeroTitle = document.getElementById('prev-hero-title');
-            const prevHeroBtn = document.getElementById('prev-hero-btn');
-            const prevHeroBtnSub = document.getElementById('prev-hero-btn-sub');
-            const prevHeroDesc = document.getElementById('prev-hero-desc');
-            const prevFeat1Icon = document.getElementById('prev-feat-1-icon');
-            const prevFeat2Icon = document.getElementById('prev-feat-2-icon');
-            const prevFeat3Icon = document.getElementById('prev-feat-3-icon');
-            const prevPaletteName = document.getElementById('prev-palette-name');
-            const prevIndBase = document.getElementById('prev-indicator-base');
-            const prevIndMain = document.getElementById('prev-indicator-main');
-            const prevIndAccent = document.getElementById('prev-indicator-accent');
-
-            prevNav.style.backgroundColor = currentPalette.base;
-            prevBrandName.style.color = currentPalette.baseText;
+            document.getElementById('prev-nav').style.backgroundColor = currentPalette.base;
+            document.getElementById('prev-brand-name').style.color = currentPalette.baseText;
+            document.getElementById('prev-brand-name').innerText = companyName;
             
-            prevLogoIcon.style.backgroundColor = currentPalette.main;
-            prevLogoIcon.style.color = currentPalette.mainText;
-            prevLogoIcon.innerText = companyName.substring(0, 1);
+            const logo = document.getElementById('prev-logo-icon');
+            logo.style.backgroundColor = currentPalette.main;
+            logo.style.color = currentPalette.mainText;
+            logo.innerText = companyName.substring(0, 1);
 
-            prevNavCTA.style.backgroundColor = currentPalette.accent;
-            prevNavCTA.style.color = currentPalette.accentText;
+            document.getElementById('prev-nav-cta').style.backgroundColor = currentPalette.accent;
+            document.getElementById('prev-nav-cta').style.color = currentPalette.accentText;
 
-            prevHero.style.backgroundColor = currentPalette.base;
-            prevHeroTitle.style.color = currentPalette.baseText;
-
-            prevHeroBadge.style.color = currentPalette.main;
-            prevHeroBadge.style.backgroundColor = currentPalette.main + "15";
+            document.getElementById('prev-hero').style.backgroundColor = currentPalette.base;
+            document.getElementById('prev-hero-title').style.color = currentPalette.baseText;
             
-            prevHeroBtn.style.backgroundColor = currentPalette.main;
-            prevHeroBtn.style.color = currentPalette.mainText;
-            
-            prevHeroBtnSub.style.borderColor = currentPalette.main;
-            prevHeroBtnSub.style.color = currentPalette.main;
+            const badge = document.getElementById('prev-hero-badge');
+            badge.style.color = currentPalette.main;
+            badge.style.backgroundColor = currentPalette.main + "15";
 
-            prevFeat1Icon.style.backgroundColor = currentPalette.accent;
-            prevFeat1Icon.style.color = currentPalette.accentText;
-            prevFeat2Icon.style.backgroundColor = currentPalette.main;
-            prevFeat2Icon.style.color = currentPalette.mainText;
-            prevFeat3Icon.style.backgroundColor = currentPalette.main;
-            prevFeat3Icon.style.color = currentPalette.mainText;
+            document.getElementById('prev-hero-btn').style.backgroundColor = currentPalette.main;
+            document.getElementById('prev-hero-btn').style.color = currentPalette.mainText;
+            document.getElementById('prev-hero-btn-sub').style.borderColor = currentPalette.main;
+            document.getElementById('prev-hero-btn-sub').style.color = currentPalette.main;
 
-            prevPaletteName.innerText = currentPalette.name;
-            prevIndBase.style.backgroundColor = currentPalette.base;
-            prevIndMain.style.backgroundColor = currentPalette.main;
-            prevIndAccent.style.backgroundColor = currentPalette.accent;
+            document.getElementById('prev-feat-1-icon').style.backgroundColor = currentPalette.accent;
+            document.getElementById('prev-feat-1-icon').style.color = currentPalette.accentText;
+            document.getElementById('prev-feat-2-icon').style.backgroundColor = currentPalette.main;
+            document.getElementById('prev-feat-2-icon').style.color = currentPalette.mainText;
+            document.getElementById('prev-feat-3-icon').style.backgroundColor = currentPalette.main;
+            document.getElementById('prev-feat-3-icon').style.color = currentPalette.mainText;
 
-            prevBrandName.innerText = companyName;
+            document.getElementById('prev-palette-name').innerText = currentPalette.name;
+            document.getElementById('prev-indicator-base').style.backgroundColor = currentPalette.base;
+            document.getElementById('prev-indicator-main').style.backgroundColor = currentPalette.main;
+            document.getElementById('prev-indicator-accent').style.backgroundColor = currentPalette.accent;
 
-            let heroTitleText = "想いをかたちにする、新しいデザイン";
-            let heroDescText = "お打ち合わせの内容から、目的を達成するための最適な体験価値を作ります。";
-
-            if (mainGoal.includes("採用")) {
-                heroTitleText = `${companyName}で、共に未来を創る仲間を募集します。`;
-                heroDescText = "私たちの熱いスピリットや、先輩たちの等身大のメッセージを伝えるリクルーティングサイトです。";
-            } else if (mainGoal.includes("問い合わせ") || mainGoal.includes("獲得")) {
-                heroTitleText = "あなたのビジネスを、ウェブのチカラで最大化する。";
-                heroDescText = "見込み顧客へ正確に魅力を発信し、24時間働く営業窓口として確実なお問い合わせへと誘います。";
-            } else if (mainGoal.includes("販売")) {
-                heroTitleText = "毎日に新しい選択を。厳選された商品を今すぐお届け。";
-                heroDescText = "簡単・安全なオンライン決済で、快適なショッピング体験をお届けするストアサイト。";
-            } else if (mainGoal.includes("ブランディング") || mainGoal.includes("信頼性")) {
-                heroTitleText = `${companyName}は、確かな信頼と実績を積み重ねています。`;
-                heroDescText = "私たちの確たるミッション、沿革、提供するバリューをクリアにまとめたコーポレートサイト。";
+            let title = "想いをかたちにする、新しいデザイン";
+            let desc = "目的を達成するための最適な体験価値を作ります。";
+            if(mainGoal.includes("採用")) {
+                title = `${companyName}で、共に未来を創る。`;
+                desc = "私たちの熱いミッションや社風を伝える採用特設サイト。";
+            } else if(mainGoal.includes("問い合わせ")) {
+                title = "ビジネスを、ウェブの力で最大化する。";
+                desc = "見込み顧客へ正確に魅力を発信し、確実なお問い合わせへと誘います。";
             }
-
-            prevHeroTitle.innerText = heroTitleText;
-            prevHeroDesc.innerText = heroDescText;
-            
-            const pages = Array.from(document.querySelectorAll('input[name="pages"]:checked')).map(el => el.value);
-            const navItemServices = document.getElementById('nav-item-services');
-            const navItemCompany = document.getElementById('nav-item-company');
-            
-            navItemServices.style.display = pages.includes("サービス紹介") ? "inline" : "none";
-            navItemCompany.style.display = pages.includes("会社概要") ? "inline" : "none";
+            document.getElementById('prev-hero-title').innerText = title;
+            document.getElementById('prev-hero-desc').innerText = desc;
         }
 
+        // ステップ遷移
         function jumpToStep(step) {
             for (let i = 1; i <= 5; i++) {
                 const content = document.getElementById(`step-content-${i}`);
                 const btn = document.getElementById(`step-btn-${i}`);
-                if (i === step) {
-                    content.classList.remove('hidden');
-                    btn.className = "flex items-center space-x-2 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 pb-2 px-1 focus:outline-none transition";
-                    btn.querySelector('span').className = "w-6 h-6 flex items-center justify-center bg-indigo-600 text-white rounded-full text-xs";
+                if(i === step) {
+                    if(content) content.classList.remove('hidden');
+                    if(btn) {
+                        btn.className = "flex items-center space-x-2 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 pb-2 px-1 focus:outline-none transition";
+                        btn.querySelector('span').className = "w-6 h-6 flex items-center justify-center bg-indigo-600 text-white rounded-full text-xs";
+                    }
                 } else {
-                    content.classList.add('hidden');
-                    btn.className = "flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-slate-600 pb-2 px-1 focus:outline-none transition";
-                    btn.querySelector('span').className = "w-6 h-6 flex items-center justify-center bg-slate-200 text-slate-600 rounded-full text-xs";
+                    if(content) content.classList.add('hidden');
+                    if(btn) {
+                        btn.className = "flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-slate-600 pb-2 px-1 focus:outline-none transition";
+                        btn.querySelector('span').className = "w-6 h-6 flex items-center justify-center bg-slate-200 text-slate-600 rounded-full text-xs";
+                    }
                 }
             }
-
             currentStep = step;
             document.getElementById('current-step-indicator').innerText = currentStep;
-
-            const prevBtn = document.getElementById('prev-btn');
-            if (currentStep === 1) {
-                prevBtn.classList.add('invisible');
-            } else {
-                prevBtn.classList.remove('invisible');
-            }
-
-            const nextBtn = document.getElementById('next-btn');
-            if (currentStep === 5) {
-                nextBtn.innerHTML = `<span>要件を最終確認</span><i class="fa-solid fa-square-check"></i>`;
-            } else {
-                nextBtn.innerHTML = `<span>次へ進む</span><i class="fa-solid fa-arrow-right"></i>`;
-            }
+            document.getElementById('prev-btn').style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+            document.getElementById('next-btn').innerHTML = currentStep === 5 ? `<span>要件を最終確認</span><i class="fa-solid fa-square-check"></i>` : `<span>次へ進む</span><i class="fa-solid fa-arrow-right"></i>`;
         }
-
         function nextStep() {
-            if (currentStep < 5) {
-                jumpToStep(currentStep + 1);
-            } else {
-                openPrintPreview();
-            }
+            if (currentStep < 5) jumpToStep(currentStep + 1);
+            else openPrintPreview();
         }
-
         function prevStep() {
-            if (currentStep > 1) {
-                jumpToStep(currentStep - 1);
-            }
+            if (currentStep > 1) jumpToStep(currentStep - 1);
         }
 
-        // 印刷用データの充填
+        // ドキュメントデータ充填
         function fillPrintData() {
-            // 基本データ
-            const companyName = document.getElementById('company_name').value.trim() || "-";
-            const companyRep = document.getElementById('company_rep').value.trim() || "-";
-            const companyAddress = document.getElementById('company_address').value.trim() || "-";
-            const corporateNumber = document.getElementById('corporate_number').value.trim() || "-";
-            const companyIndustry = document.getElementById('company_industry').value.trim() || "-";
-            const constructionLicense = document.getElementById('construction_license').value.trim() || "-";
-            const companyCapital = document.getElementById('company_capital').value.trim() || "-";
-            const companyPhone = document.getElementById('company_phone').value.trim() || "-";
+            const getVal = id => document.getElementById(id)?.value.trim() || "-";
+            document.getElementById('print_company_name').innerText = getVal('company_name');
+            document.getElementById('print_company_rep').innerText = getVal('company_rep');
+            document.getElementById('print_company_address').innerText = getVal('company_address');
+            document.getElementById('print_corporate_number').innerText = getVal('corporate_number');
+            document.getElementById('print_industry_license').innerText = `${getVal('company_industry')} / ${getVal('construction_license')}`;
+            document.getElementById('print_capital_phone').innerText = `資本金: ${getVal('company_capital')} / TEL: ${getVal('company_phone')}`;
+            document.getElementById('print_client_name').innerText = getVal('client_name');
+            document.getElementById('print_meeting_date').innerText = document.getElementById('meeting_date').value || "----年--月--日";
+            document.getElementById('print_client_email').innerText = getVal('client_email');
             
-            const clientName = document.getElementById('client_name').value.trim() || "-";
-            const meetingDate = document.getElementById('meeting_date').value || "----年--月--日";
-            const clientEmail = document.getElementById('client_email').value.trim() || "-";
-            const hpStatus = document.querySelector('input[name="current_hp_status"]:checked')?.value || "なし";
-            const currentHpUrl = document.getElementById('current_hp_url').value.trim();
-            const mainGoal = document.querySelector('input[name="main_goal"]:checked')?.value || "-";
-            const targetDemographics = document.getElementById('target_demographics').value.trim() || "未入力";
-            const targetPersona = document.getElementById('target_persona').value.trim() || "未入力";
-            const targetKeywords = document.getElementById('target_keywords').value.trim() || "未入力";
-            const targetPainPoints = document.getElementById('target_pain_points').value.trim() || "未入力";
-            const materialLogo = document.getElementById('material_logo').value;
-            const materialPhoto = document.getElementById('material_photo').value;
-            const materialText = document.getElementById('material_text').value;
-            const materialServer = document.getElementById('material_server').value;
-            const scheduleDate = document.getElementById('schedule_date').value.trim() || "未設定";
-            const budgetLevel = document.getElementById('budget_level').value;
-            const operationStyle = document.querySelector('input[name="operation_style"]:checked')?.value || "未指定";
-            const additionalNotes = document.getElementById('additional_notes').value.trim() || "特になし";
-            const customPainPoints = document.getElementById('custom_pain_points').value.trim();
-
-            const currentPalette = colorPalettes.find(p => p.id === selectedPaletteId);
-
-            // PDF 印刷データ割り当て
-            document.getElementById('print_company_name').innerText = companyName;
-            document.getElementById('print_company_rep').innerText = companyRep;
-            document.getElementById('print_company_address').innerText = companyAddress;
-            document.getElementById('print_corporate_number').innerText = corporateNumber;
-            document.getElementById('print_industry_license').innerText = `${companyIndustry} / ${constructionLicense}`;
-            document.getElementById('print_capital_phone').innerText = `資本金: ${companyCapital} / TEL: ${companyPhone}`;
-            
-            document.getElementById('print_client_name').innerText = clientName;
-            document.getElementById('print_meeting_date').innerText = meetingDate;
-            document.getElementById('print_client_email').innerText = clientEmail;
-            document.getElementById('print_current_hp').innerText = hpStatus;
-            document.getElementById('print_current_hp_url').innerText = currentHpUrl ? `(${currentHpUrl})` : '';
-            
-            const painPoints = Array.from(document.querySelectorAll('input[name="pain_points"]:checked')).map(el => el.value);
-            const printPainList = document.getElementById('print_pain_points');
-            printPainList.innerHTML = '';
-            if (painPoints.length > 0) {
-                painPoints.forEach(p => {
-                    const li = document.createElement('li');
-                    li.innerText = p;
-                    printPainList.appendChild(li);
-                });
-            } else {
-                printPainList.innerHTML = '<li>特にチェックされた課題はありません</li>';
-            }
-            
-            document.getElementById('print_custom_pain_points').innerText = customPainPoints || "特になし";
-
-            document.getElementById('print_main_goal').innerText = mainGoal;
-            document.getElementById('print_target_demographics').innerText = targetDemographics;
-            document.getElementById('print_target_persona').innerText = targetPersona;
-            document.getElementById('print_target_keywords').innerText = targetKeywords;
-            document.getElementById('print_target_pain_points').innerText = targetPainPoints;
-
-            const pages = Array.from(document.querySelectorAll('input[name="pages"]:checked')).map(el => el.value);
-            const printPagesBox = document.getElementById('print_pages');
-            printPagesBox.innerHTML = '';
-            
-            printPagesBox.innerHTML += `<span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-[8px] font-bold px-1 py-0.5 rounded">トップページ</span>`;
-            pages.forEach(p => {
-                if (p !== "トップページ") {
-                    printPagesBox.innerHTML += `<span class="bg-slate-100 text-slate-700 border border-slate-200 text-[8px] font-bold px-1 py-0.5 rounded">${p}</span>`;
-                }
-            });
-
-            document.getElementById('print_material_logo').innerText = materialLogo;
-            document.getElementById('print_material_photo').innerText = materialPhoto;
-            document.getElementById('print_material_text').innerText = materialText;
-            document.getElementById('print_material_server').innerText = materialServer;
-
+            const currentPalette = colorPalettes.find(p => p.id === selectedPaletteId) || colorPalettes[0];
             document.getElementById('print_palette_name').innerText = currentPalette.name;
             document.getElementById('print_palette_desc').innerText = currentPalette.desc;
             
-            const printColorBase = document.getElementById('print_color_base');
-            const printColorMain = document.getElementById('print_color_main');
-            const printColorAccent = document.getElementById('print_color_accent');
-            
-            printColorBase.style.backgroundColor = currentPalette.base;
-            printColorBase.style.color = currentPalette.baseText;
-            printColorMain.style.backgroundColor = currentPalette.main;
-            printColorMain.style.color = currentPalette.mainText;
-            printColorAccent.style.backgroundColor = currentPalette.accent;
-            printColorAccent.style.color = currentPalette.accentText;
+            document.getElementById('print_color_base').style.backgroundColor = currentPalette.base;
+            document.getElementById('print_color_base').style.color = currentPalette.baseText;
+            document.getElementById('print_color_main').style.backgroundColor = currentPalette.main;
+            document.getElementById('print_color_main').style.color = currentPalette.mainText;
+            document.getElementById('print_color_accent').style.backgroundColor = currentPalette.accent;
+            document.getElementById('print_color_accent').style.color = currentPalette.accentText;
 
-            document.getElementById('print_schedule_date').innerText = scheduleDate;
-            document.getElementById('print_budget_level').innerText = budgetLevel;
-            document.getElementById('print_operation_style').innerText = operationStyle;
-            document.getElementById('print_additional_notes').innerText = additionalNotes;
+            document.getElementById('print_schedule_date').innerText = getVal('schedule_date');
+            document.getElementById('print_budget_level').innerText = getVal('budget_level');
+            document.getElementById('print_additional_notes').innerText = getVal('additional_notes');
+            document.getElementById('print_main_goal').innerText = document.querySelector('input[name="main_goal"]:checked')?.value || "-";
+            document.getElementById('print_target_demographics').innerText = getVal('target_demographics');
+            document.getElementById('print_target_persona').innerText = getVal('target_persona');
+            document.getElementById('print_target_keywords').innerText = getVal('target_keywords');
+            document.getElementById('print_target_pain_points').innerText = getVal('target_pain_points');
+            
+            const painPoints = Array.from(document.querySelectorAll('input[name="pain_points"]:checked')).map(el => el.value);
+            const list = document.getElementById('print_pain_points');
+            list.innerHTML = painPoints.length ? painPoints.map(p => `<li>${p}</li>`).join('') : '<li>特に指定なし</li>';
         }
 
-        // PDF直接ダウンロード機能 (html2pdf.js)
+        // 保存・エクスポート (Webサーバー対応・安全保護ロジック付き)
         function exportPDF() {
-            const companyName = document.getElementById('company_name').value.trim() || "Web_Hearing_Sheet";
-            if(!companyName || companyName === "株式会社〇〇") {
-                showCustomAlert("PDFをエクスポートする前に、STEP 1にて「会社名」をご記入ください。", "入力項目チェック").then(() => {
-                    jumpToStep(1);
-                });
-                return;
-            }
-
+            if(typeof html2pdf === 'undefined') { showCustomAlert("PDF生成ライブラリの読み込みが完了していません。接続環境を確認してください。"); return; }
+            const companyName = document.getElementById('company_name').value.trim();
+            if(!companyName) { showCustomAlert("PDF出力のために会社名を入力してください。"); return; }
             fillPrintData();
-            
-            const printSheet = document.getElementById('print-sheet-container');
-            printSheet.classList.remove('hidden'); // 一時的にレンダリング対象にする
-
-            const opt = {
-                margin:       [8, 8, 8, 8],
-                filename:     `${companyName}_web_hearing_sheet.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, logging: false },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(printSheet).save().then(() => {
-                printSheet.classList.add('hidden');
-                showCustomAlert("PDFファイルをデバイスにエクスポートしました。", "エクスポート完了");
-            }).catch(err => {
-                printSheet.classList.add('hidden');
-                showCustomAlert("PDFの生成に失敗しました: " + err, "エラー");
-            });
+            const sheet = document.getElementById('print-sheet-container');
+            sheet.classList.remove('hidden');
+            html2pdf().set({ margin:[8,8,8,8], filename:`${companyName}_web_hearing_sheet.pdf`, jsPDF:{format:'a4'} }).from(sheet).save().then(() => { sheet.classList.add('hidden'); });
+        }
+        function exportSpreadsheet() {
+            if(typeof XLSX === 'undefined') { showCustomAlert("Excel出力ライブラリの読み込みが完了していません。"); return; }
+            const companyName = document.getElementById('company_name').value.trim();
+            if(!companyName) { showCustomAlert("Excel出力のために会社名を入力してください。"); return; }
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet([["項目", "ヒアリング内容"], ["会社名", companyName], ["打合せ納期要望", document.getElementById('schedule_date').value]]);
+            XLSX.utils.book_append_sheet(wb, ws, "ヒアリングサマリー");
+            XLSX.writeFile(wb, `${companyName}_hearing.xlsx`);
         }
 
-        // Excelワークシート (.xlsx) エクスポート機能 (SheetJS)
-        function exportSpreadsheet() {
-            const companyName = document.getElementById('company_name').value.trim() || "ヒアリング情報";
-            if(!companyName || companyName === "株式会社〇〇") {
-                showCustomAlert("スプレッドシートをエクスポートする前に、STEP 1にて「会社名」をご記入ください。", "入力項目チェック").then(() => {
-                    jumpToStep(1);
-                });
-                return;
-            }
-
-            const companyRep = document.getElementById('company_rep').value.trim() || "未入力";
-            const companyAddress = document.getElementById('company_address').value.trim() || "未入力";
-            const corporateNumber = document.getElementById('corporate_number').value.trim() || "未入力";
-            const companyIndustry = document.getElementById('company_industry').value.trim() || "未入力";
-            const constructionLicense = document.getElementById('construction_license').value.trim() || "未入力";
-            const companyCapital = document.getElementById('company_capital').value.trim() || "未入力";
-            const companyPhone = document.getElementById('company_phone').value.trim() || "未入力";
-            
-            const clientName = document.getElementById('client_name').value.trim() || "未入力";
-            const meetingDate = document.getElementById('meeting_date').value || "未指定";
-            const clientEmail = document.getElementById('client_email').value.trim() || "未入力";
-            const hpStatus = document.querySelector('input[name="current_hp_status"]:checked')?.value || "なし";
-            const currentHpUrl = document.getElementById('current_hp_url').value.trim() || "なし";
-            
-            const painPoints = Array.from(document.querySelectorAll('input[name="pain_points"]:checked')).map(el => el.value).join(', ');
-            const customPainPoints = document.getElementById('custom_pain_points').value.trim() || "特になし";
-            const mainGoal = document.querySelector('input[name="main_goal"]:checked')?.value || "未指定";
-            
-            const targetDemographics = document.getElementById('target_demographics').value.trim() || "未入力";
-            const targetPersona = document.getElementById('target_persona').value.trim() || "未入力";
-            const targetKeywords = document.getElementById('target_keywords').value.trim() || "未入力";
-            const targetPainPoints = document.getElementById('target_pain_points').value.trim() || "未入力";
-            
-            const pages = Array.from(document.querySelectorAll('input[name="pages"]:checked')).map(el => el.value).join(', ');
-            const materialLogo = document.getElementById('material_logo').value;
-            const materialPhoto = document.getElementById('material_photo').value;
-            const materialText = document.getElementById('material_text').value;
-            const materialServer = document.getElementById('material_server').value;
-            
-            const currentPalette = colorPalettes.find(p => p.id === selectedPaletteId);
-            const scheduleDate = document.getElementById('schedule_date').value.trim() || "未指定";
-            const budgetLevel = document.getElementById('budget_level').value;
-            const operationStyle = document.querySelector('input[name="operation_style"]:checked')?.value || "未指定";
-            const additionalNotes = document.getElementById('additional_notes').value.trim() || "特になし";
-
-            const data = [
-                ["Web制作ヒアリング要件定義書 - スプレッドシートサマリー", ""],
-                ["出力日", new Date().toLocaleDateString('ja-JP')],
-                ["", ""],
-                ["■ 1. クライアント基本情報", ""],
-                ["会社名 / 屋号", companyName],
-                ["代表者名", companyRep],
-                ["所在地", companyAddress],
-                ["法人番号", corporateNumber],
-                ["業種", companyIndustry],
-                ["建設業許可情報", constructionLicense],
-                ["資本金", companyCapital],
-                ["電話番号", companyPhone],
-                ["ご担当者名", clientName],
-                ["打合せ日", meetingDate],
-                ["メールアドレス", clientEmail],
-                ["既存ホームページの有無", hpStatus],
-                ["既存ホームページURL", currentHpUrl],
-                ["", ""],
-                ["■ 2. 解決したい現状の課題", ""],
-                ["選択された課題項目", painPoints || "特になし"],
-                ["その他の課題・要望", customPainPoints],
-                ["", ""],
-                ["■ 3. プロジェクト目的・ゴール", ""],
-                ["ホームページ制作 of 主たる目的", mainGoal],
-                ["", ""],
-                ["■ 4. ターゲット設計", ""],
-                ["想定ターゲット層", targetDemographics],
-                ["想定人物像・ニーズ", targetPersona],
-                ["予想検索キーワード", targetKeywords],
-                ["顧客の悩み・課題感", targetPainPoints],
-                ["", ""],
-                ["■ 5. サイトマップ / 構成", ""],
-                ["必要構成ページ", pages],
-                ["", ""],
-                ["■ 6. 提供素材・インフラ環境状況", ""],
-                ["ロゴ提供", materialLogo],
-                ["写真素材", materialPhoto],
-                ["原稿テキスト", materialText],
-                ["ドメイン・サーバー環境", materialServer],
-                ["", ""],
-                ["■ 7. デザイン・配色方針 (70:25:5黄金法則)", ""],
-                ["決定カラーパレット名", currentPalette.name],
-                ["パレット説明", currentPalette.desc],
-                ["ベースカラー (70%)", currentPalette.base],
-                ["メインカラー (25%)", currentPalette.main],
-                ["アクセントカラー (5%)", currentPalette.accent],
-                ["", ""],
-                ["■ 8. スケジュール・想定予算・運用保守", ""],
-                ["希望納期（公開希望時期）", scheduleDate],
-                ["想定ご予算レンジ", budgetLevel],
-                ["公開後の運用・管理スタイル", operationStyle],
-                ["特別要望・打合せメモ", additionalNotes]
-            ];
-
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet(data);
-
-            ws['!cols'] = [
-                { wch: 32 }, 
-                { wch: 65 }  
-            ];
-
-            XLSX.utils.book_append_sheet(wb, ws, "要件定義サマリー");
-            XLSX.writeFile(wb, `${companyName}_web_hearing_sheet.xlsx`);
-            
-            showCustomAlert("スプレッドシート（Excel形式 .xlsx）を書き出しました。表計算アプリにインポートしてご利用ください。", "エクスポート完了");
+        function resetData() {
+            showCustomConfirm("シートの内容をすべてリセットしますか？").then(ok => {
+                if(ok) location.reload();
+            });
         }
     </script>
 </body>
