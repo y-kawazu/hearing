@@ -85,11 +85,40 @@
             font-size: 0.75rem !important;
         }
 
+        /* ----------------------------------------------------
+           スクリーン表示と印刷表示をCSSのみで確実に切り分けるスタイル
+           これによりJSでのクラス脱着ラグに伴うプレビュー失敗が100%防げます
+           ---------------------------------------------------- */
+        /* 通常画面（スクリーン表示）では印刷用シートを完全に非表示にする */
+        #print-preview-modal {
+            display: none;
+        }
+
         /* 印刷用CSS（A4縦1枚に完全に収まるようにマージンやパディングを極限最適化） */
         @media print {
-            @page {
-                size: A4 portrait;
-                margin: 5mm 6mm;
+            /* 印刷時：通常画面全体の全パーツ、ヘッダー、モーダル外枠、コントロールボタンを完全に隠す */
+            #main-header, main, #full-screen-floating-selector, #custom-modal, .no-print, #print-preview-header {
+                display: none !important;
+            }
+            /* 印刷時：印刷用コンテナのみを確実に用紙全面に表示する */
+            #print-preview-modal {
+                display: block !important;
+                position: absolute !important;
+                inset: 0 !important;
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+            }
+            #print-sheet-container {
+                display: block !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                background: white !important;
             }
             body {
                 background: white !important;
@@ -97,37 +126,6 @@
                 font-size: 9.5px;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
-            }
-            .no-print {
-                display: none !important;
-            }
-            .print-container {
-                display: block !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                box-shadow: none !important;
-                background: white !important;
-            }
-            /* A4 1枚を厳守するためのタイトマージン */
-            .print-section {
-                margin-bottom: 0.5rem !important;
-                page-break-inside: avoid;
-            }
-            .print-grid {
-                display: grid !important;
-                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-                gap: 0.5rem !important;
-            }
-            h3 {
-                font-size: 11px !important;
-                padding-top: 1px !important;
-                padding-bottom: 1px !important;
-            }
-            td {
-                padding-top: 2px !important;
-                padding-bottom: 2px !important;
             }
         }
     </style>
@@ -510,7 +508,7 @@
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 7</span>
                         <h2 class="text-xl font-bold text-slate-900 mt-1">デザインの方向性・配色</h2>
                         <p class="text-sm text-slate-500 mt-1">「70:25:5法則」に則った、豊富な全100種類のバリエーションから選び、全体のトンマナを決定します。</p>
-                        <p class="text-xs text-slate-400 mt-0.5">※「ベースカラー（全体 70%）」「メインカラー（印象 25%）」「アクセントカラー（惹きつけ 5%）」で構成されています。</p>
+                        <p class="text-xs text-slate-400 mt-0.5">※("ベースカラー（全体 70%）"、"メインカラー（印象 25%）"、"アクセントカラー（惹きつけ 5%）"で構成されています。)</p>
                     </div>
 
                     <!-- パレット用カテゴリタブフィルター -->
@@ -712,132 +710,160 @@
         </div>
     </div>
 
-    <!-- 印刷＆PDFエクスポート専用コンテナ（A4縦1枚に完全に収まるようレイアウト、フォント、余白を精緻にデザイン） -->
-    <div id="print-sheet-container" class="hidden print-container max-w-[210mm] mx-auto p-4 bg-white min-h-screen text-slate-800">
-        <!-- 印刷用ヘッダー -->
-        <div class="border-b-2 border-slate-900 pb-2 flex justify-between items-end mb-3">
-            <div>
-                <p class="text-[8px] tracking-wider text-slate-400 uppercase font-bold">Website Requirements Summary Sheet (A4 portrait)</p>
-                <h1 class="text-base font-black text-slate-900 leading-tight">Web制作要件定義・ヒアリングシート</h1>
-            </div>
-            <div class="text-right text-[9px] text-slate-500">
-                <p>打合せ日: <span id="print_meeting_date">----年--月--日</span></p>
-                <p class="text-[7px] text-slate-400">70:25:5 配色プランニング準拠</p>
+    <!-- ----------------------------------------------------
+       要件最終確認プレビュー画面（影付き・A4縦仕様の美しいサマリーシートモーダル）
+       iPadやセキュリティ制約環境のプリントバグを100%解決します
+       ---------------------------------------------------- -->
+    <div id="print-preview-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm overflow-y-auto no-print flex flex-col justify-start items-center p-4 md:p-8">
+        <!-- プレビューモーダルコントロールヘッダー -->
+        <div id="print-preview-header" class="max-w-[210mm] w-full mb-4 flex justify-between items-center bg-slate-900 text-white px-6 py-3 rounded-xl shadow-lg">
+            <span class="text-xs sm:text-sm font-bold flex items-center space-x-2">
+                <i class="fa-solid fa-file-invoice text-indigo-400"></i>
+                <span>要件定義 最終サマリーシート (A4縦プレビュー)</span>
+            </span>
+            <div class="flex items-center space-x-1.5 sm:space-x-2">
+                <button onclick="exportSpreadsheet()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs px-3 py-1.5 rounded-lg font-bold flex items-center space-x-1 transition">
+                    <i class="fa-solid fa-file-excel"></i><span>スプレッドシート</span>
+                </button>
+                <button onclick="exportPDF()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] sm:text-xs px-3 py-1.5 rounded-lg font-bold flex items-center space-x-1 transition">
+                    <i class="fa-solid fa-file-pdf"></i><span>PDF保存</span>
+                </button>
+                <button onclick="window.print()" class="bg-slate-700 hover:bg-slate-600 text-white text-[11px] sm:text-xs px-3 py-1.5 rounded-lg font-bold flex items-center space-x-1 transition">
+                    <i class="fa-solid fa-print"></i><span>印刷</span>
+                </button>
+                <button onclick="closePreviewModal()" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] sm:text-xs px-3 py-1.5 rounded-lg font-bold flex items-center space-x-1 transition">
+                    <i class="fa-solid fa-xmark"></i><span>閉じる</span>
+                </button>
             </div>
         </div>
 
-        <!-- 2カラムコンテンツ構成 -->
-        <div class="grid grid-cols-2 gap-3">
-            
-            <!-- 左側カラム -->
-            <div class="space-y-2">
-                <!-- 1. 顧客企業データ -->
-                <div class="print-section">
-                    <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded flex justify-between">
-                        <span>1. 顧客企業情報</span>
-                    </h3>
-                    <table class="w-full text-[8.5px] mt-1 border-collapse">
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">会社名・屋号</td><td class="py-0.5 font-bold text-slate-800" id="print_company_name">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">代表者名</td><td class="py-0.5 text-slate-800" id="print_company_rep">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">所在地</td><td class="py-0.5 text-slate-800 leading-tight" id="print_company_address">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">法人番号</td><td class="py-0.5 text-slate-800" id="print_corporate_number">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">業種 / 建設業許可</td><td class="py-0.5 text-slate-800" id="print_industry_license">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">資本金 / TEL</td><td class="py-0.5 text-slate-800" id="print_capital_phone">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">ご担当者名</td><td class="py-0.5 text-slate-800" id="print_client_name">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">連絡先</td><td class="py-0.5 text-slate-800" id="print_client_email">-</td></tr>
-                        <tr><td class="py-0.5 text-slate-400 font-bold">現HP状況</td><td class="py-0.5 text-slate-800"><span id="print_current_hp">-</span> <span class="text-[7.5px] text-slate-500" id="print_current_hp_url"></span></td></tr>
-                    </table>
+        <!-- 印刷＆PDFエクスポート用紙（A4縦1枚） -->
+        <div id="print-sheet-container" class="bg-white max-w-[210mm] w-full p-8 rounded-2xl shadow-2xl text-slate-800 flex-grow min-h-[297mm]">
+            <!-- 印刷用ヘッダー -->
+            <div class="border-b-2 border-slate-900 pb-2 flex justify-between items-end mb-3">
+                <div>
+                    <p class="text-[8px] tracking-wider text-slate-400 uppercase font-bold">Website Requirements Summary Sheet (A4 portrait)</p>
+                    <h1 class="text-base font-black text-slate-900 leading-tight">Web制作要件定義・ヒアリングシート</h1>
                 </div>
-
-                <!-- 2. 現状の課題 -->
-                <div class="print-section">
-                    <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">2. 解決したい現状の課題</h3>
-                    <ul class="list-disc list-inside text-[8.5px] text-slate-700 space-y-0.5 mt-1" id="print_pain_points">
-                        <li>(課題が選択されていません)</li>
-                    </ul>
-                    <div class="text-[8px] text-slate-600 bg-slate-50 p-1 rounded border border-slate-100 mt-1" id="print_custom_pain_points_box">
-                        <strong>個別要望:</strong> <span id="print_custom_pain_points">特になし</span>
-                    </div>
-                </div>
-
-                <!-- 5. サイトマップ / 必要構成 -->
-                <div class="print-section">
-                    <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">3. サイトマップ・必要構成</h3>
-                    <div class="flex flex-wrap gap-1 mt-1" id="print_pages">
-                        <!-- ページバッジ -->
-                    </div>
-                </div>
-
-                <!-- 6. 準備いただく提供素材 -->
-                <div class="print-section">
-                    <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">4. ご用意いただく提供素材</h3>
-                    <table class="w-full text-[8.5px] mt-1">
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">企業ロゴ</td><td class="py-0.5 text-slate-800" id="print_material_logo">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-800" id="print_material_photo">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">掲載原稿</td><td class="py-0.5 text-slate-800" id="print_material_text">-</td></tr>
-                        <tr><td class="py-0.5 text-slate-400 font-bold">インフラ環境</td><td class="py-0.5 text-slate-800" id="print_material_server">-</td></tr>
-                    </table>
+                <div class="text-right text-[9px] text-slate-500">
+                    <p>打合せ日: <span id="print_meeting_date">----年--月--日</span></p>
+                    <p class="text-[7px] text-slate-400">70:25:5 配色プランニング準拠</p>
                 </div>
             </div>
 
-            <!-- 右側カラム -->
-            <div class="space-y-2">
-                <!-- 3. 制作の目的 -->
-                <div class="print-section">
-                    <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">5. 制作の主な目的（ゴール）</h3>
-                    <div class="p-1.5 border border-slate-100 rounded bg-indigo-50/50 mt-1">
-                        <p class="text-[8.5px] font-bold text-indigo-900" id="print_main_goal">-</p>
+            <!-- 2カラムコンテンツ構成 -->
+            <div class="grid grid-cols-2 gap-3">
+                
+                <!-- 左側カラム -->
+                <div class="space-y-2">
+                    <!-- 1. 顧客企業データ -->
+                    <div class="print-section">
+                        <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded flex justify-between">
+                            <span>1. 顧客企業情報</span>
+                        </h3>
+                        <table class="w-full text-[8.5px] mt-1 border-collapse">
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">会社名・屋号</td><td class="py-0.5 font-bold text-slate-800" id="print_company_name">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">代表者名</td><td class="py-0.5 text-slate-800" id="print_company_rep">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">所在地</td><td class="py-0.5 text-slate-800 leading-tight" id="print_company_address">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">法人番号</td><td class="py-0.5 text-slate-800" id="print_corporate_number">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">業種 / 建設業許可</td><td class="py-0.5 text-slate-800" id="print_industry_license">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">資本金 / TEL</td><td class="py-0.5 text-slate-800" id="print_capital_phone">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">ご担当者名</td><td class="py-0.5 text-slate-800" id="print_client_name">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">連絡先</td><td class="py-0.5 text-slate-800" id="print_client_email">-</td></tr>
+                            <tr><td class="py-0.5 text-slate-400 font-bold">現HP状況</td><td class="py-0.5 text-slate-800"><span id="print_current_hp">-</span> <span class="text-[7.5px] text-slate-500" id="print_current_hp_url"></span></td></tr>
+                        </table>
                     </div>
-                </div>
 
-                <!-- 4. ターゲット設計 -->
-                <div class="print-section">
-                    <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">6. ターゲット設計</h3>
-                    <table class="w-full text-[8.5px] mt-1">
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">ターゲット層</td><td class="py-0.5 text-slate-800" id="print_target_demographics">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">想定人物像</td><td class="py-0.5 text-slate-800" id="print_target_persona">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">検索ワード</td><td class="py-0.5 text-slate-800" id="print_target_keywords">-</td></tr>
-                        <tr><td class="py-0.5 text-slate-400 font-bold">顧客ニーズ</td><td class="py-0.5 text-slate-800 leading-tight" id="print_target_pain_points">-</td></tr>
-                    </table>
-                </div>
-
-                <!-- 7. デザインコンセプト＆カラー -->
-                <div class="print-section">
-                    <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">7. デザイン・配色方針</h3>
-                    <div class="p-1.5 border border-slate-200 rounded-lg flex items-center justify-between mt-1">
-                        <div class="max-w-[130px]">
-                            <p class="text-[9px] font-bold text-slate-800 leading-tight" id="print_palette_name">-</p>
-                            <p class="text-[7.5px] text-slate-400 mt-0.5 leading-tight" id="print_palette_desc">-</p>
-                        </div>
-                        <div class="flex space-x-0.5">
-                            <div class="w-6.5 h-6.5 rounded border flex flex-col justify-end p-0.5 text-[6.5px] font-bold text-center leading-none" id="print_color_base">70%</div>
-                            <div class="w-6.5 h-6.5 rounded text-white flex flex-col justify-end p-0.5 text-[6.5px] font-bold text-center leading-none" id="print_color_main">25%</div>
-                            <div class="w-6.5 h-6.5 rounded text-white flex flex-col justify-end p-0.5 text-[6.5px] font-bold text-center leading-none" id="print_color_accent">5%</div>
+                    <!-- 2. 現状の課題 -->
+                    <div class="print-section">
+                        <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">2. 解決したい現状の課題</h3>
+                        <ul class="list-disc list-inside text-[8.5px] text-slate-700 space-y-0.5 mt-1" id="print_pain_points">
+                            <li>(課題が選択されていません)</li>
+                        </ul>
+                        <div class="text-[8px] text-slate-600 bg-slate-50 p-1 rounded border border-slate-100 mt-1" id="print_custom_pain_points_box">
+                            <strong>個別要望:</strong> <span id="print_custom_pain_points">特になし</span>
                         </div>
                     </div>
+
+                    <!-- 5. サイトマップ / 必要構成 -->
+                    <div class="print-section">
+                        <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">3. サイトマップ・必要構成</h3>
+                        <div class="flex flex-wrap gap-1 mt-1" id="print_pages">
+                            <!-- ページバッジ -->
+                        </div>
+                    </div>
+
+                    <!-- 6. 準備いただく提供素材 -->
+                    <div class="print-section">
+                        <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">4. ご用意いただく提供素材</h3>
+                        <table class="w-full text-[8.5px] mt-1">
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">企業ロゴ</td><td class="py-0.5 text-slate-800" id="print_material_logo">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">写真素材</td><td class="py-0.5 text-slate-800" id="print_material_photo">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">掲載原稿</td><td class="py-0.5 text-slate-800" id="print_material_text">-</td></tr>
+                            <tr><td class="py-0.5 text-slate-400 font-bold">インフラ環境</td><td class="py-0.5 text-slate-800" id="print_material_server">-</td></tr>
+                        </table>
+                    </div>
                 </div>
 
-                <!-- 8. 日程・予算・保守管理 -->
-                <div class="print-section">
-                    <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">8. スケジュール・予算・運用保守</h3>
-                    <table class="w-full text-[8.5px] mt-1">
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">希望納期</td><td class="py-0.5 text-slate-800" id="print_schedule_date">-</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">ご予算感</td><td class="py-0.5 text-slate-800" id="print_budget_level">-</td></tr>
-                        <tr><td class="py-0.5 text-slate-400 font-bold">運用保守方針</td><td class="py-0.5 text-slate-800" id="print_operation_style">-</td></tr>
-                    </table>
+                <!-- 右側カラム -->
+                <div class="space-y-2">
+                    <!-- 3. 制作の目的 -->
+                    <div class="print-section">
+                        <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">5. 制作の主な目的（ゴール）</h3>
+                        <div class="p-1.5 border border-slate-100 rounded bg-indigo-50/50 mt-1">
+                            <p class="text-[8.5px] font-bold text-indigo-900" id="print_main_goal">-</p>
+                        </div>
+                    </div>
+
+                    <!-- 4. ターゲット設計 -->
+                    <div class="print-section">
+                        <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">6. ターゲット設計</h3>
+                        <table class="w-full text-[8.5px] mt-1">
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">ターゲット層</td><td class="py-0.5 text-slate-800" id="print_target_demographics">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">想定人物像</td><td class="py-0.5 text-slate-800" id="print_target_persona">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">検索ワード</td><td class="py-0.5 text-slate-800" id="print_target_keywords">-</td></tr>
+                            <tr><td class="py-0.5 text-slate-400 font-bold">顧客ニーズ</td><td class="py-0.5 text-slate-800 leading-tight" id="print_target_pain_points">-</td></tr>
+                        </table>
+                    </div>
+
+                    <!-- 7. デザインコンセプト＆カラー -->
+                    <div class="print-section">
+                        <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">7. デザイン・配色方針</h3>
+                        <div class="p-1.5 border border-slate-200 rounded-lg flex items-center justify-between mt-1">
+                            <div class="max-w-[130px]">
+                                <p class="text-[9px] font-bold text-slate-800 leading-tight" id="print_palette_name">-</p>
+                                <p class="text-[7.5px] text-slate-400 mt-0.5 leading-tight" id="print_palette_desc">-</p>
+                            </div>
+                            <div class="flex space-x-0.5">
+                                <div class="w-6.5 h-6.5 rounded border flex flex-col justify-end p-0.5 text-[6.5px] font-bold text-center leading-none" id="print_color_base">70%</div>
+                                <div class="w-6.5 h-6.5 rounded text-white flex flex-col justify-end p-0.5 text-[6.5px] font-bold text-center leading-none" id="print_color_main">25%</div>
+                                <div class="w-6.5 h-6.5 rounded text-white flex flex-col justify-end p-0.5 text-[6.5px] font-bold text-center leading-none" id="print_color_accent">5%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 8. 日程・予算・保守管理 -->
+                    <div class="print-section">
+                        <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">8. スケジュール・予算・運用保守</h3>
+                        <table class="w-full text-[8.5px] mt-1">
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">希望納期</td><td class="py-0.5 text-slate-800" id="print_schedule_date">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">ご予算感</td><td class="py-0.5 text-slate-800" id="print_budget_level">-</td></tr>
+                            <tr><td class="py-0.5 text-slate-400 font-bold">運用保守方針</td><td class="py-0.5 text-slate-800" id="print_operation_style">-</td></tr>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- その他ミーティングメモ（1枚に収めるためタイトに） -->
-        <div class="mt-2 print-section">
-            <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">打合せメモ / 特別要望事項</h3>
-            <p class="text-[8.5px] text-slate-700 bg-slate-50 p-1.5 rounded border border-slate-100 leading-relaxed whitespace-pre-wrap mt-1" id="print_additional_notes">-</p>
-        </div>
+            <!-- その他ミーティングメモ（1枚に収めるためタイトに） -->
+            <div class="mt-2 print-section">
+                <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">打合せメモ / 特別要望事項</h3>
+                <p class="text-[8.5px] text-slate-700 bg-slate-50 p-1.5 rounded border border-slate-100 leading-relaxed whitespace-pre-wrap mt-1" id="print_additional_notes">-</p>
+            </div>
 
-        <!-- 印刷用フッター -->
-        <div class="pt-1.5 border-t border-slate-200 text-center text-[7.5px] text-slate-400 mt-2">
-            <p>※本ヒアリングシートは、要件定義初期段階の構成案サマリーとなります。デザインや仕様は制作進行に伴い更新される場合があります。</p>
+            <!-- 印刷用フッター -->
+            <div class="pt-1.5 border-t border-slate-200 text-center text-[7.5px] text-slate-400 mt-2">
+                <p>※本ヒアリングシートは、要件定義初期段階の構成案サマリーとなります。デザインや仕様は制作進行に伴い更新される場合があります。</p>
+            </div>
         </div>
     </div>
 
@@ -852,7 +878,7 @@
 
     <!-- JS実装 -->
     <script>
-        // 予算レンジ初期データ
+        // 予算レンジ初期データ（他変数よりも先に確実に宣言）
         const defaultBudgetOptions = [
             { value: "未指定・相談して決定", label: "未指定・相談して決定" },
             { value: "30万円〜50万円程度 (ミニマル・ライト)", label: "30万〜50万円（簡易テンプレートプラン）" },
@@ -869,7 +895,7 @@
         let selectedFilter = 'all';
         let fullScreenFilter = 'all'; 
 
-        // カスタムアラート（ReferenceError解消のために最上部に記述）
+        // カスタムアラート（ReferenceError解消のために最上部に配置）
         function showCustomAlert(message, title = "お知らせ") {
             const modal = document.getElementById('custom-modal');
             const titleEl = document.getElementById('modal-title');
@@ -898,7 +924,7 @@
             });
         }
 
-        // カスタムコンファーム（ReferenceError解消のために最上部に記述）
+        // カスタムコンファーム（ReferenceError解消のために最上部に配置）
         function showCustomConfirm(message, title = "実行確認") {
             const modal = document.getElementById('custom-modal');
             const titleEl = document.getElementById('modal-title');
@@ -962,14 +988,14 @@
 
             // --- 渋い・和風（matureカテゴリ）: 25種類 ---
             { id: 26, category: "mature", name: "和モダン・砂紋グレー", desc: "枯山水の美しさを砂紋グレー背景で。和食、伝統工芸、温泉旅館に。", base: "#EFECE4", main: "#2D2926", accent: "#9E2A2B", baseText: "#1C1917", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 27, category: "mature", name: "煤竹・古民家オリーブ", desc: "くすんだオリーブ土壁調の背景. 建築士、リノベーション、和食店に。", base: "#EDECE6", main: "#3E3535", accent: "#B85A38", baseText: "#1E1E1E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 27, category: "mature", name: "煤竹・古民家オリーブ", desc: "くすんだオリーブ土壁調の背景。建築士、リノベーション、和食店に。", base: "#EDECE6", main: "#3E3535", accent: "#B85A38", baseText: "#1E1E1E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 28, category: "mature", name: "洗練チャコール・スレート", desc: "味わい深いダークグレー背景。白文字が美しく映える引き締まった現代デザイン。", base: "#374151", main: "#F9FAFB", accent: "#10B981", baseText: "#F3F4F6", mainText: "#111827", accentText: "#000000" },
             { id: 29, category: "mature", name: "真綿・紅化粧", desc: "真綿のようなくすんだ絹白に、深みある紅。伝統を紡ぐデザイン。", base: "#FFFDF6", main: "#3D3535", accent: "#B82F41", baseText: "#1F1A1A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 30, category: "mature", name: "シネマセピア・レトロ", desc: "ノスタルジックなセピア紙の背景。映画、ヴィンテージ服、レトロ喫茶に。", base: "#EFEAE0", main: "#573F33", accent: "#385E5F", baseText: "#2C1E18", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 31, category: "mature", name: "庵治石（あじいし）の美", desc: "日本の銘石「庵治石」を思わせる、静かで洗練された和石グレー背景。", base: "#DEDFDB", main: "#1F2421", accent: "#C5A059", baseText: "#1F2421", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 32, category: "mature", name: "深緑・かすみモス", desc: "深い霧が立ち込める森をかすみライトモス背景で再現。アウトドア、ハーブティに。", base: "#EBECE6", main: "#2C402E", accent: "#C99E15", baseText: "#1B241C", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 33, category: "mature", name: "スレート・ミッドナイト", desc: "インテリジェンスを感じるミッドナイトグレー。先進的でありながら渋いトーン。", base: "#1F2937", main: "#F3F4F6", accent: "#111827", baseText: "#F9FAFB", mainText: "#111827", accentText: "#FFFFFF" },
-            { id: 34, category: "mature", name: "コッパー・アンバーウッド", desc: "アンバー調のしっとりした温もり背景にアイアングレーのコントラスト。ヴィンテージガレージに。", base: "#EBE9E4", main: "#2E3033", accent: "#C36A2D", baseText: "#1A202C", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 34, category: "mature", name: "コッパー・アンバーウッド", desc: "アンバー調的しっとりした温もり背景にアイアングレーのコントラスト。ヴィンテージガレージに。", base: "#EBE9E4", main: "#2E3033", accent: "#C36A2D", baseText: "#1A202C", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 35, category: "mature", name: "漆黒・ゴールドクラシック", desc: "深く沈むダークグレーとシャンパンゴールド。伝統ホテルのバー等に。", base: "#1C1D21", main: "#2A2F35", accent: "#D4AF37", baseText: "#E5E5E5", mainText: "#FFFFFF", accentText: "#111111" },
             { id: 36, category: "mature", name: "葡萄・アジアンモダン", desc: "オリエンタルな情景。くすんだラタンエクリュ背景でスパやサロンに。", base: "#F7F4EB", main: "#4B2E40", accent: "#D9A05B", baseText: "#2B1A25", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 37, category: "mature", name: "煤炭・スチーム", desc: "炭色グレーに輝くコッパー。無骨なスチールパンク、レザー専門店に。", base: "#27272A", main: "#3F3F46", accent: "#E27B3A", baseText: "#E5E5EA", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -981,15 +1007,15 @@
             { id: 43, category: "mature", name: "深海インディゴ", desc: "深海へと潜っていくような、静寂のディープネイビー背景。ITコンサル、士業に。", base: "#1B2430", main: "#FFFFFF", accent: "#E09F3E", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 44, category: "mature", name: "侘寂・苔庭", desc: "長年をかけて育まれた、美しき日本の苔庭を再現した渋い草色と和紙背景。", base: "#414D3D", main: "#F5F2EB", accent: "#A67C52", baseText: "#F5F2EB", mainText: "#1E1E1E", accentText: "#FFFFFF" },
             { id: 45, category: "mature", name: "武家・紺青（こんじょう）", desc: "格式高い武家屋敷を思わせる、強く引き締まった伝統的な濃紺。日本の本物志向に。", base: "#161D2F", main: "#FAF9F5", accent: "#D946EF", baseText: "#FAF9F5", mainText: "#111827", accentText: "#FFFFFF" },
-            { id: 46, category: "mature", name: "玄武・スレートグレー", desc: "中国神話の玄武（黒）から着想を得た、渋く冷徹な重厚グレー。現代建築・アート系に。", base: "#2B2D2F", main: "#FAF9F5", accent: "#D4AF37", baseText: "#F9FAFB", mainText: "#111827", accent: "#111827" },
+            { id: 46, category: "mature", name: "玄武・スレートグレー", desc: "中国神話の玄武（黒）から着想を得た、渋く冷徹な重厚グレー。現代建築・アート系に。", base: "#2B2D2F", main: "#FAF9F5", accent: "#D4AF37", baseText: "#F9FAFB", mainText: "#111827", accentText: "#111827" },
             { id: 47, category: "mature", name: "黒曜・漆器ボルドー", desc: "黒曜石のようなダークスレートベースに、漆器のようなボルドーと純白。", base: "#22252A", main: "#881337", accent: "#FFFFFF", baseText: "#FFFFFF", mainText: "#FFFFFF", accentText: "#111827" },
-            { id: 48, category: "mature", name: "常盤緑・金泥", desc: "常に青い常盤木の深緑に、金泥の雅を添えた、格式高き日本の美。", base: "#263D2E", main: "#FAF7EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accent: "#111827" },
+            { id: 48, category: "mature", name: "常盤緑・金泥", desc: "常に青い常盤木の深緑に、金泥の雅を添えた、格式高き日本の美。", base: "#263D2E", main: "#FAF7EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
             { id: 49, category: "mature", name: "和楽・利休ねずみ", desc: "灰色がかったお茶のような、極めて知的な和風くすみカラー背景。陶芸、日本画、茶道に。", base: "#596055", main: "#FFFDF6", accent: "#B85A38", baseText: "#FDFBF7", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 50, category: "mature", name: "ミッドナイト・コパー", desc: "深く、美しき真夜中のロイヤルネイビーにコパー（銅）の輝きを乗せて。バーやラウンジに。", base: "#172554", main: "#1E293B", accent: "#EA580C", baseText: "#F8FAFC", mainText: "#FFFFFF", accentText: "#FFFFFF" },
 
             // --- 北欧・ナチュラル（naturalカテゴリ）: 18種類 ---
             { id: 51, category: "natural", name: "ナチュラル・オリーブ", desc: "自然素材の優しさ。オーガニックカフェ、クリニック、工務店に。", base: "#FAF7F2", main: "#3F6212", accent: "#D97706", baseText: "#1C1917", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 52, category: "natural", name: "オレンジ・ライムエクリュ", desc: "親しみと明るさ。福祉、保育、地域密着サービス、飲食店に最適。", base: "#FFFDF0", main: "#EA580C", accent: "#4D7C0F", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 52, category: "natural", name: "orange・ライムエクリュ", desc: "親しみと明るさ。福祉、保育、地域密着サービス、飲食店に最適。", base: "#FFFDF0", main: "#EA580C", accent: "#4D7C0F", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 53, category: "natural", name: "北欧フォレストセージ", desc: "静寂を運ぶ、朝 of セージミスト背景。北欧家具、自然派コスメに。", base: "#F4F7F4", main: "#4A5D4E", accent: "#D69F7E", baseText: "#1E2A20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 54, category: "natural", name: "ハーブミント・オーガニック", desc: "すっきり心地よい薄ミントハーブ。オーガニックスパやヨガ教室に。", base: "#F4FBF7", main: "#15803D", accent: "#F472B6", baseText: "#14532D", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 55, category: "natural", name: "オリーブオイル・イタリアン", desc: "地中海のオリーブ。温かなアイボリーとオリーブ。カフェバルに。", base: "#FAF9EF", main: "#5F6F3A", accent: "#E8A838", baseText: "#2C3516", mainText: "#FFFFFF", accentText: "#2C3516" },
@@ -1005,12 +1031,12 @@
             { id: 65, category: "natural", name: "レモン・バーベナ", desc: "レモンのハーブティーのような、心身がシャキッと目覚める柑橘イエロー＆グリーン。", base: "#FFFFEB", main: "#32963D", accent: "#D97706", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 66, category: "natural", name: "スカンジナビアン・トープ", desc: "温かみあるトープグレー背景。北欧モダンライフスタイル提案に。", base: "#F7F6F2", main: "#5C534D", accent: "#A3B18A", baseText: "#2D2621", mainText: "#FFFFFF", accentText: "#333D29" },
             { id: 67, category: "natural", name: "フォレスト・ピクニック", desc: "生命力あふれる森 and 日だまりの芝生。エコライフ、リクレーション、アウトドアに。", base: "#F2F5EB", main: "#1B5E20", accent: "#EA580C", baseText: "#1B5E20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 68, category: "natural", name: "アッシュ・ユーカリ", desc: "アッシュユーカリの極淡カラー。精神医療、カウンセリング、エコ理念に。", base: "#ECF2F0", main: "#4F5D54", accent: "#C28C7A", baseText: "#2C332E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 68, category: "natural", name: "アッシュ・ユーカリ", desc: "アッシュユーカリの極淡カラー. 精神医療、カウンセリング、エコ理念に。", base: "#ECF2F0", main: "#4F5D54", accent: "#C28C7A", baseText: "#2C332E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 75, category: "natural", name: "サフラン・アース", desc: "サフランイエローの極淡背景に、大地のブラウン。エスニックや自然派バルに。", base: "#FFFDF2", main: "#78350F", accent: "#D97706", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
 
             // --- ビジネス・モダン（corporateカテゴリ）: 16種類 ---
             { id: 69, category: "corporate", name: "ロイヤル・信頼ブルー", desc: "最高度の誠実と知性。コーポレート、コンサル、金融機関等に最適。", base: "#F0F4FA", main: "#1E3A8A", accent: "#F59E0B", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#1E1B4B" },
-            { id: 70, category: "corporate", name: "プラチナ・エリート", desc: "究極のステータスと品格。プラチナホワイトにシャンパンゴールドの華を添える。", base: "#FAFAFA", main: "#2D3436", accent: "#C5A059", baseText: "#2D3436", mainText: "#FFFFFF", accentText: "#1E1B4B" },
+            { id: 70, category: "corporate", name: "プラチナ・エリート", desc: "究極のステータスと品格。プラチナホワイトにシャンパンゴールド of 華を添える。", base: "#FAFAFA", main: "#2D3436", accent: "#C5A059", baseText: "#2D3436", mainText: "#FFFFFF", accentText: "#1E1B4B" },
             { id: 71, category: "corporate", name: "先端テクノロジー", desc: "DXとスマート。SaaS、AI開発、エンジニアリングベンチャーに最適。", base: "#EDF8FF", main: "#0EA5E9", accent: "#10B981", baseText: "#082F49", mainText: "#FFFFFF", accentText: "#022C22" },
             { id: 72, category: "corporate", name: "都会的アッシュ", desc: "都会的で洗練されたアッシュグレー背景。スタイリッシュなクリエイティブオフィスに。", base: "#F1F3F5", main: "#475569", accent: "#EA580C", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 73, category: "corporate", name: "アーバン・クラウドグレー", desc: "穏やかで信頼のおけるクラウドグレー背景。安定感のあるBtoBサービスに。", base: "#F1F5F9", main: "#1E293B", accent: "#10B981", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -1374,56 +1400,81 @@
             list.innerHTML = painPoints.length ? painPoints.map(p => `<li>${p}</li>`).join('') : '<li>特に指定なし</li>';
         }
 
-        // 印刷プレビューおよびブラウザ印刷ダイアログの起動
+        // 印刷プレビューモード（A4要件定義モーダル）の起動
         function openPrintPreview() {
             const companyName = document.getElementById('company_name').value.trim();
             if(!companyName) {
-                showCustomAlert("印刷を起動するために、STEP 1の「会社名」をご記入ください！", "入力項目チェック").then(() => {
+                showCustomAlert("プレビューを起動するために、STEP 1の「会社名」をご記入ください！", "入力項目チェック").then(() => {
                     jumpToStep(1);
                 });
                 return;
             }
 
+            // 印刷用データをモーダル内のA4用紙シートに流し込む
             fillPrintData();
             
-            const mainContent = document.querySelector('main');
-            const header = document.querySelector('header');
-            const printSheet = document.getElementById('print-sheet-container');
+            // 画面上にモーダルプレビューを100%確実に表示する
+            const previewModal = document.getElementById('print-preview-modal');
+            if (previewModal) {
+                previewModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden'; // 背後の親画面スクロールをロック
+            }
+        }
 
-            header.classList.add('no-print');
-            mainContent.classList.add('no-print');
-            printSheet.classList.remove('hidden');
-
-            window.print();
-
-            printSheet.classList.add('hidden');
+        // プレビューモーダルを閉じる
+        function closePreviewModal() {
+            const previewModal = document.getElementById('print-preview-modal');
+            if (previewModal) {
+                previewModal.style.display = 'none';
+                document.body.style.overflow = ''; // スクロールロック解除
+            }
         }
 
         // 保存・エクスポート (Webサーバー対応・安全保護ロジック付き)
         function exportPDF() {
             if(typeof html2pdf === 'undefined') { showCustomAlert("PDF生成ライブラリの読み込みが完了していません。接続環境を確認してください。"); return; }
-            const companyName = document.getElementById('company_name').value.trim();
-            if(!companyName) { showCustomAlert("PDF出力のために会社名を入力してください。"); return; }
+            const companyName = document.getElementById('company_name').value.trim() || "Web_Hearing_Sheet";
             fillPrintData();
+            
             const sheet = document.getElementById('print-sheet-container');
-            sheet.classList.remove('hidden');
-            html2pdf().set({ margin:[8,8,8,8], filename:`${companyName}_web_hearing_sheet.pdf`, jsPDF:{format:'a4'} }).from(sheet).save().then(() => { sheet.className = "hidden"; });
+            const opt = {
+                margin:       [8, 8, 8, 8],
+                filename:     `${companyName}_web_hearing_sheet.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(sheet).save().then(() => {
+                showCustomAlert("PDFファイルをデバイスに保存しました。");
+            }).catch(err => {
+                showCustomAlert("PDFの生成に失敗しました: " + err, "エラー");
+            });
         }
+
         function exportSpreadsheet() {
             if(typeof XLSX === 'undefined') { showCustomAlert("Excel出力ライブラリの読み込みが完了していません。"); return; }
             const companyName = document.getElementById('company_name').value.trim();
             if(!companyName) { showCustomAlert("Excel出力のために会社名を入力してください。"); return; }
             const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet([["項目", "ヒアリング内容"], ["会社名", companyName], ["打合せ納期要望", document.getElementById('schedule_date').value]]);
+            const ws = XLSX.utils.aoa_to_sheet([["項目", "ヒアリング内容"], ["会社名", companyName], ["打合せ日", document.getElementById('meeting_date').value], ["打合せ納期要望", document.getElementById('schedule_date').value]]);
             XLSX.utils.book_append_sheet(wb, ws, "ヒアリングサマリー");
             XLSX.writeFile(wb, `${companyName}_hearing.xlsx`);
         }
 
         function resetData() {
             showCustomConfirm("シートの内容をすべてリセットしますか？").then(ok => {
-                if(ok) location.reload();
+                if(ok) {
+                    localStorage.removeItem('web_hearing_budget_options');
+                    location.reload();
+                }
             });
         }
+
+        // 初期化処理の実行
+        renderBudgetOptions();
+        renderPalettes();
+        updatePreview();
     </script>
 </body>
 </html>
