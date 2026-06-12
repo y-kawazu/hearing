@@ -136,15 +136,11 @@
     <header id="main-header" class="bg-white border-b border-slate-200 sticky top-0 z-40 no-print">
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- タイトル・管理者 -->
+                <!-- タイトル・管理者（「リセット」ボタンを取り外しました） -->
                 <div class="flex items-center space-x-3">
                     <button onclick="openAdminLogin()" class="text-slate-500 hover:text-indigo-600 transition duration-150 px-3 py-2 rounded-lg text-sm font-medium flex items-center space-x-1 hover:bg-indigo-50">
                         <i class="fa-solid fa-lock"></i>
                         <span class="hidden sm:inline">管理者設定</span>
-                    </button>
-                    <button onclick="resetData()" class="text-slate-500 hover:text-red-600 transition duration-150 px-3 py-2 rounded-lg text-sm font-medium flex items-center space-x-1 hover:bg-red-50">
-                        <i class="fa-solid fa-rotate-left"></i>
-                        <span class="hidden sm:inline">リセット</span>
                     </button>
                 </div>
                 <!-- 各種ダウンロード・出力ボタン -->
@@ -166,7 +162,7 @@
         </div>
     </header>
 
-    <!-- メインコンテンツ -->
+    <!-- メメインコンテンツ -->
     <main class="flex-grow flex flex-col lg:flex-row max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6 no-print">
         
         <!-- 左側：フォームステップエリア (幅 42%) -->
@@ -763,7 +759,7 @@
                         </h3>
                         <table class="w-full text-[8.5px] mt-1 border-collapse">
                             <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">会社名・屋号</td><td class="py-0.5 font-bold text-slate-800" id="print_company_name">-</td></tr>
-                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">代表者名</td><td class="py-0.5 text-slate-800" id="print_company_rep">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-800" id="print_company_rep">-</td></tr>
                             <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">所在地</td><td class="py-0.5 text-slate-800 leading-tight" id="print_company_address">-</td></tr>
                             <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">法人番号</td><td class="py-0.5 text-slate-800" id="print_corporate_number">-</td></tr>
                             <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">業種 / 建設業許可</td><td class="py-0.5 text-slate-800" id="print_industry_license">-</td></tr>
@@ -798,7 +794,7 @@
                         <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">4. ご用意いただく提供素材</h3>
                         <table class="w-full text-[8.5px] mt-1">
                             <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold w-1/3">企業ロゴ</td><td class="py-0.5 text-slate-800" id="print_material_logo">-</td></tr>
-                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">写真素材</td><td class="py-0.5 text-slate-800" id="print_material_photo">-</td></tr>
+                            <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-800" id="print_material_photo">-</td></tr>
                             <tr class="border-b border-slate-100"><td class="py-0.5 text-slate-400 font-bold">掲載原稿</td><td class="py-0.5 text-slate-800" id="print_material_text">-</td></tr>
                             <tr><td class="py-0.5 text-slate-400 font-bold">インフラ環境</td><td class="py-0.5 text-slate-800" id="print_material_server">-</td></tr>
                         </table>
@@ -1101,8 +1097,8 @@
             { id: 38, category: "mature", name: "藍染・千草色", desc: "歴史が息づく藍染の美学。くすんだ藍色の背景が圧倒的な存在感を引き出す。", base: "#2B3A4A", main: "#FAF6EE", accent: "#D97706", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 39, category: "mature", name: "織部・抹茶クラシック", desc: "安土桃山時代より続く織部焼の器をイメージした渋い緑と、金色のアクセント。", base: "#3E4C33", main: "#F7F4EB", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
             { id: 40, category: "mature", name: "鉄御納戸（てつおんど）", desc: "江戸の粋を感じさせる、青味を含んだ重厚なダークグレー。老舗工務店や企業に。", base: "#2E3B42", main: "#F9FAF7", accent: "#D08A42", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
-            { id: 41, category: "mature", name: "群青・砂金", desc: "深みのある群青にくすんだ黄金色をあわせた、歴史と格式の配色。", base: "#1E2A38", main: "#FAF6EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
-            { id: 42, category: "mature", name: "利休茶・煤竹", desc: "千利休が好んだ、緑がかった渋いブラウングレー。茶室、懐石料理に最適。", base: "#4D4B3E", main: "#FAF7F2", accent: "#B85A38", baseText: "#FAF7F2", mainText: "#1E1E1E", accentText: "#FFFFFF" },
+            { id: 41, category: "mature", name: "群青・砂金", desc: "深みある群青にくすんだ黄金色をあわせた、歴史と格式の配色。", base: "#1E2A38", main: "#FAF6EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
+            { id: 42, category: "mature", name: "利休茶・煤竹", desc: "千利休が好んだ、緑がかった渋いブラウングレー。茶室、懐信料理に最適。", base: "#4D4B3E", main: "#FAF7F2", accent: "#B85A38", baseText: "#FAF7F2", mainText: "#1E1E1E", accentText: "#FFFFFF" },
             { id: 43, category: "mature", name: "深海インディゴ", desc: "深海へと潜っていくような、静寂のディープネイビー背景。ITコンサル、士業に。", base: "#1B2430", main: "#FFFFFF", accent: "#E09F3E", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 44, category: "mature", name: "侘寂・苔庭", desc: "長年をかけて育まれた、美しき日本の苔庭を再現した渋い草色と和紙背景。", base: "#414D3D", main: "#F5F2EB", accent: "#A67C52", baseText: "#F5F2EB", mainText: "#1E1E1E", accentText: "#FFFFFF" },
             { id: 45, category: "mature", name: "武家・紺青（こんじょう）", desc: "格式高い武家屋敷を思わせる、強く引き締まった伝統的な濃紺。日本の本物志向に。", base: "#161D2F", main: "#FAF9F5", accent: "#D946EF", baseText: "#FAF9F5", mainText: "#111827", accentText: "#FFFFFF" },
@@ -1129,13 +1125,13 @@
             { id: 64, category: "natural", name: "セコイア・ウッド", desc: "荘厳な大樹を感じる深みあるナチュラルブラウンと、葉をイメージしたセージ。", base: "#FAF7EE", main: "#4D382B", accent: "#4F5D54", baseText: "#4D382B", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 65, category: "natural", name: "レモン・バーベナ", desc: "レモンのハーブティーのような、心身がシャキッと目覚める柑橘イエロー＆グリーン。", base: "#FFFFEB", main: "#32963D", accent: "#D97706", baseText: "#1E250A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 66, category: "natural", name: "スカンジナビアン・トープ", desc: "温かみあるトープグレー背景。北欧モダンライフスタイル提案に。", base: "#F7F6F2", main: "#5C534D", accent: "#A3B18A", baseText: "#2D2621", mainText: "#FFFFFF", accentText: "#333D29" },
-            { id: 67, category: "natural", name: "フォレスト・ピクニック", desc: "生命力あふれる森 and 日だまりの芝生。エコライフ、リクレーション、アウトドアに。", base: "#F2F5EB", main: "#1B5E20", accent: "#EA580C", baseText: "#1B5E20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 67, category: "natural", name: "フォレスト・ピクニック", desc: "生命力あふれる森 and 日だまりの芝生。エコライフ, リクレーション, アウトドアに。", base: "#F2F5EB", main: "#1B5E20", accent: "#EA580C", baseText: "#1B5E20", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 68, category: "natural", name: "アッシュ・ユーカリ", desc: "アッシュユーカリの極淡カラー. 精神医療、カウンセリング、エコ理念に。", base: "#ECF2F0", main: "#4F5D54", accent: "#C28C7A", baseText: "#2C332E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 75, category: "natural", name: "サフラン・アース", desc: "サフランイエローの極淡背景に、大地のブラウン。エスニックや自然派バルに。", base: "#FFFDF2", main: "#78350F", accent: "#D97706", baseText: "#451A03", mainText: "#FFFFFF", accentText: "#FFFFFF" },
 
             // --- ビジネス・モダン（corporateカテゴリ）: 16種類 ---
             { id: 69, category: "corporate", name: "ロイヤル・信頼ブルー", desc: "最高度の誠実と知性。コーポレート、コンサル、金融機関等に最適。", base: "#F0F4FA", main: "#1E3A8A", accent: "#F59E0B", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#1E1B4B" },
-            { id: 70, category: "corporate", name: "プラチナ・エリート", desc: "究極 of ステータスと品格。プラチナホワイトにシャンパンゴールド of 華を添える。", base: "#FAFAFA", main: "#2D3436", accent: "#C5A059", baseText: "#2D3436", mainText: "#FFFFFF", accentText: "#1E1B4B" },
+            { id: 70, category: "corporate", name: "プラチナ・エリート", desc: "静謐なステータスと品格。プラチナホワイトにシャンパンゴールドの華を添える。", base: "#FAFAFA", main: "#2D3436", accent: "#C5A059", baseText: "#2D3436", mainText: "#FFFFFF", accentText: "#1E1B4B" },
             { id: 71, category: "corporate", name: "先端テクノロジー", desc: "DXとスマート。SaaS、AI開発、エンジニアリングベンチャーに最適。", base: "#EDF8FF", main: "#0EA5E9", accent: "#10B981", baseText: "#082F49", mainText: "#FFFFFF", accentText: "#022C22" },
             { id: 72, category: "corporate", name: "都会的アッシュ", desc: "都会的で洗練されたアッシュグレー背景。スタイリッシュなクリエイティブオフィスに。", base: "#F1F3F5", main: "#475569", accent: "#EA580C", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 73, category: "corporate", name: "アーバン・クラウドグレー", desc: "穏やかで信頼のおけるクラウドグレー背景。安定感のあるBtoBサービスに。", base: "#F1F5F9", main: "#1E293B", accent: "#10B981", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
