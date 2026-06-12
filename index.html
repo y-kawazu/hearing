@@ -478,7 +478,7 @@
                                     <option value="素材収集中">集めている途中</option>
                                 </select>
                             </div>
-
+                            
                             <div class="flex items-center justify-between border-b border-slate-50 pb-2">
                                 <span class="text-sm font-medium">3. 掲載原稿テキスト</span>
                                 <select id="material_text" onchange="updatePreview()" class="text-xs bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
@@ -508,7 +508,7 @@
                         <span class="text-xs font-bold text-indigo-600 uppercase tracking-wide">STEP 7</span>
                         <h2 class="text-xl font-bold text-slate-900 mt-1">デザインの方向性・配色</h2>
                         <p class="text-sm text-slate-500 mt-1">「70:25:5法則」に則った、豊富な全100種類のバリエーションから選び、全体のトンマナを決定します。</p>
-                        <p class="text-xs text-slate-400 mt-0.5">※("ベースカラー（全体 70%）"、"メインカラー（印象 25%）"、"アクセントカラー（惹きつけ 5%）"で構成されています。)</p>
+                        <p class="text-xs text-slate-400 mt-0.5">※「ベースカラー（全体 70%）」「メインカラー（印象 25%）」「アクセントカラー（惹きつけ 5%）」で構成されています。</p>
                     </div>
 
                     <!-- パレット用カテゴリタブフィルター -->
@@ -781,7 +781,7 @@
                             <li>(課題が選択されていません)</li>
                         </ul>
                         <div class="text-[8px] text-slate-600 bg-slate-50 p-1 rounded border border-slate-100 mt-1" id="print_custom_pain_points_box">
-                            <strong>個別要望:</strong> <span id="print_custom_pain_points">特になし</span>
+                            <strong>個別要望:</strong> <span id="print_custom_pain_points">特なし</span>
                         </div>
                     </div>
 
@@ -789,7 +789,7 @@
                     <div class="print-section">
                         <h3 class="text-xs font-bold text-slate-950 bg-slate-100 px-2 py-0.5 rounded">3. サイトマップ・必要構成</h3>
                         <div class="flex flex-wrap gap-1 mt-1" id="print_pages">
-                            <!-- ページバッジ -->
+                            <!-- page_badge -->
                         </div>
                     </div>
 
@@ -867,6 +867,67 @@
         </div>
     </div>
 
+    <!-- 管理者ログインモーダル -->
+    <div id="admin-login-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm flex items-center justify-center z-50 hidden no-print">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl border border-slate-100 mx-4">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="p-2.5 bg-slate-100 text-slate-600 rounded-xl">
+                    <i class="fa-solid fa-lock text-lg"></i>
+                </div>
+                <h3 class="text-sm font-bold text-slate-900">管理者ログイン</h3>
+            </div>
+            <p class="text-xs text-slate-500 mb-4 leading-relaxed">予算レンジの金額選択肢を変更するには管理者パスワードを入力してください。<br><span class="font-bold">初期パスワード: admin</span></p>
+            <input type="password" id="admin-password-input" placeholder="パスワードを入力" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition outline-none text-sm mb-4">
+            <div class="flex justify-end space-x-2">
+                <button onclick="closeAdminLogin()" class="px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-medium text-slate-500 hover:bg-slate-50 transition">キャンセル</button>
+                <button onclick="submitAdminLogin()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold transition">ログイン</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 管理設定モーダル -->
+    <div id="admin-settings-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm flex items-center justify-center z-50 hidden no-print overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-100 mx-4 my-8">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl">
+                        <i class="fa-solid fa-sliders text-lg"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-900">管理者設定（予算レンジ変更）</h3>
+                </div>
+                <button onclick="closeAdminSettings()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            
+            <p class="text-xs text-slate-500 mb-4 leading-relaxed">打ち合わせで提示する「想定ご予算レンジ」の選択肢を自由に編集できます。値（内部・出力用）と表示用のラベル（最大5つ）を個別に設定可能です。</p>
+            
+            <div id="budget-edit-list" class="space-y-3 mb-6">
+                <!-- JSで動的に構築 -->
+            </div>
+
+            <div class="border-t border-slate-100 pt-4 mb-6">
+                <h4 class="text-xs font-bold text-slate-800 mb-2">管理者パスワードの変更</h4>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 mb-1">新しいパスワード</label>
+                        <input type="password" id="new-admin-password" placeholder="新規設定用" class="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-xs outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 mb-1">新しいパスワード（確認）</label>
+                        <input type="password" id="new-admin-password-confirm" placeholder="確認用" class="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-xs outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center">
+                <button onclick="resetToDefaultBudget()" class="px-3.5 py-2 border border-slate-200 text-red-600 rounded-xl text-xs font-medium hover:bg-red-50 transition">初期設定に戻す</button>
+                <div class="flex space-x-2">
+                    <button onclick="closeAdminSettings()" class="px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-medium text-slate-500 hover:bg-slate-50 transition">閉じる</button>
+                    <button onclick="saveAdminSettings()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold transition">設定を保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- コントロールダイアログ -->
     <div id="custom-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm flex items-center justify-center z-50 hidden no-print">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl border border-slate-100 mx-4">
@@ -878,6 +939,36 @@
 
     <!-- JS実装 -->
     <script>
+        // ----------------------------------------------------
+        // セキュリティ対応・安全なlocalStorageアクセッサー関数
+        // (ダウンロードしたfile://環境でのlocalStorage書き込み拒否エラーを完全に回避)
+        // ----------------------------------------------------
+        function safeGetLocalStorage(key, defaultValue) {
+            try {
+                const val = localStorage.getItem(key);
+                return val !== null ? val : defaultValue;
+            } catch (e) {
+                // セキュリティ拒否発生時はオンメモリでそのまま進行
+                return defaultValue;
+            }
+        }
+
+        function safeSetLocalStorage(key, value) {
+            try {
+                localStorage.setItem(key, value);
+            } catch (e) {
+                // エラー時は書き込みをスキップ
+            }
+        }
+
+        function safeRemoveLocalStorage(key) {
+            try {
+                localStorage.removeItem(key);
+            } catch (e) {
+                // エラー時はスキップ
+            }
+        }
+
         // 予算レンジ初期データ（他変数よりも先に確実に宣言）
         const defaultBudgetOptions = [
             { value: "未指定・相談して決定", label: "未指定・相談して決定" },
@@ -887,8 +978,16 @@
             { value: "200万円以上 (大規模カスタマイズ)", label: "200万円以上（大規模コーポレート・EC等）" }
         ];
 
-        let budgetOptions = JSON.parse(localStorage.getItem('web_hearing_budget_options')) || defaultBudgetOptions;
-        let adminPassword = localStorage.getItem('web_hearing_admin_password') || "admin";
+        // 安全な読み込み処理を施した設定データ展開
+        let budgetOptions;
+        try {
+            const saved = safeGetLocalStorage('web_hearing_budget_options', null);
+            budgetOptions = saved ? JSON.parse(saved) : defaultBudgetOptions;
+        } catch (e) {
+            budgetOptions = [...defaultBudgetOptions];
+        }
+
+        let adminPassword = safeGetLocalStorage('web_hearing_admin_password', "admin");
 
         let selectedPaletteId = 1; 
         let currentStep = 1;
@@ -924,7 +1023,7 @@
             });
         }
 
-        // カスタムコンファーム（ReferenceError解消のために最上部に配置）
+        // カスタムコンファーム
         function showCustomConfirm(message, title = "実行確認") {
             const modal = document.getElementById('custom-modal');
             const titleEl = document.getElementById('modal-title');
@@ -1036,7 +1135,7 @@
 
             // --- ビジネス・モダン（corporateカテゴリ）: 16種類 ---
             { id: 69, category: "corporate", name: "ロイヤル・信頼ブルー", desc: "最高度の誠実と知性。コーポレート、コンサル、金融機関等に最適。", base: "#F0F4FA", main: "#1E3A8A", accent: "#F59E0B", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#1E1B4B" },
-            { id: 70, category: "corporate", name: "プラチナ・エリート", desc: "究極のステータスと品格。プラチナホワイトにシャンパンゴールド of 華を添える。", base: "#FAFAFA", main: "#2D3436", accent: "#C5A059", baseText: "#2D3436", mainText: "#FFFFFF", accentText: "#1E1B4B" },
+            { id: 70, category: "corporate", name: "プラチナ・エリート", desc: "究極 of ステータスと品格。プラチナホワイトにシャンパンゴールド of 華を添える。", base: "#FAFAFA", main: "#2D3436", accent: "#C5A059", baseText: "#2D3436", mainText: "#FFFFFF", accentText: "#1E1B4B" },
             { id: 71, category: "corporate", name: "先端テクノロジー", desc: "DXとスマート。SaaS、AI開発、エンジニアリングベンチャーに最適。", base: "#EDF8FF", main: "#0EA5E9", accent: "#10B981", baseText: "#082F49", mainText: "#FFFFFF", accentText: "#022C22" },
             { id: 72, category: "corporate", name: "都会的アッシュ", desc: "都会的で洗練されたアッシュグレー背景。スタイリッシュなクリエイティブオフィスに。", base: "#F1F3F5", main: "#475569", accent: "#EA580C", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 73, category: "corporate", name: "アーバン・クラウドグレー", desc: "穏やかで信頼のおけるクラウドグレー背景。安定感のあるBtoBサービスに。", base: "#F1F5F9", main: "#1E293B", accent: "#10B981", baseText: "#0F172A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -1056,7 +1155,7 @@
             // --- ポップ・個性派（popカテゴリ）: 16種類 ---
             // ==========================================
             { id: 85, category: "pop", name: "創造性・バイオレット", desc: "感性を揺さぶるネオンバイオレット。先進のデザイン事務所、アートサロンに。", base: "#F8F5FF", main: "#7C3AED", accent: "#F43F5E", baseText: "#1C1917", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 86, category: "pop", name: "メルヘン・パステルレモン", desc: "お日さまを浴びたレモンイエロー背景。ハンドメイド、子供向け、スイーツに。", base: "#FEFCE8", main: "#A8DADC", accent: "#F4A261", baseText: "#1D3557", mainText: "#1D3557", accentText: "#FFFFFF" },
+            { id: 86, category: "pop", name: "メルヘン・パステルレモン", desc: "お日さまを浴びたレモンイエロー背景。ハンドメイド, 子供向け、スイーツに。", base: "#FEFCE8", main: "#A8DADC", accent: "#F4A261", baseText: "#1D3557", mainText: "#1D3557", accentText: "#FFFFFF" },
             { id: 87, category: "pop", name: "サンセット・カリフォルニア", desc: "開放的なサニーバニラ背景. カリフォルニアスタイルアパレル、ダイナーに。", base: "#FFFDF6", main: "#D94E34", accent: "#4A7A96", baseText: "#3C1F15", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 88, category: "pop", name: "レトロポップ・ティール", desc: "アメリカンレトロポップ。ヘアサロン、ポップなカフェ、個性的アトリエに。", base: "#FFFBF2", main: "#008080", accent: "#FF6F61", baseText: "#1E293B", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 89, category: "pop", name: "アクティブ・アスリートグレー", desc: "力強いスレートグレー背景に、アスリートの熱意を乗せたライム。パーソナルジムに。", base: "#374151", main: "#1F2937", accent: "#A3E635", baseText: "#F9FAFB", mainText: "#F9FAFB", accentText: "#09090B" },
@@ -1132,18 +1231,32 @@
                 const lbl = document.getElementById(`budget-lbl-${i}`).value.trim();
                 updated.push({ value: val, label: lbl });
             }
+
+            // パスワード変更
+            const newPw = document.getElementById('new-admin-password').value;
+            const newPwConfirm = document.getElementById('new-admin-password-confirm').value;
+
+            if (newPw) {
+                if (newPw !== newPwConfirm) {
+                    showCustomAlert("新しく設定するパスワードと確認用パスワードが一致しません。", "パスワードエラー");
+                    return;
+                }
+                adminPassword = newPw;
+                safeSetLocalStorage('web_hearing_admin_password', adminPassword);
+            }
+
             budgetOptions = updated;
-            localStorage.setItem('web_hearing_budget_options', JSON.stringify(budgetOptions));
+            safeSetLocalStorage('web_hearing_budget_options', JSON.stringify(budgetOptions));
             renderBudgetOptions();
             closeAdminSettings();
-            showCustomAlert("予算設定を保存しました。");
+            showCustomAlert("設定を保存しました。");
         }
         function resetToDefaultBudget() {
             budgetOptions = [...defaultBudgetOptions];
-            localStorage.removeItem('web_hearing_budget_options');
+            safeRemoveLocalStorage('web_hearing_budget_options');
             renderBudgetOptions();
             closeAdminSettings();
-            showCustomAlert("初期値に戻しました。");
+            showCustomAlert("初期設定に戻しました。");
         }
 
         // カラーパレット描画
@@ -1465,7 +1578,8 @@
         function resetData() {
             showCustomConfirm("シートの内容をすべてリセットしますか？").then(ok => {
                 if(ok) {
-                    localStorage.removeItem('web_hearing_budget_options');
+                    safeRemoveLocalStorage('web_hearing_budget_options');
+                    safeRemoveLocalStorage('web_hearing_admin_password');
                     location.reload();
                 }
             });
