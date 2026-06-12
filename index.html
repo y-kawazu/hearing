@@ -149,7 +149,7 @@
                         <span class="hidden sm:inline">リセット</span>
                     </button>
                 </div>
-                <!-- 各種ダウンロード・出力ボタン（簡潔なネーミングへ統一） -->
+                <!-- 各種ダウンロード・出力ボタン -->
                 <div class="flex items-center space-x-2">
                     <button onclick="exportSpreadsheet()" class="bg-emerald-600 hover:bg-emerald-700 text-white transition duration-150 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-1.5 shadow-sm shadow-emerald-100">
                         <i class="fa-solid fa-file-excel"></i>
@@ -852,7 +852,86 @@
 
     <!-- JS実装 -->
     <script>
-        // 完全統合された全100個のプロ仕様パレット配列（文法エラーのない1つのソリッドな配列定義です）
+        // 予算レンジ初期データ
+        const defaultBudgetOptions = [
+            { value: "未指定・相談して決定", label: "未指定・相談して決定" },
+            { value: "30万円〜50万円程度 (ミニマル・ライト)", label: "30万〜50万円（簡易テンプレートプラン）" },
+            { value: "50万円〜100万円程度 (スタンダード・標準)", label: "50万〜100万円（オリジナル・標準プラン）" },
+            { value: "100万円〜200万円程度 (プレミアム・多機能)", label: "100万〜200万円（システム連携・マーケ重視）" },
+            { value: "200万円以上 (大規模カスタマイズ)", label: "200万円以上（大規模コーポレート・EC等）" }
+        ];
+
+        let budgetOptions = JSON.parse(localStorage.getItem('web_hearing_budget_options')) || defaultBudgetOptions;
+        let adminPassword = localStorage.getItem('web_hearing_admin_password') || "admin";
+
+        let selectedPaletteId = 1; 
+        let currentStep = 1;
+        let selectedFilter = 'all';
+        let fullScreenFilter = 'all'; 
+
+        // カスタムアラート（ReferenceError解消のために最上部に記述）
+        function showCustomAlert(message, title = "お知らせ") {
+            const modal = document.getElementById('custom-modal');
+            const titleEl = document.getElementById('modal-title');
+            const msgEl = document.getElementById('modal-message');
+            const cancelBtn = document.getElementById('modal-cancel-btn');
+            const confirmBtn = document.getElementById('modal-confirm-btn');
+            const iconBg = document.getElementById('modal-icon-bg');
+            const icon = document.getElementById('modal-icon');
+
+            if (!modal) return Promise.resolve(false);
+
+            titleEl.innerText = title;
+            msgEl.innerText = message;
+            cancelBtn.classList.add('hidden'); // アラート時はキャンセル不要
+            
+            iconBg.className = "p-2.5 bg-indigo-50 text-indigo-600 rounded-xl";
+            icon.className = "fa-solid fa-circle-info text-lg";
+
+            modal.classList.remove('hidden');
+
+            return new Promise((resolve) => {
+                confirmBtn.onclick = () => {
+                    modal.classList.add('hidden');
+                    resolve(true);
+                };
+            });
+        }
+
+        // カスタムコンファーム（ReferenceError解消のために最上部に記述）
+        function showCustomConfirm(message, title = "実行確認") {
+            const modal = document.getElementById('custom-modal');
+            const titleEl = document.getElementById('modal-title');
+            const msgEl = document.getElementById('modal-message');
+            const cancelBtn = document.getElementById('modal-cancel-btn');
+            const confirmBtn = document.getElementById('modal-confirm-btn');
+            const iconBg = document.getElementById('modal-icon-bg');
+            const icon = document.getElementById('modal-icon');
+
+            if (!modal) return Promise.resolve(false);
+
+            titleEl.innerText = title;
+            msgEl.innerText = message;
+            cancelBtn.classList.remove('hidden'); // キャンセルを表示
+            
+            iconBg.className = "p-2.5 bg-amber-50 text-amber-600 rounded-xl";
+            icon.className = "fa-solid fa-triangle-exclamation text-lg";
+
+            modal.classList.remove('hidden');
+
+            return new Promise((resolve) => {
+                confirmBtn.onclick = () => {
+                    modal.classList.add('hidden');
+                    resolve(true);
+                };
+                cancelBtn.onclick = () => {
+                    modal.classList.add('hidden');
+                    resolve(false);
+                };
+            });
+        }
+
+        // 完全統合された全100個のプロ仕様パレット配列
         const colorPalettes = [
             // --- グレージュ・淡色（paleカテゴリ）: 25種類 ---
             { id: 1, category: "pale", name: "洗練グレージュ", desc: "大人の上品なくすみグレーベージュ。一番人気のニュアンスカラー。", base: "#F4F2EE", main: "#4A4744", accent: "#C29B9B", baseText: "#2C2A29", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -883,7 +962,7 @@
 
             // --- 渋い・和風（matureカテゴリ）: 25種類 ---
             { id: 26, category: "mature", name: "和モダン・砂紋グレー", desc: "枯山水の美しさを砂紋グレー背景で。和食、伝統工芸、温泉旅館に。", base: "#EFECE4", main: "#2D2926", accent: "#9E2A2B", baseText: "#1C1917", mainText: "#FFFFFF", accentText: "#FFFFFF" },
-            { id: 27, category: "mature", name: "煤竹・古民家オリーブ", desc: "くすんだオリーブ土壁調の背景。建築士、リノベーション、和食店に。", base: "#EDECE6", main: "#3E3535", accent: "#B85A38", baseText: "#1E1E1E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
+            { id: 27, category: "mature", name: "煤竹・古民家オリーブ", desc: "くすんだオリーブ土壁調の背景. 建築士、リノベーション、和食店に。", base: "#EDECE6", main: "#3E3535", accent: "#B85A38", baseText: "#1E1E1E", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 28, category: "mature", name: "洗練チャコール・スレート", desc: "味わい深いダークグレー背景。白文字が美しく映える引き締まった現代デザイン。", base: "#374151", main: "#F9FAFB", accent: "#10B981", baseText: "#F3F4F6", mainText: "#111827", accentText: "#000000" },
             { id: 29, category: "mature", name: "真綿・紅化粧", desc: "真綿のようなくすんだ絹白に、深みある紅。伝統を紡ぐデザイン。", base: "#FFFDF6", main: "#3D3535", accent: "#B82F41", baseText: "#1F1A1A", mainText: "#FFFFFF", accentText: "#FFFFFF" },
             { id: 30, category: "mature", name: "シネマセピア・レトロ", desc: "ノスタルジックなセピア紙の背景。映画、ヴィンテージ服、レトロ喫茶に。", base: "#EFEAE0", main: "#573F33", accent: "#385E5F", baseText: "#2C1E18", mainText: "#FFFFFF", accentText: "#FFFFFF" },
@@ -902,9 +981,9 @@
             { id: 43, category: "mature", name: "深海インディゴ", desc: "深海へと潜っていくような、静寂のディープネイビー背景。ITコンサル、士業に。", base: "#1B2430", main: "#FFFFFF", accent: "#E09F3E", baseText: "#F3F4F6", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 44, category: "mature", name: "侘寂・苔庭", desc: "長年をかけて育まれた、美しき日本の苔庭を再現した渋い草色と和紙背景。", base: "#414D3D", main: "#F5F2EB", accent: "#A67C52", baseText: "#F5F2EB", mainText: "#1E1E1E", accentText: "#FFFFFF" },
             { id: 45, category: "mature", name: "武家・紺青（こんじょう）", desc: "格式高い武家屋敷を思わせる、強く引き締まった伝統的な濃紺。日本の本物志向に。", base: "#161D2F", main: "#FAF9F5", accent: "#D946EF", baseText: "#FAF9F5", mainText: "#111827", accentText: "#FFFFFF" },
-            { id: 46, category: "mature", name: "玄武・スレートグレー", desc: "中国神話の玄武（黒）から着想を得た、渋く冷徹な重厚グレー。現代建築・アート系に。", base: "#2B2D2F", main: "#FAF9F5", accent: "#D4AF37", baseText: "#F9FAFB", mainText: "#111827", accentText: "#111827" },
+            { id: 46, category: "mature", name: "玄武・スレートグレー", desc: "中国神話の玄武（黒）から着想を得た、渋く冷徹な重厚グレー。現代建築・アート系に。", base: "#2B2D2F", main: "#FAF9F5", accent: "#D4AF37", baseText: "#F9FAFB", mainText: "#111827", accent: "#111827" },
             { id: 47, category: "mature", name: "黒曜・漆器ボルドー", desc: "黒曜石のようなダークスレートベースに、漆器のようなボルドーと純白。", base: "#22252A", main: "#881337", accent: "#FFFFFF", baseText: "#FFFFFF", mainText: "#FFFFFF", accentText: "#111827" },
-            { id: 48, category: "mature", name: "常盤緑・金泥", desc: "常に青い常盤木の深緑に、金泥の雅を添えた、格式高き日本の美。", base: "#263D2E", main: "#FAF7EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accentText: "#111827" },
+            { id: 48, category: "mature", name: "常盤緑・金泥", desc: "常に青い常盤木の深緑に、金泥の雅を添えた、格式高き日本の美。", base: "#263D2E", main: "#FAF7EE", accent: "#C5A059", baseText: "#F3F4F6", mainText: "#111827", accent: "#111827" },
             { id: 49, category: "mature", name: "和楽・利休ねずみ", desc: "灰色がかったお茶のような、極めて知的な和風くすみカラー背景。陶芸、日本画、茶道に。", base: "#596055", main: "#FFFDF6", accent: "#B85A38", baseText: "#FDFBF7", mainText: "#111827", accentText: "#FFFFFF" },
             { id: 50, category: "mature", name: "ミッドナイト・コパー", desc: "深く、美しき真夜中のロイヤルネイビーにコパー（銅）の輝きを乗せて。バーやラウンジに。", base: "#172554", main: "#1E293B", accent: "#EA580C", baseText: "#F8FAFC", mainText: "#FFFFFF", accentText: "#FFFFFF" },
 
@@ -967,23 +1046,6 @@
             { id: 100, category: "pop", name: "フォレスト・ネオンライム", desc: "荘厳な深緑ベースに、目が覚めるようなネオンライム。ゲーム、WEBサービス、テック系。", base: "#14532D", main: "#1F2937", accent: "#A3E635", baseText: "#F4FDF4", mainText: "#FFFFFF", accentText: "#09090B" },
             { id: 99, category: "pop", name: "オーシャン・バーベナ", desc: "海を愛するアパレル・サーフ。淡くまばゆいペールブルーに、夕陽を乗せて。", base: "#F0F9FF", main: "#0D9488", accent: "#EA580C", baseText: "#034E5A", mainText: "#FFFFFF", accentText: "#FFFFFF" }
         ];
-
-        // 予算レンジ初期データ（変数定義の順序を上に移動させてバグを修正）
-        const defaultBudgetOptions = [
-            { value: "未指定・相談して決定", label: "未指定・相談して決定" },
-            { value: "30万円〜50万円程度 (ミニマル・ライト)", label: "30万〜50万円（簡易テンプレートプラン）" },
-            { value: "50万円〜100万円程度 (スタンダード・標準)", label: "50万〜100万円（オリジナル・標準プラン）" },
-            { value: "100万円〜200万円程度 (プレミアム・多機能)", label: "100万〜200万円（システム連携・マーケ重視）" },
-            { value: "200万円以上 (大規模カスタマイズ)", label: "200万円以上（大規模コーポレート・EC等）" }
-        ];
-
-        let budgetOptions = JSON.parse(localStorage.getItem('web_hearing_budget_options')) || defaultBudgetOptions;
-        let adminPassword = localStorage.getItem('web_hearing_admin_password') || "admin";
-
-        let selectedPaletteId = 1; 
-        let currentStep = 1;
-        let selectedFilter = 'all';
-        let fullScreenFilter = 'all'; 
 
         // 予算プルダウン構築
         function renderBudgetOptions() {
@@ -1312,6 +1374,31 @@
             list.innerHTML = painPoints.length ? painPoints.map(p => `<li>${p}</li>`).join('') : '<li>特に指定なし</li>';
         }
 
+        // 印刷プレビューおよびブラウザ印刷ダイアログの起動
+        function openPrintPreview() {
+            const companyName = document.getElementById('company_name').value.trim();
+            if(!companyName) {
+                showCustomAlert("印刷を起動するために、STEP 1の「会社名」をご記入ください！", "入力項目チェック").then(() => {
+                    jumpToStep(1);
+                });
+                return;
+            }
+
+            fillPrintData();
+            
+            const mainContent = document.querySelector('main');
+            const header = document.querySelector('header');
+            const printSheet = document.getElementById('print-sheet-container');
+
+            header.classList.add('no-print');
+            mainContent.classList.add('no-print');
+            printSheet.classList.remove('hidden');
+
+            window.print();
+
+            printSheet.classList.add('hidden');
+        }
+
         // 保存・エクスポート (Webサーバー対応・安全保護ロジック付き)
         function exportPDF() {
             if(typeof html2pdf === 'undefined') { showCustomAlert("PDF生成ライブラリの読み込みが完了していません。接続環境を確認してください。"); return; }
@@ -1320,7 +1407,7 @@
             fillPrintData();
             const sheet = document.getElementById('print-sheet-container');
             sheet.classList.remove('hidden');
-            html2pdf().set({ margin:[8,8,8,8], filename:`${companyName}_web_hearing_sheet.pdf`, jsPDF:{format:'a4'} }).from(sheet).save().then(() => { sheet.classList.add('hidden'); });
+            html2pdf().set({ margin:[8,8,8,8], filename:`${companyName}_web_hearing_sheet.pdf`, jsPDF:{format:'a4'} }).from(sheet).save().then(() => { sheet.className = "hidden"; });
         }
         function exportSpreadsheet() {
             if(typeof XLSX === 'undefined') { showCustomAlert("Excel出力ライブラリの読み込みが完了していません。"); return; }
